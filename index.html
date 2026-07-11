@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donuts Delícia</title>
+    <!-- Fontes Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ----- CONFIGURAÇÕES GERAIS E SCROLLBAR ----- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Estilização da Scrollbar combinando com o site */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fcecec; }
+        ::-webkit-scrollbar-thumb { background: #F4D1D1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e8baba; }
+
+        body { font-family: 'Roboto', sans-serif; color: #333; overflow-x: hidden; padding-top: 80px; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* ----- CABEÇALHO FIXO (HEADER) ----- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #3e3e3e; cursor: pointer; }
+        
+        /* Menu Desktop */
+        .nav-container { display: flex; align-items: center; gap: 25px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { font-size: 14px; color: #555; transition: color 0.3s ease; position: relative;}
+        .nav-links a:hover, .nav-links a.active { color: #000; }
+        .nav-links a.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background-color: #333;
+        }
+        
+        /* Menu de Ações no Desktop (Trabalhe Conosco e Carrinho) */
+        .nav-actions { display: flex; gap: 20px; align-items: center; font-size: 14px; color: #555; }
+        .nav-actions a { transition: color 0.3s; }
+        .nav-actions a:hover { color: #000; }
+        
+        .cart-wrapper-desktop { position: relative; cursor: pointer; margin-left: 15px; padding-left: 15px; border-left: 1px solid #ddd; display: flex; align-items: center; gap: 5px;}
+        .cart-wrapper-desktop:hover { color: #000; }
+
+        .cart-count {
+            position: absolute; top: -8px; right: -12px;
+            background-color: #e74c3c; color: #fff; font-size: 11px;
+            border-radius: 50%; padding: 2px 6px; font-weight: bold; display: none;
+        }
+
+        /* Menu Hamburguer (Mobile) - Escondido por padrão */
+        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .hamburger span { width: 25px; height: 3px; background-color: #333; transition: 0.3s; }
+        
+        /* Ícones Mobile - Escondidos por padrão no Desktop */
+        .header-mobile-icons { display: none; }
+
+        /* Menu Mobile Aberto (Overlay) */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; right: -100%; width: 70%; max-width: 300px; height: 100vh;
+            background: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s ease-in-out;
+            z-index: 1001; padding: 40px 30px; display: flex; flex-direction: column;
+            margin-top: 80px;
+        }
+        .mobile-menu-overlay.active { right: 0; }
+        .close-menu { align-self: flex-end; font-size: 24px; cursor: pointer; margin-bottom: 30px; color: #777; transition: color 0.3s;}
+        .close-menu:hover { color: #333; }
+        .mobile-menu-overlay ul { display: flex; flex-direction: column; gap: 20px; }
+        .mobile-menu-overlay ul li { border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .mobile-menu-overlay ul li a { font-size: 16px; color: #555; font-weight: 500; display: block; transition: color 0.3s; }
+        .mobile-menu-overlay ul li a:hover { color: #000; }
+
+        /* ----- SEÇÕES DE CONTEÚDO (PÁGINAS) ----- */
+        .page-section { display: none; animation: fadeIn 0.5s ease; }
+        .page-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PÁGINA INÍCIO (HERO COM WHATSAPP) */
+        .hero {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 60px 8%; min-height: 80vh;
+            background: linear-gradient(135deg, #F4D1D1 0%, #FDE8E8 100%);
+        }
+        .hero-content { max-width: 50%; }
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 58px; color: #222; line-height: 1.1; margin-bottom: 20px; }
+        .hero-content .linha-amarela { display: block; width: 40px; height: 4px; background-color: #FFE45C; margin-bottom: 20px; }
+        .hero-content p { font-size: 18px; color: #555; margin-bottom: 30px; }
+        
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        
+        .btn-hero { background-color: #FFF566; color: #333; border: none; padding: 15px 50px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; border-radius: 4px; }
+        .btn-hero:hover { transform: scale(1.05); background-color: #f0dc50; }
+
+        .btn-whatsapp-hero { 
+            background-color: #25D366; color: #fff; border: none; padding: 15px 35px; 
+            font-size: 16px; font-weight: 500; cursor: pointer; border-radius: 4px; 
+            display: flex; align-items: center; gap: 10px; transition: all 0.3s ease;
+        }
+        .btn-whatsapp-hero:hover { background-color: #1da851; transform: scale(1.05); }
+
+        .hero-image img { max-width: 450px; width: 100%; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); }
+
+        .produtos-home { padding: 80px 8%; background-color: #fff; }
+        .grid-produtos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 40px; }
+        .produto-card { text-align: center; padding: 10px; transition: transform 0.3s ease; cursor: pointer; }
+        .produto-card:hover { transform: translateY(-8px); }
+        .img-wrapper { background-color: #FBD6D6; padding: 20px; border-radius: 4px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; height: 200px; overflow: hidden;}
+        .img-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.5s ease; }
+        .produto-card:hover .img-wrapper img { transform: scale(1.05); }
+        .produto-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: #3e3e3e; font-weight: 400; margin-bottom: 5px; }
+        .produto-card span { color: #666; font-size: 14px; }
+        
+        .btn-container { text-align: center; margin-top: 20px; }
+        .btn-todos { background-color: #FFF566; padding: 15px 40px; border: none; font-size: 15px; font-weight: 500; cursor: pointer; border-radius: 4px; transition: all 0.3s ease; }
+        .btn-todos:hover { background-color: #f0dc50; transform: scale(1.02); }
+
+        .beneficios { background-color: #F9F9F9; padding: 80px 8%; }
+        .grid-beneficios { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .beneficio-item { text-align: center; padding: 15px; transition: transform 0.3s ease; }
+        .beneficio-item:hover { transform: translateY(-3px); }
+        .beneficio-item i { font-size: 32px; color: #333; margin-bottom: 15px; }
+        .beneficio-item h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 10px; color: #222; }
+        .beneficio-item p { font-size: 14px; color: #666; line-height: 1.5; }
+
+        /* PÁGINA PRODUTOS */
+        .pagina-produtos { padding: 60px 8%; background-color: #fff; min-height: 60vh; }
+        .pagina-produtos h1 { font-family: 'Playfair Display', serif; font-size: 42px; text-align: center; margin-bottom: 40px; color: #222; }
+
+        /* PÁGINA SOBRE MIM */
+        .pagina-sobre { padding: 60px 8%; background-color: #F4D1D1; min-height: 60vh; display: flex; align-items: center; justify-content: center;}
+        .sobre-container { max-width: 900px; background: #fff; padding: 50px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .sobre-imagem { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 5px solid #F4D1D1; }
+        .sobre-container h1 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 20px; color: #222; }
+        .sobre-container p { font-size: 16px; line-height: 1.8; color: #555; margin-bottom: 15px; max-width: 600px; }
+
+        /* PÁGINA CONTATO */
+        .pagina-contato { padding: 60px 8%; background-color: #fff; min-height: 60vh; }
+        .pagina-contato h1 { font-family: 'Playfair Display', serif; font-size: 42px; text-align: center; margin-bottom: 30px; color: #222; }
+        .contato-form { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+        .contato-form input, .contato-form textarea { padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; font-size: 14px; outline: none; transition: border 0.3s; }
+        .contato-form input:focus, .contato-form textarea:focus { border-color: #F4D1D1; }
+        .contato-form button { background-color: #333; color: #fff; border: none; padding: 15px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        .contato-form button:hover { background-color: #555; }
+
+        /* PÁGINA TRABALHE CONOSCO */
+        .pagina-trabalhe { padding: 60px 8%; background-color: #fff; min-height: 60vh; }
+        .pagina-trabalhe h1 { font-family: 'Playfair Display', serif; font-size: 42px; text-align: center; margin-bottom: 30px; color: #222; }
+
+        /* PÁGINA CARRINHO */
+        .pagina-carrinho { padding: 60px 8%; background-color: #fff; min-height: 60vh; }
+        .pagina-carrinho h1 { font-family: 'Playfair Display', serif; font-size: 42px; text-align: center; margin-bottom: 30px; color: #222; }
+        .cart-itens-container { max-width: 800px; margin: 0 auto; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .cart-item-info { display: flex; align-items: center; gap: 15px; }
+        .cart-item-info img { width: 60px; height: 60px; object-fit: contain; }
+        .cart-item-info h4 { font-family: 'Playfair Display', serif; font-size: 18px; }
+        .cart-item-price { font-weight: bold; color: #333; }
+        .cart-item-remove { color: #e74c3c; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .cart-item-remove:hover { transform: scale(1.2); }
+        
+        .cart-total { text-align: right; margin-top: 20px; font-size: 20px; font-weight: bold; border-top: 2px solid #333; padding-top: 20px; }
+        .btn-checkout { background-color: #333; color: #fff; border: none; padding: 15px 40px; font-size: 16px; border-radius: 4px; margin-top: 20px; cursor: pointer; transition: 0.3s; width: 100%; max-width: 300px; }
+        .btn-checkout:hover { background-color: #555; transform: scale(1.02); }
+        .cart-empty { text-align: center; font-size: 18px; color: #777; padding: 40px 0; }
+
+        /* ----- BOTÃO VOLTAR AO TOPO ----- */
+        #back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            background-color: #333; color: #fff; width: 50px; height: 50px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease; z-index: 999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        #back-to-top.show { opacity: 1; visibility: visible; }
+        #back-to-top:hover { background-color: #555; transform: translateY(-5px); }
+
+        /* ----- MODAL (DETALHES DO PRODUTO) ----- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            background: #fff; max-width: 500px; width: 90%; padding: 40px;
+            border-radius: 12px; text-align: center; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; font-size: 24px;
+            color: #888; cursor: pointer; transition: color 0.3s;
+        }
+        .modal-close:hover { color: #222; }
+
+        .modal-content img {
+            max-width: 200px; width: 100%; margin-bottom: 15px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+        .modal-content h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: #222; margin-bottom: 5px; }
+        .modal-content .modal-price { font-size: 20px; color: #555; font-weight: bold; margin-bottom: 15px; display: block; }
+        .modal-content p { color: #666; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        
+        .modal-btn-add {
+            background-color: #FFF566; border: none; padding: 12px 40px;
+            font-size: 16px; font-weight: 500; border-radius: 4px; cursor: pointer;
+            transition: all 0.3s ease; width: 100%;
+        }
+        .modal-btn-add:hover { background-color: #f0dc50; transform: scale(1.02); }
+
+        /* ----- RODAPÉ ----- */
+        footer {
+            padding: 40px 0; text-align: center;
+            background: linear-gradient(135deg, #F4D1D1 0%, #FDE8E8 100%);
+            color: #555; font-size: 14px;
+        }
+        footer p { margin-bottom: 8px; }
+        footer strong { color: #333; }
+
+        /* ============================================
+           RESPONSIVIDADE
+           ============================================ */
+        
+        @media (max-width: 1024px) {
+            .grid-beneficios { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            /* Esconde menu desktop */
+            .nav-container { display: none; } 
+            
+            /* Mostra hamburguer e ícones mobile */
+            .hamburger { display: flex; } 
+            .header-mobile-icons { display: flex; align-items: center; gap: 15px; position: relative; }
+            
+            /* Some o botão de carrinho desktop */
+            .cart-wrapper-desktop { display: none; }
+
+            .hero { flex-direction: column; text-align: center; padding: 40px 20px; min-height: auto; }
+            .hero-content { max-width: 100%; margin-bottom: 30px; }
+            .hero-content h1 { font-size: 38px; }
+            .hero-content .linha-amarela { margin: 0 auto 20px auto; }
+            .hero-image img { max-width: 280px; }
+            .hero-buttons { justify-content: center; width: 100%; flex-direction: column; }
+            .btn-hero, .btn-whatsapp-hero { width: 100%; justify-content: center; }
+
+            .grid-produtos { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .img-wrapper { height: 160px; padding: 15px; }
+            .produtos-home, .pagina-produtos, .pagina-contato, .pagina-trabalhe, .pagina-carrinho { padding: 40px 5%; }
+            .pagina-sobre { padding: 40px 10px; }
+            .sobre-container { padding: 30px; }
+            .sobre-imagem { width: 140px; height: 140px; }
+
+            .grid-beneficios { grid-template-columns: 1fr; gap: 40px; }
+            .beneficios { padding: 50px 5%; }
+            
+            .mobile-cart-wrapper { position: relative; cursor: pointer; }
+            .mobile-cart-count {
+                position: absolute; top: -8px; right: -8px;
+                background-color: #e74c3c; color: #fff; font-size: 11px;
+                border-radius: 50%; padding: 2px 6px; font-weight: bold; display: none;
+            }
+
+            #back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 18px; }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-produtos { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .img-wrapper { height: 120px; padding: 10px; }
+            .produto-card h3 { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO (FIXO) -->
+    <header>
+        <div class="logo" onclick="navigate('home')">Donuts Delícia</div>
+        
+        <!-- Menu Desktop -->
+        <div class="nav-container">
+            <ul class="nav-links" id="desktop-links">
+                <li><a onclick="navigate('home')" class="active" id="nav-home">Início</a></li>
+                <li><a onclick="navigate('produtos')" id="nav-produtos">Produtos</a></li>
+                <li><a onclick="navigate('sobre')" id="nav-sobre">Sobre mim</a></li>
+                <li><a onclick="navigate('contato')" id="nav-contato">Contato</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a onclick="navigate('trabalhe')">Trabalhe Conosco</a>
+                <!-- Carrinho integrado ao menu sem duplicar -->
+                <div class="cart-wrapper-desktop" onclick="navigate('carrinho')">
+                    <i class="fa-solid fa-cart-shopping"></i> Carrinho
+                    <span class="cart-count" id="desktop-cart-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ícones Menu Mobile (Apenas visível no celular graças ao CSS) -->
+        <div class="header-mobile-icons">
+           <div class="mobile-cart-wrapper" onclick="navigate('carrinho')">
+                <i class="fa-solid fa-cart-shopping" style="font-size: 20px; cursor: pointer;"></i>
+                <span class="mobile-cart-count" id="mobile-cart-count">0</span>
+           </div>
+            <div class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENU MOBILE OVERLAY -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <span class="close-menu" id="close-menu-btn"><i class="fa-solid fa-xmark"></i></span>
+        <ul>
+            <li><a onclick="navigate('home')">Início</a></li>
+            <li><a onclick="navigate('produtos')">Produtos</a></li>
+            <li><a onclick="navigate('sobre')">Sobre mim</a></li>
+            <li><a onclick="navigate('contato')">Contato</a></li>
+            <li><a onclick="navigate('trabalhe')">Trabalhe Conosco</a></li>
+        </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SEÇÕES DE CONTEÚDO (Cada uma é uma página) -->
+    <!-- ========================================== -->
+
+    <!-- 1. PÁGINA INÍCIO (COM WHATSAPP NO HERO) -->
+    <section id="page-home" class="page-section active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>A cura perfeita para<br>sua gula</h1>
+                <span class="linha-amarela"></span>
+                <p>Receitas tradicionais e os melhores ingredientes.</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn-hero" onclick="navigate('produtos')">Confira</button>
+                    <!-- TROQUE O NÚMERO 5511999999999 ABAIXO PELO SEU WHATSAPP COM DDD -->
+                    <a href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre os donuts." target="_blank" class="btn-whatsapp-hero">
+                        <i class="fa-brands fa-whatsapp"></i> Chamar no WhatsApp
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+               <img src="https://pngimg.com/uploads/donut/donut_PNG69.png" alt="Donut">
+            </div>
+        </div>
+
+        <div class="produtos-home">
+            <div class="grid-produtos">
+                <!-- 6 Produtos na página Início -->
+                <div class="produto-card" onclick="openModal('Chocolate', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG95.png', 'Delicioso donut coberto com chocolate belga.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG95.png" alt="Donut Chocolate"></div>
+                    <h3>Chocolate</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Glaceado', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG97.png', 'O clássico donut com cobertura de açúcar cristalizado.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG97.png" alt="Donut Glaceado"></div>
+                    <h3>Glaceado</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Nozes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG98.png', 'Crocante e saboroso, coberto com pedaços de nozes.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG98.png" alt="Donut Nozes"></div>
+                    <h3>Nozes</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Chocolate Branco', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG99.png', 'Cobertura cremosa de chocolate branco, pura indulgência.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG99.png" alt="Donut Chocolate Branco"></div>
+                    <h3>Chocolate Branco</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Rosa', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG100.png', 'Cobertura rosa com confetes coloridos para alegrar seu dia.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG100.png" alt="Donut Rosa"></div>
+                    <h3>Rosa</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Castanhas', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG101.png', 'Donut com castanhas picadas e um toque de caramelo.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG101.png" alt="Donut Castanhas"></div>
+                    <h3>Castanhas</h3><span>R$5,00</span>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn-todos" onclick="navigate('produtos')">Explore todos os produtos</button>
+            </div>
+        </div>
+
+        <div class="beneficios">
+            <div class="grid-beneficios">
+                <div class="beneficio-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h4>Frete grátis</h4>
+                    <p>Clique aqui e comece a escrever. Ad minima veniam quis nostrum.</p>
+                </div>
+                <div class="beneficio-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <h4>Para veganos</h4>
+                    <p>Clique aqui e comece a escrever. Sed quia non numquam eius modi tempora incidunt.</p>
+                </div>
+                <div class="beneficio-item">
+                    <i class="fa-solid fa-box-open"></i>
+                    <h4>Embalagem segura</h4>
+                    <p>Clique aqui e comece a escrever. Illum qui dolorem eum fugiat quo voluptas.</p>
+                </div>
+                <div class="beneficio-item">
+                    <i class="fa-solid fa-wallet"></i>
+                    <h4>Os melhores preços</h4>
+                    <p>Clique aqui e comece a escrever. Ea commodi consequatur quis autem vel eum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. PÁGINA PRODUTOS -->
+    <section id="page-produtos" class="page-section">
+        <div class="pagina-produtos">
+            <h1>Nossos Produtos</h1>
+            <div class="grid-produtos">
+                <!-- 9 Produtos no Catálogo -->
+                <div class="produto-card" onclick="openModal('Chocolate', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG91.png', 'Cobertura de chocolate intenso.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG91.png" alt="Donut"></div>
+                    <h3>Chocolate</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Glaceado', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG97.png', 'Cobertura de açúcar tradicional.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG97.png" alt="Donut"></div>
+                    <h3>Glaceado</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Nozes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG98.png', 'Crocância de nozes selecionadas.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG98.png" alt="Donut"></div>
+                    <h3>Nozes</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Chocolate Branco', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG99.png', 'Doce e cremoso.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG99.png" alt="Donut"></div>
+                    <h3>Chocolate Branco</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Rosa', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG100.png', 'Colorido e divertido.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG100.png" alt="Donut"></div>
+                    <h3>Rosa</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Castanhas', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG101.png', 'Sabor único.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG101.png" alt="Donut"></div>
+                    <h3>Castanhas</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Caramelo', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG94.png', 'Cobertura de caramelo suave.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG94.png" alt="Donut"></div>
+                    <h3>Caramelo</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Confetes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG96.png', 'Muito confete para alegrar.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG96.png" alt="Donut"></div>
+                    <h3>Confetes</h3><span>R$5,00</span>
+                </div>
+                <div class="produto-card" onclick="openModal('Cereja', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG93.png', 'Finalizado com cereja.')">
+                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG93.png" alt="Donut"></div>
+                    <h3>Cereja</h3><span>R$5,00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PÁGINA SOBRE MIM -->
+    <section id="page-sobre" class="page-section">
+        <div class="pagina-sobre">
+            <div class="sobre-container">
+                <img class="sobre-imagem" src="https://images.unsplash.com/photo-1488716820095-cbe80883c496?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Foto da Confeiteira">
+                <h1>Sobre mim</h1>
+                <p>Olá! Sou a fundadora da Donuts Delícia. Minha paixão por confeitaria começou na cozinha da minha avó, onde aprendi que os melhores ingredientes fazem toda a diferença.</p>
+                <p>Hoje, trago receitas tradicionais com um toque especial, utilizando apenas matéria-prima de alta qualidade. Meu objetivo é oferecer a cura perfeita para sua gula em cada mordida.</p>
+                <p><strong>Feito com amor e dedicação.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PÁGINA CONTATO -->
+    <section id="page-contato" class="page-section">
+        <div class="pagina-contato">
+            <h1>Entre em contato</h1>
+            <form class="contato-form">
+                <input type="text" placeholder="Seu nome" required>
+                <input type="email" placeholder="Seu e-mail" required>
+                <textarea rows="5" placeholder="Digite sua mensagem..." required></textarea>
+                <button type="submit">Enviar mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 5. PÁGINA TRABALHE CONOSCO -->
+    <section id="page-trabalhe" class="page-section">
+        <div class="pagina-trabalhe">
+            <h1>Trabalhe Conosco</h1>
+            <form class="contato-form">
+                <input type="text" placeholder="Seu nome completo" required>
+                <input type="email" placeholder="Seu e-mail" required>
+                <input type="tel" placeholder="Seu telefone" required>
+                <textarea rows="4" placeholder="Conte um pouco sobre sua experiência com confeitaria..." required></textarea>
+                <button type="submit">Enviar Currículo</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 6. PÁGINA CARRINHO (CHECKOUT) -->
+    <section id="page-carrinho" class="page-section">
+        <div class="pagina-carrinho">
+            <h1>Meu Carrinho</h1>
+            <div class="cart-itens-container" id="cart-items-container">
+                <div id="cart-list"></div>
+                <div id="cart-total-container" style="display:none;">
+                    <div class="cart-total">Total: <span id="cart-total-value">R$0,00</span></div>
+                    <div style="text-align: center;">
+                        <button class="btn-checkout" onclick="finalizarCompra()">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 Todos os direitos reservados</p>
+        <p>Desenvolvido por <strong>PabloG.Dev</strong> &bull; Cookies</p>
+    </footer>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <div id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <i class="fa-solid fa-arrow-up"></i>
+    </div>
+
+    <!-- MODAL DE DETALHES -->
+    <div class="modal-overlay" id="productModal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" src="" alt="Donut">
+            <h2 id="modalTitle">Nome do Donut</h2>
+            <span class="modal-price" id="modalPrice">R$0,00</span>
+            <p id="modalDescription">Descrição do produto.</p>
+            <button class="modal-btn-add" onclick="addToCartFromModal()">Adicionar ao carrinho</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCRIPT COMPLETO (CARRINHO, NAVEGAÇÃO ETC)  -->
+    <!-- ========================================== -->
+    <script>
+        // --- Variáveis Globais do Carrinho ---
+        let cart = JSON.parse(localStorage.getItem('donutsCart')) || [];
+        let currentModalProduct = { title: '', price: 0, image: '' };
+
+        // --- Lógica de Navegação entre Páginas ---
+        function navigate(pageId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            const targetSection = document.getElementById('page-' + pageId);
+            if(targetSection) targetSection.classList.add('active');
+
+            const navLinks = document.querySelectorAll('#desktop-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            const activeLink = document.getElementById('nav-' + pageId);
+            if(activeLink) activeLink.classList.add('active');
+
+            document.getElementById('mobile-menu').classList.remove('active');
+            window.scrollTo(0, 0);
+
+            if(pageId === 'carrinho') renderCart();
+        }
+
+        // --- Lógica do Menu Hamburguer ---
+        const hamburger = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeBtn = document.getElementById('close-menu-btn');
+
+        hamburger.addEventListener('click', () => { mobileMenu.classList.add('active'); });
+        closeBtn.addEventListener('click', () => { mobileMenu.classList.remove('active'); });
+
+        document.addEventListener('click', (event) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(event.target) && 
+                !hamburger.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // --- Lógica do Botão Voltar ao Topo ---
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+
+        // --- Lógica do Modal ---
+        function openModal(title, price, image, description) {
+            currentModalProduct = { title, price, image };
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = `R$${price.toFixed(2)}`;
+            document.getElementById('modalImage').src = image;
+            document.getElementById('modalDescription').innerText = description;
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOutside(event) {
+            if (event.target === document.getElementById('productModal')) {
+                closeModal();
+            }
+        }
+
+        // --- Lógica do Carrinho ---
+        function addToCartFromModal() {
+            const existingItem = cart.find(item => item.title === currentModalProduct.title);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...currentModalProduct, quantity: 1 });
+            }
+            saveCart();
+            closeModal();
+            alert(`${currentModalProduct.title} adicionado ao carrinho!`);
+        }
+
+        function removeFromCart(title) {
+            cart = cart.filter(item => item.title !== title);
+            saveCart();
+            renderCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem('donutsCart', JSON.stringify(cart));
+            updateCartCounter();
+        }
+
+        function updateCartCounter() {
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const desktopCount = document.getElementById('desktop-cart-count');
+            const mobileCount = document.getElementById('mobile-cart-count');
+
+            if (totalItems > 0) {
+                desktopCount.style.display = 'block';
+                desktopCount.innerText = totalItems;
+                mobileCount.style.display = 'block';
+                mobileCount.innerText = totalItems;
+            } else {
+                desktopCount.style.display = 'none';
+                mobileCount.style.display = 'none';
+            }
+        }
+
+        function renderCart() {
+            const listContainer = document.getElementById('cart-list');
+            const totalContainer = document.getElementById('cart-total-container');
+            const totalValueSpan = document.getElementById('cart-total-value');
+
+            listContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<div class="cart-empty">Seu carrinho está vazio. Vá para <a href="#" onclick="navigate(\'produtos\')" style="text-decoration:underline; color:#333;">Produtos</a>.</div>';
+                totalContainer.style.display = 'none';
+                return;
+            }
+
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div class="cart-item-info">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div>
+                            <h4>${item.title}</h4>
+                            <span>Qtd: ${item.quantity}</span>
+                        </div>
+                    </div>
+                    <div class="cart-item-price">R$${itemTotal.toFixed(2)}</div>
+                    <div class="cart-item-remove" onclick="removeFromCart('${item.title}')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                `;
+                listContainer.appendChild(itemDiv);
+            });
+
+            totalValueSpan.innerText = `R$${total.toFixed(2)}`;
+            totalContainer.style.display = 'block';
+        }
+
+        function finalizarCompra() {
+            if(cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            alert('Compra finalizada com sucesso! Obrigado por comprar na Donuts Delícia.');
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        // Carregar contador ao abrir a página
+        document.addEventListener('DOMContentLoaded', updateCartCounter);
+    </script>
+</body>
+</html>
