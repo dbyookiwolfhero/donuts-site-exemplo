@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donuts Delícia</title>
+    <title id="meta-title">Donuts Delícia</title>
     <!-- Fontes Google -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- Ícones FontAwesome -->
@@ -13,7 +13,6 @@
         /* ----- CONFIGURAÇÕES GERAIS E SCROLLBAR ----- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Estilização da Scrollbar combinando com o site */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fcecec; }
         ::-webkit-scrollbar-thumb { background: #F4D1D1; border-radius: 10px; }
@@ -34,7 +33,7 @@
         .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #3e3e3e; cursor: pointer; }
         
         /* Menu Desktop */
-        .nav-container { display: flex; align-items: center; gap: 25px; }
+        .nav-container { display: flex; align-items: center; gap: 20px; }
         .nav-links { display: flex; gap: 25px; }
         .nav-links a { font-size: 14px; color: #555; transition: color 0.3s ease; position: relative;}
         .nav-links a:hover, .nav-links a.active { color: #000; }
@@ -42,12 +41,19 @@
             content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background-color: #333;
         }
         
-        /* Menu de Ações no Desktop (Trabalhe Conosco e Carrinho) */
-        .nav-actions { display: flex; gap: 20px; align-items: center; font-size: 14px; color: #555; }
+        /* Menu de Ações no Desktop (Idiomas, Trabalhe Conosco e Carrinho) */
+        .nav-actions { display: flex; align-items: center; gap: 20px; font-size: 14px; color: #555; }
         .nav-actions a { transition: color 0.3s; }
         .nav-actions a:hover { color: #000; }
+
+        /* Seletor de Idiomas no Header */
+        .lang-selector-header { display: flex; gap: 5px; margin-right: 5px; border-right: 1px solid #ddd; padding-right: 15px; }
+        .lang-btn { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: none; padding: 0; transition: all 0.3s ease; }
+        .lang-btn img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .lang-btn:hover { transform: scale(1.15); }
+        .lang-btn.active { border-color: #333; }
         
-        .cart-wrapper-desktop { position: relative; cursor: pointer; margin-left: 15px; padding-left: 15px; border-left: 1px solid #ddd; display: flex; align-items: center; gap: 5px;}
+        .cart-wrapper-desktop { position: relative; cursor: pointer; display: flex; align-items: center; gap: 5px;}
         .cart-wrapper-desktop:hover { color: #000; }
 
         .cart-count {
@@ -56,11 +62,11 @@
             border-radius: 50%; padding: 2px 6px; font-weight: bold; display: none;
         }
 
-        /* Menu Hamburguer (Mobile) - Escondido por padrão */
+        /* Menu Hamburguer (Mobile) */
         .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
         .hamburger span { width: 25px; height: 3px; background-color: #333; transition: 0.3s; }
         
-        /* Ícones Mobile - Escondidos por padrão no Desktop */
+        /* Ícones Mobile */
         .header-mobile-icons { display: none; }
 
         /* Menu Mobile Aberto (Overlay) */
@@ -245,15 +251,11 @@
         }
 
         @media (max-width: 768px) {
-            /* Esconde menu desktop */
             .nav-container { display: none; } 
-            
-            /* Mostra hamburguer e ícones mobile */
             .hamburger { display: flex; } 
             .header-mobile-icons { display: flex; align-items: center; gap: 15px; position: relative; }
-            
-            /* Some o botão de carrinho desktop */
             .cart-wrapper-desktop { display: none; }
+            .lang-selector-header { display: none; }
 
             .hero { flex-direction: column; text-align: center; padding: 40px 20px; min-height: auto; }
             .hero-content { max-width: 100%; margin-bottom: 30px; }
@@ -299,23 +301,35 @@
         <!-- Menu Desktop -->
         <div class="nav-container">
             <ul class="nav-links" id="desktop-links">
-                <li><a onclick="navigate('home')" class="active" id="nav-home">Início</a></li>
-                <li><a onclick="navigate('produtos')" id="nav-produtos">Produtos</a></li>
-                <li><a onclick="navigate('sobre')" id="nav-sobre">Sobre mim</a></li>
-                <li><a onclick="navigate('contato')" id="nav-contato">Contato</a></li>
+                <li><a onclick="navigate('home')" class="active" id="nav-home" data-key="nav_home">Início</a></li>
+                <li><a onclick="navigate('produtos')" id="nav-produtos" data-key="nav_products">Produtos</a></li>
+                <li><a onclick="navigate('sobre')" id="nav-sobre" data-key="nav_about">Sobre mim</a></li>
+                <li><a onclick="navigate('contato')" id="nav-contato" data-key="nav_contact">Contato</a></li>
             </ul>
             
             <div class="nav-actions">
-                <a onclick="navigate('trabalhe')">Trabalhe Conosco</a>
-                <!-- Carrinho integrado ao menu sem duplicar -->
+                <!-- SELETOR DE IDIOMAS NO HEADER (DESKTOP) -->
+                <div class="lang-selector-header">
+                    <button class="lang-btn active" onclick="setLanguage('pt')" title="Português">
+                        <img src="https://flagcdn.com/w40/br.png" alt="PT">
+                    </button>
+                    <button class="lang-btn" onclick="setLanguage('en')" title="English">
+                        <img src="https://flagcdn.com/w40/us.png" alt="EN">
+                    </button>
+                    <button class="lang-btn" onclick="setLanguage('es')" title="Español">
+                        <img src="https://flagcdn.com/w40/es.png" alt="ES">
+                    </button>
+                </div>
+
+                <a onclick="navigate('trabalhe')" data-key="nav_work">Trabalhe Conosco</a>
                 <div class="cart-wrapper-desktop" onclick="navigate('carrinho')">
-                    <i class="fa-solid fa-cart-shopping"></i> Carrinho
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-key="nav_cart">Carrinho</span>
                     <span class="cart-count" id="desktop-cart-count">0</span>
                 </div>
             </div>
         </div>
 
-        <!-- Ícones Menu Mobile (Apenas visível no celular graças ao CSS) -->
+        <!-- Ícones Menu Mobile -->
         <div class="header-mobile-icons">
            <div class="mobile-cart-wrapper" onclick="navigate('carrinho')">
                 <i class="fa-solid fa-cart-shopping" style="font-size: 20px; cursor: pointer;"></i>
@@ -333,11 +347,22 @@
     <div class="mobile-menu-overlay" id="mobile-menu">
         <span class="close-menu" id="close-menu-btn"><i class="fa-solid fa-xmark"></i></span>
         <ul>
-            <li><a onclick="navigate('home')">Início</a></li>
-            <li><a onclick="navigate('produtos')">Produtos</a></li>
-            <li><a onclick="navigate('sobre')">Sobre mim</a></li>
-            <li><a onclick="navigate('contato')">Contato</a></li>
-            <li><a onclick="navigate('trabalhe')">Trabalhe Conosco</a></li>
+            <li style="border-bottom: none; display: flex; justify-content: center; gap: 15px; padding-top: 10px;">
+                <button class="lang-btn active" onclick="setLanguage('pt')" title="Português">
+                    <img src="https://flagcdn.com/w40/br.png" alt="PT" style="width: 30px; height: 30px; border-radius: 50%;">
+                </button>
+                <button class="lang-btn" onclick="setLanguage('en')" title="English">
+                    <img src="https://flagcdn.com/w40/us.png" alt="EN" style="width: 30px; height: 30px; border-radius: 50%;">
+                </button>
+                <button class="lang-btn" onclick="setLanguage('es')" title="Español">
+                    <img src="https://flagcdn.com/w40/es.png" alt="ES" style="width: 30px; height: 30px; border-radius: 50%;">
+                </button>
+            </li>
+            <li><a onclick="navigate('home')" data-key="nav_home">Início</a></li>
+            <li><a onclick="navigate('produtos')" data-key="nav_products">Produtos</a></li>
+            <li><a onclick="navigate('sobre')" data-key="nav_about">Sobre mim</a></li>
+            <li><a onclick="navigate('contato')" data-key="nav_contact">Contato</a></li>
+            <li><a onclick="navigate('trabalhe')" data-key="nav_work">Trabalhe Conosco</a></li>
         </ul>
     </div>
 
@@ -345,19 +370,19 @@
     <!-- SEÇÕES DE CONTEÚDO (Cada uma é uma página) -->
     <!-- ========================================== -->
 
-    <!-- 1. PÁGINA INÍCIO (COM WHATSAPP NO HERO) -->
+    <!-- 1. PÁGINA INÍCIO -->
     <section id="page-home" class="page-section active">
         <div class="hero">
             <div class="hero-content">
-                <h1>A cura perfeita para<br>sua gula</h1>
+                <h1 data-key="hero_title">A cura perfeita para<br>sua gula</h1>
                 <span class="linha-amarela"></span>
-                <p>Receitas tradicionais e os melhores ingredientes.</p>
+                <p data-key="hero_sub">Receitas tradicionais e os melhores ingredientes.</p>
                 
                 <div class="hero-buttons">
-                    <button class="btn-hero" onclick="navigate('produtos')">Confira</button>
-                    <!-- TROQUE O NÚMERO 5511999999999 ABAIXO PELO SEU WHATSAPP COM DDD -->
+                    <button class="btn-hero" onclick="navigate('produtos')" data-key="hero_btn">Confira</button>
+                    <!-- 🔴 TROQUE O NÚMERO DO WHATSAPP ABAIXO PELO SEU (COM DDD) -->
                     <a href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre os donuts." target="_blank" class="btn-whatsapp-hero">
-                        <i class="fa-brands fa-whatsapp"></i> Chamar no WhatsApp
+                        <i class="fa-brands fa-whatsapp"></i> <span data-key="hero_whatsapp">Chamar no WhatsApp</span>
                     </a>
                 </div>
             </div>
@@ -366,36 +391,11 @@
             </div>
         </div>
 
+        <!-- OS PRODUTOS SÃO GERADOS PELO JAVASCRIPT -->
         <div class="produtos-home">
-            <div class="grid-produtos">
-                <!-- 6 Produtos na página Início -->
-                <div class="produto-card" onclick="openModal('Chocolate', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG95.png', 'Delicioso donut coberto com chocolate belga.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG95.png" alt="Donut Chocolate"></div>
-                    <h3>Chocolate</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Glaceado', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG97.png', 'O clássico donut com cobertura de açúcar cristalizado.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG97.png" alt="Donut Glaceado"></div>
-                    <h3>Glaceado</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Nozes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG98.png', 'Crocante e saboroso, coberto com pedaços de nozes.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG98.png" alt="Donut Nozes"></div>
-                    <h3>Nozes</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Chocolate Branco', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG99.png', 'Cobertura cremosa de chocolate branco, pura indulgência.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG99.png" alt="Donut Chocolate Branco"></div>
-                    <h3>Chocolate Branco</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Rosa', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG100.png', 'Cobertura rosa com confetes coloridos para alegrar seu dia.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG100.png" alt="Donut Rosa"></div>
-                    <h3>Rosa</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Castanhas', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG101.png', 'Donut com castanhas picadas e um toque de caramelo.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG101.png" alt="Donut Castanhas"></div>
-                    <h3>Castanhas</h3><span>R$5,00</span>
-                </div>
-            </div>
+            <div class="grid-produtos" id="home-products-grid"></div>
             <div class="btn-container">
-                <button class="btn-todos" onclick="navigate('produtos')">Explore todos os produtos</button>
+                <button class="btn-todos" onclick="navigate('produtos')" data-key="home_explore">Explore todos os produtos</button>
             </div>
         </div>
 
@@ -403,23 +403,23 @@
             <div class="grid-beneficios">
                 <div class="beneficio-item">
                     <i class="fa-solid fa-truck-fast"></i>
-                    <h4>Frete grátis</h4>
-                    <p>Clique aqui e comece a escrever. Ad minima veniam quis nostrum.</p>
+                    <h4 data-key="benefit_1_title">Frete grátis</h4>
+                    <p data-key="benefit_1_desc">Clique aqui e comece a escrever. Ad minima veniam quis nostrum.</p>
                 </div>
                 <div class="beneficio-item">
                     <i class="fa-solid fa-apple-whole"></i>
-                    <h4>Para veganos</h4>
-                    <p>Clique aqui e comece a escrever. Sed quia non numquam eius modi tempora incidunt.</p>
+                    <h4 data-key="benefit_2_title">Para veganos</h4>
+                    <p data-key="benefit_2_desc">Clique aqui e comece a escrever. Sed quia non numquam eius modi tempora incidunt.</p>
                 </div>
                 <div class="beneficio-item">
                     <i class="fa-solid fa-box-open"></i>
-                    <h4>Embalagem segura</h4>
-                    <p>Clique aqui e comece a escrever. Illum qui dolorem eum fugiat quo voluptas.</p>
+                    <h4 data-key="benefit_3_title">Embalagem segura</h4>
+                    <p data-key="benefit_3_desc">Clique aqui e comece a escrever. Illum qui dolorem eum fugiat quo voluptas.</p>
                 </div>
                 <div class="beneficio-item">
                     <i class="fa-solid fa-wallet"></i>
-                    <h4>Os melhores preços</h4>
-                    <p>Clique aqui e comece a escrever. Ea commodi consequatur quis autem vel eum.</p>
+                    <h4 data-key="benefit_4_title">Os melhores preços</h4>
+                    <p data-key="benefit_4_desc">Clique aqui e comece a escrever. Ea commodi consequatur quis autem vel eum.</p>
                 </div>
             </div>
         </div>
@@ -428,46 +428,8 @@
     <!-- 2. PÁGINA PRODUTOS -->
     <section id="page-produtos" class="page-section">
         <div class="pagina-produtos">
-            <h1>Nossos Produtos</h1>
-            <div class="grid-produtos">
-                <!-- 9 Produtos no Catálogo -->
-                <div class="produto-card" onclick="openModal('Chocolate', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG91.png', 'Cobertura de chocolate intenso.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG91.png" alt="Donut"></div>
-                    <h3>Chocolate</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Glaceado', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG97.png', 'Cobertura de açúcar tradicional.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG97.png" alt="Donut"></div>
-                    <h3>Glaceado</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Nozes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG98.png', 'Crocância de nozes selecionadas.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG98.png" alt="Donut"></div>
-                    <h3>Nozes</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Chocolate Branco', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG99.png', 'Doce e cremoso.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG99.png" alt="Donut"></div>
-                    <h3>Chocolate Branco</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Rosa', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG100.png', 'Colorido e divertido.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG100.png" alt="Donut"></div>
-                    <h3>Rosa</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Castanhas', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG101.png', 'Sabor único.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG101.png" alt="Donut"></div>
-                    <h3>Castanhas</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Caramelo', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG94.png', 'Cobertura de caramelo suave.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG94.png" alt="Donut"></div>
-                    <h3>Caramelo</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Confetes', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG96.png', 'Muito confete para alegrar.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG96.png" alt="Donut"></div>
-                    <h3>Confetes</h3><span>R$5,00</span>
-                </div>
-                <div class="produto-card" onclick="openModal('Cereja', 5.00, 'https://pngimg.com/uploads/donut/donut_PNG93.png', 'Finalizado com cereja.')">
-                    <div class="img-wrapper"><img src="https://pngimg.com/uploads/donut/donut_PNG93.png" alt="Donut"></div>
-                    <h3>Cereja</h3><span>R$5,00</span>
-                </div>
-            </div>
+            <h1 data-key="products_title">Nossos Produtos</h1>
+            <div class="grid-produtos" id="catalog-products-grid"></div>
         </div>
     </section>
 
@@ -476,10 +438,10 @@
         <div class="pagina-sobre">
             <div class="sobre-container">
                 <img class="sobre-imagem" src="https://images.unsplash.com/photo-1488716820095-cbe80883c496?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Foto da Confeiteira">
-                <h1>Sobre mim</h1>
-                <p>Olá! Sou a fundadora da Donuts Delícia. Minha paixão por confeitaria começou na cozinha da minha avó, onde aprendi que os melhores ingredientes fazem toda a diferença.</p>
-                <p>Hoje, trago receitas tradicionais com um toque especial, utilizando apenas matéria-prima de alta qualidade. Meu objetivo é oferecer a cura perfeita para sua gula em cada mordida.</p>
-                <p><strong>Feito com amor e dedicação.</strong></p>
+                <h1 data-key="about_title">Sobre mim</h1>
+                <p data-key="about_desc_1">Olá! Sou a fundadora da Donuts Delícia. Minha paixão por confeitaria começou na cozinha da minha avó, onde aprendi que os melhores ingredientes fazem toda a diferença.</p>
+                <p data-key="about_desc_2">Hoje, trago receitas tradicionais com um toque especial, utilizando apenas matéria-prima de alta qualidade. Meu objetivo é oferecer a cura perfeita para sua gula em cada mordida.</p>
+                <p><strong data-key="about_desc_3">Feito com amor e dedicação.</strong></p>
             </div>
         </div>
     </section>
@@ -487,12 +449,12 @@
     <!-- 4. PÁGINA CONTATO -->
     <section id="page-contato" class="page-section">
         <div class="pagina-contato">
-            <h1>Entre em contato</h1>
+            <h1 data-key="contact_title">Entre em contato</h1>
             <form class="contato-form">
-                <input type="text" placeholder="Seu nome" required>
-                <input type="email" placeholder="Seu e-mail" required>
-                <textarea rows="5" placeholder="Digite sua mensagem..." required></textarea>
-                <button type="submit">Enviar mensagem</button>
+                <input type="text" placeholder="Seu nome" data-key="contact_name" required>
+                <input type="email" placeholder="Seu e-mail" data-key="contact_email" required>
+                <textarea rows="5" placeholder="Digite sua mensagem..." data-key="contact_msg" required></textarea>
+                <button type="submit" data-key="contact_btn">Enviar mensagem</button>
             </form>
         </div>
     </section>
@@ -500,37 +462,37 @@
     <!-- 5. PÁGINA TRABALHE CONOSCO -->
     <section id="page-trabalhe" class="page-section">
         <div class="pagina-trabalhe">
-            <h1>Trabalhe Conosco</h1>
+            <h1 data-key="work_title">Trabalhe Conosco</h1>
             <form class="contato-form">
-                <input type="text" placeholder="Seu nome completo" required>
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="tel" placeholder="Seu telefone" required>
-                <textarea rows="4" placeholder="Conte um pouco sobre sua experiência com confeitaria..." required></textarea>
-                <button type="submit">Enviar Currículo</button>
+                <input type="text" placeholder="Seu nome completo" data-key="work_name" required>
+                <input type="email" placeholder="Seu e-mail" data-key="work_email" required>
+                <input type="tel" placeholder="Seu telefone" data-key="work_phone" required>
+                <textarea rows="4" placeholder="Conte um pouco sobre sua experiência..." data-key="work_exp" required></textarea>
+                <button type="submit" data-key="work_btn">Enviar Currículo</button>
             </form>
         </div>
     </section>
 
-    <!-- 6. PÁGINA CARRINHO (CHECKOUT) -->
+    <!-- 6. PÁGINA CARRINHO -->
     <section id="page-carrinho" class="page-section">
         <div class="pagina-carrinho">
-            <h1>Meu Carrinho</h1>
+            <h1 data-key="cart_title">Meu Carrinho</h1>
             <div class="cart-itens-container" id="cart-items-container">
                 <div id="cart-list"></div>
                 <div id="cart-total-container" style="display:none;">
-                    <div class="cart-total">Total: <span id="cart-total-value">R$0,00</span></div>
+                    <div class="cart-total"><span data-key="cart_total">Total</span>: <span id="cart-total-value">R$0,00</span></div>
                     <div style="text-align: center;">
-                        <button class="btn-checkout" onclick="finalizarCompra()">Finalizar Compra</button>
+                        <button class="btn-checkout" onclick="finalizarCompra()" data-key="cart_checkout">Finalizar Compra</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- RODAPÉ -->
+    <!-- RODAPÉ CORRIGIDO -->
     <footer>
         <p>&copy; 2026 Todos os direitos reservados</p>
-        <p>Desenvolvido por <strong>PabloG.Dev</strong> &bull; Cookies</p>
+        <p><span data-key="footer_dev">Desenvolvido por</span> <strong>PabloG.Dev</strong> &bull; Cookies</p>
     </footer>
 
     <!-- BOTÃO VOLTAR AO TOPO -->
@@ -538,7 +500,7 @@
         <i class="fa-solid fa-arrow-up"></i>
     </div>
 
-    <!-- MODAL DE DETALHES -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="productModal" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -546,23 +508,198 @@
             <h2 id="modalTitle">Nome do Donut</h2>
             <span class="modal-price" id="modalPrice">R$0,00</span>
             <p id="modalDescription">Descrição do produto.</p>
-            <button class="modal-btn-add" onclick="addToCartFromModal()">Adicionar ao carrinho</button>
+            <button class="modal-btn-add" onclick="addToCartFromModal()" data-key="modal_add">Adicionar ao carrinho</button>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- SCRIPT COMPLETO (CARRINHO, NAVEGAÇÃO ETC)  -->
+    <!-- SCRIPT TRADUTOR, CARRINHO E NAVEGAÇÃO       -->
     <!-- ========================================== -->
     <script>
-        // --- Variáveis Globais do Carrinho ---
+        // --- DICIONÁRIO DE TRADUÇÃO GERAL (PT, EN, ES) ---
+        const translations = {
+            'pt': {
+                'nav_home': 'Início', 'nav_products': 'Produtos', 'nav_about': 'Sobre mim',
+                'nav_contact': 'Contato', 'nav_work': 'Trabalhe Conosco', 'nav_cart': 'Carrinho',
+                'hero_title': 'A cura perfeita para<br>sua gula', 'hero_sub': 'Receitas tradicionais e os melhores ingredientes.',
+                'hero_btn': 'Confira', 'hero_whatsapp': 'Chamar no WhatsApp',
+                'home_explore': 'Explore todos os produtos',
+                'benefit_1_title': 'Frete grátis', 'benefit_1_desc': 'Clique aqui e comece a escrever.',
+                'benefit_2_title': 'Para veganos', 'benefit_2_desc': 'Clique aqui e comece a escrever.',
+                'benefit_3_title': 'Embalagem segura', 'benefit_3_desc': 'Clique aqui e comece a escrever.',
+                'benefit_4_title': 'Os melhores preços', 'benefit_4_desc': 'Clique aqui e comece a escrever.',
+                'products_title': 'Nossos Produtos',
+                'about_title': 'Sobre mim', 
+                'about_desc_1': 'Olá! Sou a fundadora da Donuts Delícia. Minha paixão por confeitaria começou na cozinha da minha avó, onde aprendi que os melhores ingredientes fazem toda a diferença.',
+                'about_desc_2': 'Hoje, trago receitas tradicionais com um toque especial, utilizando apenas matéria-prima de alta qualidade. Meu objetivo é oferecer a cura perfeita para sua gula em cada mordida.',
+                'about_desc_3': 'Feito com amor e dedicação.',
+                'contact_title': 'Entre em contato', 'contact_name': 'Seu nome', 'contact_email': 'Seu e-mail',
+                'contact_msg': 'Digite sua mensagem...', 'contact_btn': 'Enviar mensagem',
+                'work_title': 'Trabalhe Conosco', 'work_name': 'Seu nome completo', 'work_email': 'Seu e-mail',
+                'work_phone': 'Seu telefone', 'work_exp': 'Conte um pouco sobre sua experiência...', 'work_btn': 'Enviar Currículo',
+                'cart_title': 'Meu Carrinho', 'cart_total': 'Total', 'cart_checkout': 'Finalizar Compra',
+                'footer_rights': '© 2026 Todos os direitos reservados', 'footer_dev': 'Desenvolvido por',
+                'meta_title': 'Donuts Delícia',
+                'modal_add': 'Adicionar ao carrinho',
+                'cart_empty_text': 'Seu carrinho está vazio.'
+            },
+            'en': {
+                'nav_home': 'Home', 'nav_products': 'Products', 'nav_about': 'About me',
+                'nav_contact': 'Contact', 'nav_work': 'Work with us', 'nav_cart': 'Cart',
+                'hero_title': 'The perfect cure<br>for your cravings', 'hero_sub': 'Traditional recipes and the best ingredients.',
+                'hero_btn': 'Check it out', 'hero_whatsapp': 'Call on WhatsApp',
+                'home_explore': 'Explore all products',
+                'benefit_1_title': 'Free Shipping', 'benefit_1_desc': 'Click here to start writing.',
+                'benefit_2_title': 'Vegan Friendly', 'benefit_2_desc': 'Click here to start writing.',
+                'benefit_3_title': 'Safe Packaging', 'benefit_3_desc': 'Click here to start writing.',
+                'benefit_4_title': 'Best Prices', 'benefit_4_desc': 'Click here to start writing.',
+                'products_title': 'Our Products',
+                'about_title': 'About me',
+                'about_desc_1': 'Hi! I am the founder of Donuts Delícia. My passion for baking started in my grandmother\'s kitchen, where I learned that the best ingredients make all the difference.',
+                'about_desc_2': 'Today, I bring traditional recipes with a special touch, using only high-quality ingredients. My goal is to offer the perfect cure for your cravings in every bite.',
+                'about_desc_3': 'Made with love and dedication.',
+                'contact_title': 'Contact us', 'contact_name': 'Your name', 'contact_email': 'Your email',
+                'contact_msg': 'Type your message...', 'contact_btn': 'Send message',
+                'work_title': 'Work with us', 'work_name': 'Full name', 'work_email': 'Your email',
+                'work_phone': 'Your phone', 'work_exp': 'Tell us about your experience...', 'work_btn': 'Send Resume',
+                'cart_title': 'My Cart', 'cart_total': 'Total', 'cart_checkout': 'Checkout',
+                'footer_rights': '© 2026 All rights reserved', 'footer_dev': 'Developed by',
+                'meta_title': 'Donuts Delícia',
+                'modal_add': 'Add to cart',
+                'cart_empty_text': 'Your cart is empty.'
+            },
+            'es': {
+                'nav_home': 'Inicio', 'nav_products': 'Productos', 'nav_about': 'Sobre mí',
+                'nav_contact': 'Contacto', 'nav_work': 'Trabaja con nosotros', 'nav_cart': 'Carrito',
+                'hero_title': 'La cura perfecta<br>para tu antojo', 'hero_sub': 'Recetas tradicionales y los mejores ingredientes.',
+                'hero_btn': 'Descubre', 'hero_whatsapp': 'Llama por WhatsApp',
+                'home_explore': 'Explora todos los productos',
+                'benefit_1_title': 'Envío gratis', 'benefit_1_desc': 'Haz clic aquí para empezar a escribir.',
+                'benefit_2_title': 'Para veganos', 'benefit_2_desc': 'Haz clic aquí para empezar a escribir.',
+                'benefit_3_title': 'Embalaje seguro', 'benefit_3_desc': 'Haz clic aquí para empezar a escribir.',
+                'benefit_4_title': 'Mejores precios', 'benefit_4_desc': 'Haz clic aquí para empezar a escribir.',
+                'products_title': 'Nuestros Productos',
+                'about_title': 'Sobre mí',
+                'about_desc_1': '¡Hola! Soy la fundadora de Donuts Delícia. Mi pasión por la repostería comenzó en la cocina de mi abuela, donde aprendí que los mejores ingredientes marcan la diferencia.',
+                'about_desc_2': 'Hoy traigo recetas tradicionales con un toque especial, utilizando solo materia prima de alta calidad. Mi objetivo es ofrecer la cura perfecta para tu antojo en cada bocado.',
+                'about_desc_3': 'Hecho con amor y dedicación.',
+                'contact_title': 'Contáctanos', 'contact_name': 'Tu nombre', 'contact_email': 'Tu email',
+                'contact_msg': 'Escribe tu mensaje...', 'contact_btn': 'Enviar mensaje',
+                'work_title': 'Trabaja con nosotros', 'work_name': 'Nombre completo', 'work_email': 'Tu email',
+                'work_phone': 'Tu teléfono', 'work_exp': 'Cuéntanos tu experiencia...', 'work_btn': 'Enviar Currículum',
+                'cart_title': 'Mi Carrito', 'cart_total': 'Total', 'cart_checkout': 'Finalizar Compra',
+                'footer_rights': '© 2026 Todos los derechos reservados', 'footer_dev': 'Desarrollado por',
+                'meta_title': 'Donuts Delícia',
+                'modal_add': 'Añadir al carrito',
+                'cart_empty_text': 'Tu carrito está vacío.'
+            }
+        };
+
+        // --- DICIONÁRIO DE PRODUTOS (Nomes e Descrições) ---
+        const productTranslations = {
+            'pt': [
+                { title: 'Chocolate', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG95.png', desc: 'Delicioso donut coberto com chocolate belga.' },
+                { title: 'Glaceado', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG97.png', desc: 'O clássico donut com cobertura de açúcar cristalizado.' },
+                { title: 'Nozes', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG98.png', desc: 'Crocante e saboroso, coberto com pedaços de nozes.' },
+                { title: 'Chocolate Branco', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG99.png', desc: 'Cobertura cremosa de chocolate branco, pura indulgência.' },
+                { title: 'Rosa', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG100.png', desc: 'Cobertura rosa com confetes coloridos para alegrar seu dia.' },
+                { title: 'Castanhas', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG101.png', desc: 'Donut com castanhas picadas e um toque de caramelo.' },
+                { title: 'Caramelo', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG94.png', desc: 'Cobertura de caramelo suave.' },
+                { title: 'Confetes', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG96.png', desc: 'Muito confete para alegrar.' },
+                { title: 'Cereja', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG93.png', desc: 'Finalizado com cereja.' }
+            ],
+            'en': [
+                { title: 'Chocolate', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG95.png', desc: 'Delicious donut covered with Belgian chocolate.' },
+                { title: 'Glazed', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG97.png', desc: 'The classic donut with crystallized sugar coating.' },
+                { title: 'Walnuts', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG98.png', desc: 'Crispy and tasty, covered with walnut pieces.' },
+                { title: 'White Chocolate', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG99.png', desc: 'Creamy white chocolate coating, pure indulgence.' },
+                { title: 'Pink', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG100.png', desc: 'Pink topping with colorful sprinkles to brighten your day.' },
+                { title: 'Chestnuts', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG101.png', desc: 'Donut with chopped chestnuts and a touch of caramel.' },
+                { title: 'Caramel', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG94.png', desc: 'Smooth caramel topping.' },
+                { title: 'Sprinkles', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG96.png', desc: 'Lots of sprinkles to cheer you up.' },
+                { title: 'Cherry', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG93.png', desc: 'Finished with a cherry.' }
+            ],
+            'es': [
+                { title: 'Chocolate', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG95.png', desc: 'Delicioso donut cubierto con chocolate belga.' },
+                { title: 'Glaseado', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG97.png', desc: 'El clásico donut con cobertura de azúcar cristalizada.' },
+                { title: 'Nueces', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG98.png', desc: 'Crujiente y sabroso, cubierto con trozos de nueces.' },
+                { title: 'Chocolate Blanco', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG99.png', desc: 'Cobertura cremosa de chocolate blanco, pura indulgencia.' },
+                { title: 'Rosa', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG100.png', desc: 'Cobertura rosa con confites de colores para alegrar tu día.' },
+                { title: 'Castañas', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG101.png', desc: 'Donut con castañas picadas y un toque de caramelo.' },
+                { title: 'Caramelo', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG94.png', desc: 'Cobertura suave de caramelo.' },
+                { title: 'Confites', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG96.png', desc: 'Muchos confites para alegrar.' },
+                { title: 'Cereza', price: 5.00, image: 'https://pngimg.com/uploads/donut/donut_PNG93.png', desc: 'Finalizado con cereza.' }
+            ]
+        };
+
+        let currentLanguage = 'pt';
         let cart = JSON.parse(localStorage.getItem('donutsCart')) || [];
         let currentModalProduct = { title: '', price: 0, image: '' };
+
+        // --- Lógica para Trocar o Idioma e Produtos ---
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('siteLang', lang);
+            
+            // Traduz textos gerais
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            document.title = translations[lang]['meta_title'];
+            
+            // Marca a bandeira ativa
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll(`.lang-btn[onclick="setLanguage('${lang}')"]`).forEach(btn => btn.classList.add('active'));
+
+            // Recria os produtos com os novos nomes e descrições
+            renderAllProducts(lang);
+        }
+
+        // --- Renderizar Produtos Dinamicamente ---
+        function renderAllProducts(lang) {
+            const products = productTranslations[lang];
+            const homeGrid = document.getElementById('home-products-grid');
+            const catalogGrid = document.getElementById('catalog-products-grid');
+
+            // Limpa as grades
+            homeGrid.innerHTML = '';
+            catalogGrid.innerHTML = '';
+
+            // Exibe os 6 primeiros na Home
+            const homeProducts = products.slice(0, 6);
+            homeProducts.forEach(p => {
+                const card = createProductCard(p, lang);
+                homeGrid.appendChild(card);
+            });
+
+            // Exibe todos os 9 no Catálogo
+            products.forEach(p => {
+                const card = createProductCard(p, lang);
+                catalogGrid.appendChild(card);
+            });
+        }
+
+        function createProductCard(product, lang) {
+            const div = document.createElement('div');
+            div.className = 'produto-card';
+            // Passa dados para o modal
+            div.onclick = () => openModal(product.title, product.price, product.image, product.desc);
+            
+            div.innerHTML = `
+                <div class="img-wrapper"><img src="${product.image}" alt="${product.title}"></div>
+                <h3>${product.title}</h3><span>R$${product.price.toFixed(2)}</span>
+            `;
+            return div;
+        }
 
         // --- Lógica de Navegação entre Páginas ---
         function navigate(pageId) {
             const sections = document.querySelectorAll('.page-section');
             sections.forEach(sec => sec.classList.remove('active'));
-
             const targetSection = document.getElementById('page-' + pageId);
             if(targetSection) targetSection.classList.add('active');
 
@@ -573,11 +710,10 @@
 
             document.getElementById('mobile-menu').classList.remove('active');
             window.scrollTo(0, 0);
-
             if(pageId === 'carrinho') renderCart();
         }
 
-        // --- Lógica do Menu Hamburguer ---
+        // --- Menu Hamburguer ---
         const hamburger = document.getElementById('hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const closeBtn = document.getElementById('close-menu-btn');
@@ -593,17 +729,14 @@
             }
         });
 
-        // --- Lógica do Botão Voltar ao Topo ---
+        // --- Botão Topo ---
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('back-to-top');
-            if (window.scrollY > 300) {
-                btn.classList.add('show');
-            } else {
-                btn.classList.remove('show');
-            }
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
         });
 
-        // --- Lógica do Modal ---
+        // --- Modal ---
         function openModal(title, price, image, description) {
             currentModalProduct = { title, price, image };
             document.getElementById('modalTitle').innerText = title;
@@ -620,19 +753,14 @@
         }
 
         function closeModalOutside(event) {
-            if (event.target === document.getElementById('productModal')) {
-                closeModal();
-            }
+            if (event.target === document.getElementById('productModal')) closeModal();
         }
 
-        // --- Lógica do Carrinho ---
+        // --- Carrinho ---
         function addToCartFromModal() {
             const existingItem = cart.find(item => item.title === currentModalProduct.title);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...currentModalProduct, quantity: 1 });
-            }
+            if (existingItem) existingItem.quantity += 1;
+            else cart.push({ ...currentModalProduct, quantity: 1 });
             saveCart();
             closeModal();
             alert(`${currentModalProduct.title} adicionado ao carrinho!`);
@@ -653,15 +781,11 @@
             const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
             const desktopCount = document.getElementById('desktop-cart-count');
             const mobileCount = document.getElementById('mobile-cart-count');
-
             if (totalItems > 0) {
-                desktopCount.style.display = 'block';
-                desktopCount.innerText = totalItems;
-                mobileCount.style.display = 'block';
-                mobileCount.innerText = totalItems;
+                desktopCount.style.display = 'block'; desktopCount.innerText = totalItems;
+                mobileCount.style.display = 'block'; mobileCount.innerText = totalItems;
             } else {
-                desktopCount.style.display = 'none';
-                mobileCount.style.display = 'none';
+                desktopCount.style.display = 'none'; mobileCount.style.display = 'none';
             }
         }
 
@@ -669,11 +793,10 @@
             const listContainer = document.getElementById('cart-list');
             const totalContainer = document.getElementById('cart-total-container');
             const totalValueSpan = document.getElementById('cart-total-value');
-
             listContainer.innerHTML = '';
 
             if (cart.length === 0) {
-                listContainer.innerHTML = '<div class="cart-empty">Seu carrinho está vazio. Vá para <a href="#" onclick="navigate(\'produtos\')" style="text-decoration:underline; color:#333;">Produtos</a>.</div>';
+                listContainer.innerHTML = `<div class="cart-empty"><span data-key="cart_empty_text" style="font-size:18px; color:#777;">Seu carrinho está vazio.</span></div>`;
                 totalContainer.style.display = 'none';
                 return;
             }
@@ -682,42 +805,34 @@
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
-
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
                 itemDiv.innerHTML = `
                     <div class="cart-item-info">
                         <img src="${item.image}" alt="${item.title}">
-                        <div>
-                            <h4>${item.title}</h4>
-                            <span>Qtd: ${item.quantity}</span>
-                        </div>
+                        <div><h4>${item.title}</h4><span>Qtd: ${item.quantity}</span></div>
                     </div>
                     <div class="cart-item-price">R$${itemTotal.toFixed(2)}</div>
-                    <div class="cart-item-remove" onclick="removeFromCart('${item.title}')">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </div>
+                    <div class="cart-item-remove" onclick="removeFromCart('${item.title}')"><i class="fa-solid fa-trash-can"></i></div>
                 `;
                 listContainer.appendChild(itemDiv);
             });
-
             totalValueSpan.innerText = `R$${total.toFixed(2)}`;
             totalContainer.style.display = 'block';
         }
 
         function finalizarCompra() {
-            if(cart.length === 0) {
-                alert('Seu carrinho está vazio!');
-                return;
-            }
-            alert('Compra finalizada com sucesso! Obrigado por comprar na Donuts Delícia.');
-            cart = [];
-            saveCart();
-            renderCart();
+            if(cart.length === 0) return alert('Carrinho vazio!');
+            alert('Compra finalizada com sucesso!');
+            cart = []; saveCart(); renderCart();
         }
 
-        // Carregar contador ao abrir a página
-        document.addEventListener('DOMContentLoaded', updateCartCounter);
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('siteLang') || 'pt';
+            setLanguage(savedLang);
+            updateCartCounter();
+        });
     </script>
 </body>
 </html>
