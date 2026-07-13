@@ -24,7 +24,7 @@
         :root {
             --verde-escuro: #006241;
             --verde-claro: #00a86b;
-            --vermelho-principal: #cc0022;
+            --vermelho-principal: #E63946;
             --laranja-donut: #f5a623;
             --cinza-claro: #f4f4f4;
             --cinza-medio: #e0e0e0;
@@ -74,12 +74,12 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
             min-height: 70px;
         }
 
         .logo-header {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             font-style: italic;
             color: var(--vermelho-principal);
@@ -91,6 +91,7 @@
             transition: 0.3s;
         }
         .logo-header span { color: var(--verde-escuro); }
+        .logo-header:hover { transform: scale(1.02); }
 
         /* --- NAVEGAÇÃO DESKTOP --- */
         nav {
@@ -151,7 +152,7 @@
             flex-shrink: 0;
             margin-left: 10px;
         }
-        .btn-header:hover { background-color: #a3001b; transform: scale(1.05); }
+        .btn-header:hover { background-color: #b71c1c; transform: scale(1.05); }
 
         .btn-header-outline {
             background-color: transparent;
@@ -256,10 +257,11 @@
             min-height: 450px;
             color: white;
             transition: background 0.8s ease;
+            overflow: hidden;
         }
 
         .hero.hero-vermelho {
-            background: linear-gradient(135deg, var(--vermelho-principal) 0%, #d60025 100%);
+            background: linear-gradient(135deg, #d32f2f 0%, var(--vermelho-principal) 100%);
         }
 
         .hero.hero-verde {
@@ -278,10 +280,11 @@
             line-height: 1.1;
             margin-bottom: 25px;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease;
         }
         .hero-btn {
             display: inline-block;
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
             color: white;
             padding: 15px 35px;
@@ -298,6 +301,7 @@
             background-color: rgba(255,255,255,0.3); 
             transform: translateY(-3px);
             border-color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         .hero-image { max-width: 45%; z-index: 2; }
         .hero-image img {
@@ -319,8 +323,8 @@
             z-index: 2;
         }
         .hero-indicators button {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.6);
             background: transparent;
@@ -347,13 +351,15 @@
         }
         .hero-arrows button {
             width: 45px; height: 45px; border-radius: 50%; border: none;
-            background-color: rgba(255,255,255,0.8);
+            background-color: rgba(255,255,255,0.9);
             color: var(--vermelho-principal);
             font-size: 18px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .hero-arrows button:hover { 
             background-color: white; 
             transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         /* --- SEÇÃO PRODUTOS (Preview) --- */
@@ -374,6 +380,7 @@
             margin-bottom: 50px;
             flex-wrap: wrap;
             justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .tab-btn {
             display: flex; align-items: center; gap: 10px;
@@ -381,7 +388,11 @@
             background: transparent; font-weight: 700; font-size: 14px;
             color: #555; cursor: pointer; transition: 0.3s;
         }
-        .tab-btn.active { background-color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.08); color: var(--verde-escuro); }
+        .tab-btn.active { 
+            background-color: white; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+            color: var(--verde-escuro); 
+        }
         .tab-btn:hover { background-color: white; }
 
         .carrossel-wrapper {
@@ -393,6 +404,7 @@
             scroll-behavior: smooth; padding: 20px 10px;
             width: 100%; justify-content: flex-start;
             scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
         .carrossel-grid::-webkit-scrollbar { display: none; }
 
@@ -402,37 +414,54 @@
             scroll-snap-align: start;
             transition: 0.3s;
             border: 1px solid #eee;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .card-produto:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .card-produto:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-color: var(--verde-escuro);
+        }
         .card-produto img {
             width: 100%; height: 200px; object-fit: cover;
             margin: 0 auto 15px; display: block; border-radius: 50%;
         }
         .card-produto h3 { color: var(--verde-escuro); font-size: 1.1rem; margin-bottom: 10px; }
         .card-produto p { font-size: 0.9rem; color: #666; line-height: 1.4; }
-        .card-produto .preco { color: var(--vermelho-principal); font-weight: 700; margin-top: 10px; display: block; }
+        .card-produto .preco { 
+            color: var(--vermelho-principal); 
+            font-weight: 700; 
+            margin-top: 15px; 
+            display: block;
+            font-size: 1.1rem;
+        }
 
         .arrow-esq, .arrow-dir {
-            position: absolute; background: var(--cinza-medio); color: #555;
+            position: absolute; background: white; color: #555;
             border: none; width: 45px; height: 45px; border-radius: 50%;
             cursor: pointer; font-size: 18px; transition: 0.3s;
             display: flex; align-items: center; justify-content: center;
             z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            top: 50%;
+            transform: translateY(-50%);
         }
         .arrow-esq { left: 0; }
         .arrow-dir { right: 0; background: var(--verde-escuro); color: white; }
-        .arrow-esq:hover { background: #ccc; }
+        .arrow-esq:hover { background: #f0f0f0; }
         .arrow-dir:hover { background: #004d33; }
 
         .btn-ver-mais {
             display: inline-block; background-color: var(--verde-escuro);
             color: white; padding: 15px 50px; border-radius: 30px;
-            font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,98,65,0.3);
+            font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,98,65,0.3);
             cursor: pointer;
             border: none;
             transition: 0.3s;
         }
-        .btn-ver-mais:hover { transform: scale(1.05); }
+        .btn-ver-mais:hover { 
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,98,65,0.4);
+        }
 
         /* --- SEÇÃO O CLÁSSICO --- */
         .classico-section {
@@ -456,8 +485,9 @@
             cursor: pointer;
             border: none;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .btn-saiba-mais:hover { background-color: #a3001b; transform: translateY(-3px); }
+        .btn-saiba-mais:hover { background-color: #b71c1c; transform: translateY(-3px); }
         .classico-pontos {
             position: absolute; bottom: 0; right: 0; width: 60%; height: 50px;
             background-image: radial-gradient(var(--branco) 3px, transparent 3px);
@@ -538,6 +568,7 @@
             font-size: 2.8rem;
             font-weight: 800;
             display: block;
+            color: #ffd700;
         }
 
         .quem-somos-hero .stat-item .label {
@@ -660,7 +691,7 @@
         .valor-card .icon-wrapper {
             width: 70px;
             height: 70px;
-            background: linear-gradient(135deg, var(--vermelho-principal), #d60025);
+            background: linear-gradient(135deg, var(--vermelho-principal), #b71c1c);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1141,10 +1172,11 @@
         .footer-nav a {
             color: var(--verde-escuro); font-weight: 700; font-size: 14px; text-transform: uppercase;
             cursor: pointer;
+            transition: 0.3s;
         }
-        .footer-nav a:hover { color: var(--vermelho-principal); }
+        .footer-nav a:hover { color: var(--vermelho-principal); transform: translateY(-2px); }
         
-        .footer-divider { border-top: 1px solid #ddd; padding-top: 20px; margin-bottom: 20px; }
+        .footer-divider { border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 20px; }
         .footer-links {
             display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;
             margin-bottom: 20px; color: #888; font-size: 14px;
@@ -1753,10 +1785,10 @@
 
     <!-- TOP BAR -->
     <div class="top-bar">
-        <a href="#"><i class="fab fa-tiktok"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
 
     <!-- OVERLAY PARA MOBILE -->
@@ -1797,13 +1829,13 @@
                 <img id="hero-image" src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Donut Hero">
             </div>
             <div class="hero-arrows">
-                <button onclick="mudarSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-                <button onclick="mudarSlide(1)"><i class="fas fa-chevron-right"></i></button>
+                <button onclick="mudarSlide(-1)" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="mudarSlide(1)" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
             </div>
             <div class="hero-indicators" id="hero-indicators">
-                <button class="active" onclick="irParaSlide(0)"></button>
-                <button onclick="irParaSlide(1)"></button>
-                <button onclick="irParaSlide(2)"></button>
+                <button class="active" onclick="irParaSlide(0)" aria-label="Ir para slide 1"></button>
+                <button onclick="irParaSlide(1)" aria-label="Ir para slide 2"></button>
+                <button onclick="irParaSlide(2)" aria-label="Ir para slide 3"></button>
             </div>
         </section>
 
@@ -1827,11 +1859,11 @@
             </div>
 
             <div class="carrossel-wrapper">
-                <button class="arrow-esq" onclick="scrollCarrossel(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="arrow-esq" onclick="scrollCarrossel(-1)" aria-label="Rolar para esquerda"><i class="fas fa-chevron-left"></i></button>
                 <div class="carrossel-grid" id="grid-produtos">
                     <!-- Conteúdo gerado via JavaScript -->
                 </div>
-                <button class="arrow-dir" onclick="scrollCarrossel(1)"><i class="fas fa-chevron-right"></i></button>
+                <button class="arrow-dir" onclick="scrollCarrossel(1)" aria-label="Rolar para direita"><i class="fas fa-chevron-right"></i></button>
             </div>
 
             <a class="btn-ver-mais" onclick="navegar('nossos-produtos')">Ver Todos os Produtos</a>
@@ -2175,10 +2207,10 @@
         </div>
 
         <div class="footer-socials">
-            <a href="#"><i class="fab fa-tiktok"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
         </div>
 
         <div class="footer-copyright">
@@ -2221,22 +2253,22 @@
 
         // ===== HERO SLIDES =====
         const slides = [
-    {
-        titulo: 'A felicidade está<br>mais perto do<br>que imagina.',
-        imagem: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',
-        classe: 'hero-vermelho'
-    },
-    {
-     titulo: 'Sabor único<br>em cada<br>mordida!',
-        imagem: 'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop',
-        classe: 'hero-verde'
-    },
-    {
-        titulo: 'Momentos<br>especiais com<br>quem você ama!',
-        imagem: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop',
-        classe: 'hero-laranja'
-    }
-];
+            {
+                titulo: 'A felicidade está<br>mais perto do que<br>você imagina.',
+                imagem: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',
+                classe: 'hero-vermelho'
+            },
+            {
+                titulo: 'Sabor único<br>em cada<br>mordida!',
+                imagem: 'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop',
+                classe: 'hero-verde'
+            },
+            {
+                titulo: 'Momentos<br>especiais com<br>quem você ama!',
+                imagem: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop',
+                classe: 'hero-laranja'
+            }
+        ];
 
         let slideAtual = 0;
         let intervaloAuto = null;
@@ -2363,8 +2395,16 @@
 
         function scrollCarrossel(direcao) {
             const grid = document.getElementById('grid-produtos');
+            if (!grid) return;
+            
+            // Calcula a largura do card + gap
             const card = grid.querySelector('.card-produto');
-            const scrollAmount = card ? card.offsetWidth + 30 : 260;
+            if (!card) return;
+            
+            const cardWidth = card.offsetWidth;
+            const gap = 30; // mesmo valor do gap no CSS
+            const scrollAmount = (cardWidth + gap) * 2; // rola 2 cards por vez
+            
             grid.scrollBy({ left: direcao * scrollAmount, behavior: 'smooth' });
         }
 
