@@ -1,2457 +1,469 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donut Delícia - Os melhores donuts</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* --- ESTILOS GERAIS --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            background-color: #ffffff;
-        }
-
-        :root {
-            --verde-escuro: #006241;
-            --verde-claro: #00a86b;
-            --vermelho-principal: #E63946;
-            --laranja-donut: #f5a623;
-            --cinza-claro: #f4f4f4;
-            --cinza-medio: #e0e0e0;
-            --branco: #ffffff;
-            --preto-texto: #333333;
-        }
-
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--cinza-claro);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--verde-escuro);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--vermelho-principal);
-        }
-
-        /* --- TOP BAR --- */
-        .top-bar {
-            background-color: var(--verde-escuro);
-            padding: 8px 5%;
-            display: flex;
-            justify-content: flex-start;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .top-bar a { color: white; font-size: 16px; }
-        .top-bar a:hover { color: #ddd; transform: translateY(-2px); }
-
-        /* --- HEADER / NAVEGAÇÃO --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 5%;
-            background-color: white;
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            min-height: 70px;
-        }
-
-        .logo-header {
-            font-size: 24px;
-            font-weight: 800;
-            font-style: italic;
-            color: var(--vermelho-principal);
-            border: 3px solid var(--verde-escuro);
-            padding: 5px 15px;
-            border-radius: 10px 0 10px 0;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: 0.3s;
-        }
-        .logo-header span { color: var(--verde-escuro); }
-        .logo-header:hover { transform: scale(1.02); }
-
-        /* --- NAVEGAÇÃO DESKTOP --- */
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        nav ul li a {
-            color: var(--verde-escuro);
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            cursor: pointer;
-            padding: 8px 0;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
-            white-space: nowrap;
-            position: relative;
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--vermelho-principal);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after,
-        nav ul li a.active::after {
-            width: 100%;
-        }
-
-        nav ul li a:hover { color: var(--vermelho-principal); }
-        nav ul li a.active { color: var(--vermelho-principal); }
-
-        .btn-header {
-            background-color: var(--vermelho-principal);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-            white-space: nowrap;
-            flex-shrink: 0;
-            margin-left: 10px;
-        }
-        .btn-header:hover { background-color: #b71c1c; transform: scale(1.05); }
-
-        .btn-header-outline {
-            background-color: transparent;
-            color: var(--vermelho-principal);
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: 2px solid var(--vermelho-principal);
-            transition: 0.3s;
-        }
-        .btn-header-outline:hover { 
-            background-color: var(--vermelho-principal); 
-            color: white;
-            transform: scale(1.05);
-        }
-
-        /* --- HAMBURGER MENU --- */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 5px;
-            background: transparent;
-            border: none;
-            z-index: 1001;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 28px;
-            height: 3px;
-            background: var(--verde-escuro);
-            border-radius: 3px;
-            transition: 0.3s ease;
-            transform-origin: center;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 6px);
-            background: var(--vermelho-principal);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -6px);
-            background: var(--vermelho-principal);
-        }
-
-        .hamburger:hover span {
-            background: var(--vermelho-principal);
-        }
-
-        /* --- MENU MOBILE OVERLAY --- */
-        .nav-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        /* --- PÁGINAS (Sections) --- */
-        .pagina {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .pagina.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 60px 5%;
-            position: relative;
-            min-height: 450px;
-            color: white;
-            transition: background 0.8s ease;
-            overflow: hidden;
-        }
-
-        .hero.hero-vermelho {
-            background: linear-gradient(135deg, #d32f2f 0%, var(--vermelho-principal) 100%);
-        }
-
-        .hero.hero-verde {
-            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
-        }
-
-        .hero.hero-laranja {
-            background: linear-gradient(135deg, #e07b1a 0%, var(--laranja-donut) 100%);
-        }
-
-        .hero-content { max-width: 50%; z-index: 2; }
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            font-style: italic;
-            line-height: 1.1;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            transition: opacity 0.3s ease;
-        }
-        .hero-btn {
-            display: inline-block;
-            background-color: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.3);
-            transition: 0.3s;
-        }
-        .hero-btn:hover { 
-            background-color: rgba(255,255,255,0.3); 
-            transform: translateY(-3px);
-            border-color: white;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .hero-image { max-width: 45%; z-index: 2; }
-        .hero-image img {
-            width: 100%;
-            max-width: 450px;
-            border-radius: 50%;
-            box-shadow: -15px 15px 30px rgba(0,0,0,0.3);
-            border: 8px solid rgba(255,255,255,0.2);
-            transition: opacity 0.5s ease;
-        }
-        
-        .hero-indicators {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 2;
-        }
-        .hero-indicators button {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.6);
-            background: transparent;
-            cursor: pointer;
-            transition: 0.3s;
-            padding: 0;
-        }
-        .hero-indicators button.active {
-            background: white;
-            border-color: white;
-            transform: scale(1.3);
-        }
-        .hero-indicators button:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .hero-arrows {
-            position: absolute;
-            bottom: 30px;
-            left: 5%;
-            display: flex;
-            gap: 15px;
-            z-index: 2;
-        }
-        .hero-arrows button {
-            width: 45px; height: 45px; border-radius: 50%; border: none;
-            background-color: rgba(255,255,255,0.9);
-            color: var(--vermelho-principal);
-            font-size: 18px; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .hero-arrows button:hover { 
-            background-color: white; 
-            transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        /* --- SEÇÃO PRODUTOS (Preview) --- */
-        .produtos-section { padding: 60px 5%; text-align: center; background: white; }
-        .produtos-section h2 {
-            color: var(--verde-escuro);
-            font-size: 2.2rem;
-            margin-bottom: 40px;
-            font-weight: 800;
-        }
-
-        .tabs-container {
-            display: inline-flex;
-            background-color: var(--cinza-claro);
-            border-radius: 50px;
-            padding: 8px;
-            gap: 5px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .tab-btn {
-            display: flex; align-items: center; gap: 10px;
-            padding: 15px 40px; border-radius: 40px; border: none;
-            background: transparent; font-weight: 700; font-size: 14px;
-            color: #555; cursor: pointer; transition: 0.3s;
-        }
-        .tab-btn.active { 
-            background-color: white; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-            color: var(--verde-escuro); 
-        }
-        .tab-btn:hover { background-color: white; }
-
-        .carrossel-wrapper {
-            position: relative; display: flex; align-items: center;
-            justify-content: center; margin-bottom: 50px; padding: 0 50px;
-        }
-        .carrossel-grid {
-            display: flex; gap: 30px; overflow-x: auto;
-            scroll-behavior: smooth; padding: 20px 10px;
-            width: 100%; justify-content: flex-start;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-        }
-        .carrossel-grid::-webkit-scrollbar { display: none; }
-
-        .card-produto {
-            flex: 0 0 260px; text-align: center; background: white;
-            padding: 20px; border-radius: 20px;
-            scroll-snap-align: start;
-            transition: 0.3s;
-            border: 1px solid #eee;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .card-produto:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-color: var(--verde-escuro);
-        }
-        .card-produto img {
-            width: 100%; height: 200px; object-fit: cover;
-            margin: 0 auto 15px; display: block; border-radius: 50%;
-        }
-        .card-produto h3 { color: var(--verde-escuro); font-size: 1.1rem; margin-bottom: 10px; }
-        .card-produto p { font-size: 0.9rem; color: #666; line-height: 1.4; }
-        .card-produto .preco { 
-            color: var(--vermelho-principal); 
-            font-weight: 700; 
-            margin-top: 15px; 
-            display: block;
-            font-size: 1.1rem;
-        }
-
-        .arrow-esq, .arrow-dir {
-            position: absolute; background: white; color: #555;
-            border: none; width: 45px; height: 45px; border-radius: 50%;
-            cursor: pointer; font-size: 18px; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .arrow-esq { left: 0; }
-        .arrow-dir { right: 0; background: var(--verde-escuro); color: white; }
-        .arrow-esq:hover { background: #f0f0f0; }
-        .arrow-dir:hover { background: #004d33; }
-
-        .btn-ver-mais {
-            display: inline-block; background-color: var(--verde-escuro);
-            color: white; padding: 15px 50px; border-radius: 30px;
-            font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,98,65,0.3);
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-        }
-        .btn-ver-mais:hover { 
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0,98,65,0.4);
-        }
-
-        /* --- SEÇÃO O CLÁSSICO --- */
-        .classico-section {
-            display: flex; background-color: var(--verde-escuro); color: white;
-            min-height: 400px; margin-top: 50px;
-        }
-        .classico-img {
-            flex: 1;
-            background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=800&auto=format&fit=crop');
-            background-size: cover; background-position: center; min-height: 300px;
-        }
-        .classico-content {
-            flex: 1; padding: 60px 40px; display: flex; flex-direction: column;
-            justify-content: center; position: relative;
-        }
-        .classico-content h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
-        .classico-content p { font-size: 1rem; line-height: 1.6; margin-bottom: 30px; max-width: 500px; opacity: 0.9; }
-        .btn-saiba-mais {
-            align-self: flex-start; background-color: var(--vermelho-principal);
-            color: white; padding: 15px 35px; border-radius: 30px; font-weight: 700; text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .btn-saiba-mais:hover { background-color: #b71c1c; transform: translateY(-3px); }
-        .classico-pontos {
-            position: absolute; bottom: 0; right: 0; width: 60%; height: 50px;
-            background-image: radial-gradient(var(--branco) 3px, transparent 3px);
-            background-size: 25px 25px; opacity: 0.3; pointer-events: none;
-        }
-
-        /* --- PÁGINA: QUEM SOMOS --- */
-        .pagina-quem-somos {
-            padding: 0;
-            max-width: 100%;
-        }
-
-        .quem-somos-hero {
-            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
-            padding: 80px 5% 60px;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quem-somos-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 60%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .quem-somos-hero .dots-bg {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background-image: radial-gradient(rgba(255,255,255,0.1) 2px, transparent 2px);
-            background-size: 30px 30px;
-            pointer-events: none;
-        }
-
-        .quem-somos-hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .quem-somos-hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            position: relative;
-            z-index: 1;
-            line-height: 1.6;
-        }
-
-        .quem-somos-hero .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-            margin-top: 40px;
-        }
-
-        .quem-somos-hero .stat-item {
-            text-align: center;
-        }
-
-        .quem-somos-hero .stat-item .numero {
-            font-size: 2.8rem;
-            font-weight: 800;
-            display: block;
-            color: #ffd700;
-        }
-
-        .quem-somos-hero .stat-item .label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .quem-somos-conteudo {
-            padding: 60px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .quem-somos-conteudo .section-titulo {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .quem-somos-conteudo .section-titulo h2 {
-            color: var(--verde-escuro);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .quem-somos-conteudo .section-titulo p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            margin: 40px 0;
-            position: relative;
-            padding-left: 40px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--vermelho-principal), var(--verde-escuro));
-            border-radius: 3px;
-        }
-
-        .timeline-item {
-            background: var(--cinza-claro);
-            padding: 25px 30px;
-            border-radius: 15px;
-            position: relative;
-            transition: 0.3s;
-            border-left: 4px solid var(--vermelho-principal);
-        }
-
-        .timeline-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -33px;
-            top: 30px;
-            width: 16px;
-            height: 16px;
-            background: var(--vermelho-principal);
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px var(--vermelho-principal);
-        }
-
-        .timeline-item .ano {
-            color: var(--vermelho-principal);
-            font-weight: 800;
-            font-size: 1.3rem;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .timeline-item h4 {
-            color: var(--verde-escuro);
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .timeline-item p {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .valores-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .valor-card {
-            background: var(--cinza-claro);
-            padding: 35px 25px;
-            border-radius: 20px;
-            text-align: center;
-            transition: 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .valor-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--verde-escuro);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .valor-card .icon-wrapper {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--vermelho-principal), #b71c1c);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
-            color: white;
-        }
-
-        .valor-card h4 {
-            color: var(--verde-escuro);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .valor-card p {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .equipe-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .membro-card {
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .membro-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .membro-card .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            color: white;
-            box-shadow: 0 5px 20px rgba(0,98,65,0.2);
-        }
-
-        .membro-card h4 {
-            color: var(--verde-escuro);
-            font-size: 1.1rem;
-        }
-
-        .membro-card .cargo {
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        /* --- PÁGINA: TRABALHE CONOSCO --- */
-        .pagina-trabalhe {
-            padding: 0;
-            max-width: 100%;
-        }
-
-        .trabalhe-hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 80px 5% 60px;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .trabalhe-hero::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 50%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(204,0,34,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .trabalhe-hero .donut-icon {
-            font-size: 70px;
-            margin-bottom: 20px;
-            display: block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .trabalhe-hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .trabalhe-hero h1 span {
-            color: var(--vermelho-principal);
-        }
-
-        .trabalhe-hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            position: relative;
-            z-index: 1;
-            line-height: 1.6;
-        }
-
-        .trabalhe-hero .btn-grande {
-            display: inline-block;
-            background: var(--vermelho-principal);
-            color: white;
-            padding: 18px 50px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 10px 30px rgba(204,0,34,0.3);
-        }
-
-        .trabalhe-hero .btn-grande:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(204,0,34,0.4);
-        }
-
-        .trabalhe-beneficios {
-            padding: 60px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .trabalhe-beneficios h2 {
-            text-align: center;
-            color: var(--verde-escuro);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .trabalhe-beneficios .sub {
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-        }
-
-        .beneficios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .beneficio-card {
-            background: var(--cinza-claro);
-            padding: 35px 25px;
-            border-radius: 20px;
-            text-align: center;
-            transition: 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .beneficio-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--verde-escuro);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .beneficio-card .icon {
-            font-size: 45px;
-            color: var(--vermelho-principal);
-            margin-bottom: 15px;
-        }
-
-        .beneficio-card h4 {
-            color: var(--verde-escuro);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .beneficio-card p {
-            color: #555;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .vagas-section {
-            background: var(--cinza-claro);
-            padding: 60px 5%;
-        }
-
-        .vagas-section .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .vagas-section h2 {
-            text-align: center;
-            color: var(--verde-escuro);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .vagas-section .sub {
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-        }
-
-        .vaga-card {
-            background: white;
-            padding: 25px 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            transition: 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .vaga-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .vaga-card .vaga-info h4 {
-            color: var(--verde-escuro);
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .vaga-card .vaga-info .local {
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        .vaga-card .vaga-info .local i {
-            margin-right: 5px;
-        }
-
-        .vaga-card .vaga-tag {
-            background: var(--cinza-claro);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--verde-escuro);
-        }
-
-        .vaga-card .btn-candidatar {
-            background: var(--verde-escuro);
-            color: white;
-            padding: 10px 30px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-        }
-
-        .vaga-card .btn-candidatar:hover {
-            background: var(--vermelho-principal);
-            transform: scale(1.05);
-        }
-
-        .trabalhe-cta {
-            padding: 60px 5%;
-            text-align: center;
-            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
-            color: white;
-        }
-
-        .trabalhe-cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .trabalhe-cta p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        .trabalhe-cta .btn-cta {
-            display: inline-block;
-            background: white;
-            color: var(--verde-escuro);
-            padding: 15px 45px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-        }
-
-        .trabalhe-cta .btn-cta:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        /* --- PÁGINA: NOSSOS PRODUTOS --- */
-        .pagina-produtos {
-            padding: 80px 5% 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pagina-produtos h1 {
-            color: var(--verde-escuro);
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        .pagina-produtos .subtitulo {
-            color: #666;
-            font-size: 1.2rem;
-            margin-bottom: 50px;
-        }
-
-        .grid-produtos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-        }
-
-        .categoria-titulo {
-            color: var(--verde-escuro);
-            font-size: 1.8rem;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--cinza-claro);
-        }
-
-        .categoria-titulo:first-of-type {
-            margin-top: 0;
-        }
-
-        /* --- PÁGINA: NOSSAS LOJAS --- */
-        .pagina-lojas {
-            padding: 80px 5% 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pagina-lojas h1 {
-            color: var(--verde-escuro);
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        .pagina-lojas .subtitulo {
-            color: #666;
-            font-size: 1.2rem;
-            margin-bottom: 50px;
-        }
-
-        .grid-lojas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card-loja {
-            background: var(--cinza-claro);
-            padding: 35px 30px;
-            border-radius: 20px;
-            transition: 0.3s;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .card-loja:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-            border-color: var(--verde-escuro);
-        }
-
-        .card-loja i {
-            font-size: 50px;
-            color: var(--vermelho-principal);
-            margin-bottom: 20px;
-        }
-
-        .card-loja h3 {
-            color: var(--verde-escuro);
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-        }
-
-        .card-loja p {
-            color: #555;
-            line-height: 1.8;
-        }
-
-        .card-loja .destaque {
-            color: var(--vermelho-principal);
-            font-weight: 700;
-            margin-top: 10px;
-            display: block;
-        }
-
-        .card-loja .horario {
-            background: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--verde-escuro);
-        }
-
-        .mapa-section {
-            margin-top: 60px;
-            padding: 40px;
-            background: var(--cinza-claro);
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .mapa-section h2 {
-            color: var(--verde-escuro);
-            margin-bottom: 20px;
-        }
-
-        .mapa-placeholder {
-            background: #ddd;
-            height: 300px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 1.2rem;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            background-color: white; padding: 60px 5% 20px; text-align: center;
-        }
-        .footer-logo { margin-bottom: 30px; }
-        .footer-logo h2 {
-            font-size: 24px; font-weight: 800; font-style: italic;
-            color: var(--vermelho-principal); border: 3px solid var(--verde-escuro);
-            padding: 5px 15px; border-radius: 10px 0 10px 0; display: inline-block;
-        }
-        .footer-logo span { color: var(--verde-escuro); }
-
-        .footer-nav {
-            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;
-        }
-        .footer-nav a {
-            color: var(--verde-escuro); font-weight: 700; font-size: 14px; text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .footer-nav a:hover { color: var(--vermelho-principal); transform: translateY(-2px); }
-        
-        .footer-divider { border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 20px; }
-        .footer-links {
-            display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;
-            margin-bottom: 20px; color: #888; font-size: 14px;
-        }
-        .footer-links a:hover { color: var(--verde-escuro); }
-
-        .footer-socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; font-size: 22px; color: var(--verde-escuro); }
-        .footer-socials a:hover { color: var(--vermelho-principal); transform: translateY(-3px); }
-        
-        .footer-copyright { font-size: 12px; color: #555; margin-top: 20px; }
-        .footer-dots {
-            height: 50px; width: 100%;
-            background-image: radial-gradient(var(--verde-escuro) 2px, transparent 2px);
-            background-size: 20px 20px; opacity: 0.2; margin-top: 30px;
-        }
-
-        /* ============================================================ */
-        /* === RESPONSIVIDADE DO NAV === */
-        /* ============================================================ */
-
-        /* --- Tablet (max-width: 1024px) --- */
-        @media (max-width: 1024px) {
-            nav ul { gap: 15px; }
-            nav ul li a { font-size: 12px; }
-            .btn-header { padding: 8px 18px; font-size: 11px; }
-            .logo-header { font-size: 20px; padding: 4px 12px; }
-        }
-
-        /* --- Tablet Médio (max-width: 900px) --- */
-        @media (max-width: 900px) {
-            .hamburger {
-                display: flex;
-            }
-
-            nav {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 350px;
-                height: 100vh;
-                background: white;
-                padding: 80px 30px 30px;
-                flex-direction: column;
-                align-items: flex-start;
-                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: -5px 0 30px rgba(0,0,0,0.1);
-                z-index: 999;
-                overflow-y: auto;
-            }
-
-            nav.active {
-                right: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
-                gap: 5px;
-            }
-
-            nav ul li {
-                width: 100%;
-            }
-
-            nav ul li a {
-                display: block;
-                padding: 12px 15px;
-                font-size: 14px;
-                border-bottom: none;
-                border-left: 3px solid transparent;
-                transition: 0.3s;
-                width: 100%;
-                border-radius: 8px;
-            }
-
-            nav ul li a::after {
-                display: none;
-            }
-
-            nav ul li a:hover,
-            nav ul li a.active {
-                background: var(--cinza-claro);
-                border-left-color: var(--vermelho-principal);
-                color: var(--vermelho-principal);
-            }
-
-            .btn-header {
-                margin: 15px 0 0;
-                width: 100%;
-                text-align: center;
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .nav-overlay.active {
-                display: block;
-                opacity: 1;
-            }
-        }
-
-        /* --- Mobile Grande (max-width: 768px) --- */
-        @media (max-width: 768px) {
-            .top-bar { 
-                justify-content: center; 
-                gap: 15px; 
-                padding: 8px 5%;
-            }
-            .top-bar a { font-size: 14px; }
-
-            header {
-                padding: 10px 5%;
-                min-height: 60px;
-            }
-
-            .logo-header {
-                font-size: 18px;
-                padding: 4px 12px;
-                border-width: 2px;
-            }
-
-            nav {
-                width: 85%;
-                max-width: 320px;
-                padding: 70px 20px 20px;
-            }
-
-            nav ul li a {
-                font-size: 13px;
-                padding: 10px 12px;
-            }
-
-            .btn-header {
-                font-size: 13px;
-                padding: 10px;
-            }
-
-            .hamburger span {
-                width: 25px;
-                height: 2.5px;
-            }
-        }
-
-        /* --- Mobile Médio (max-width: 600px) --- */
-        @media (max-width: 600px) {
-            .top-bar a { font-size: 12px; }
-            .top-bar { gap: 10px; padding: 6px 5%; }
-
-            .logo-header {
-                font-size: 16px;
-                padding: 3px 10px;
-            }
-
-            nav {
-                width: 90%;
-                max-width: 300px;
-                padding: 60px 15px 15px;
-            }
-
-            nav ul li a {
-                font-size: 12px;
-                padding: 8px 10px;
-            }
-
-            .btn-header {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .hamburger span {
-                width: 22px;
-                height: 2px;
-            }
-            .hamburger { gap: 4px; }
-        }
-
-        /* --- Mobile Pequeno (max-width: 480px) --- */
-        @media (max-width: 480px) {
-            .logo-header {
-                font-size: 14px;
-                padding: 3px 8px;
-                border-width: 2px;
-            }
-
-            .hamburger span {
-                width: 20px;
-                height: 2px;
-            }
-            .hamburger { gap: 4px; }
-
-            nav {
-                width: 95%;
-                max-width: 280px;
-                padding: 50px 12px 12px;
-            }
-
-            nav ul li a {
-                font-size: 11px;
-                padding: 7px 10px;
-            }
-
-            .btn-header {
-                font-size: 11px;
-                padding: 8px;
-                border-radius: 20px;
-            }
-        }
-
-        /* --- Mobile Extra Pequeno (max-width: 360px) --- */
-        @media (max-width: 360px) {
-            .logo-header {
-                font-size: 12px;
-                padding: 2px 6px;
-            }
-
-            .hamburger span {
-                width: 18px;
-                height: 2px;
-            }
-            .hamburger { gap: 3px; }
-
-            nav ul li a {
-                font-size: 10px;
-                padding: 6px 8px;
-            }
-
-            .btn-header {
-                font-size: 10px;
-                padding: 6px;
-            }
-        }
-
-        /* ============================================================ */
-        /* === RESPONSIVIDADE DO CONTEÚDO === */
-        /* ============================================================ */
-
-        @media (max-width: 1024px) {
-            .hero-content h1 { font-size: 3rem; }
-            .quem-somos-hero h1 { font-size: 2.8rem; }
-            .trabalhe-hero h1 { font-size: 2.8rem; }
-            .quem-somos-hero .hero-stats { gap: 40px; }
-        }
-
-        @media (max-width: 900px) {
-            .hero { 
-                flex-direction: column; 
-                text-align: center; 
-                padding: 40px 20px; 
-                min-height: auto; 
-            }
-            .hero-content { 
-                max-width: 100%; 
-                margin-bottom: 40px; 
-            }
-            .hero-content h1 { 
-                font-size: 2.8rem; 
-            }
-            .hero-image { 
-                max-width: 70%; 
-                margin: 0 auto; 
-            }
-            .hero-arrows { 
-                position: static; 
-                justify-content: center; 
-                margin-top: 20px; 
-            }
-            .hero-indicators { 
-                bottom: 80px; 
-            }
-            
-            .classico-section { 
-                flex-direction: column; 
-            }
-            .classico-img { 
-                min-height: 250px; 
-            }
-            .classico-content { 
-                padding: 40px 20px; 
-                text-align: center; 
-                align-items: center; 
-            }
-            .classico-content p { 
-                text-align: center; 
-                max-width: 100%; 
-            }
-            .btn-saiba-mais { 
-                align-self: center; 
-            }
-            .classico-pontos { 
-                width: 100%; 
-            }
-            
-            .quem-somos-hero .hero-stats { 
-                gap: 30px; 
-            }
-            .quem-somos-hero .stat-item .numero { 
-                font-size: 2rem; 
-            }
-            
-            .trabalhe-hero h1 { 
-                font-size: 2.2rem; 
-            }
-            .vaga-card { 
-                flex-direction: column; 
-                text-align: center; 
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-content h1 { 
-                font-size: 2.2rem; 
-            }
-            .hero-image { 
-                max-width: 90%; 
-            }
-            
-            .carrossel-wrapper { 
-                padding: 0 15px; 
-            }
-            .carrossel-grid { 
-                gap: 15px; 
-            }
-            .card-produto { 
-                flex: 0 0 180px; 
-            }
-            .card-produto img { 
-                height: 150px; 
-            }
-            .arrow-esq, .arrow-dir { 
-                width: 35px; 
-                height: 35px; 
-                font-size: 14px;
-            }
-
-            .tabs-container { 
-                width: 100%; 
-                border-radius: 20px; 
-                padding: 10px; 
-            }
-            .tab-btn { 
-                flex: 1; 
-                padding: 12px 10px; 
-                font-size: 12px; 
-                justify-content: center; 
-            }
-            
-            .footer-nav { 
-                gap: 20px; 
-                flex-direction: column; 
-            }
-            .footer-links { 
-                gap: 20px; 
-                flex-direction: column; 
-            }
-            
-            .pagina-produtos h1,
-            .pagina-lojas h1 { 
-                font-size: 2rem; 
-            }
-            
-            .grid-lojas { 
-                grid-template-columns: 1fr; 
-            }
-            .grid-produtos { 
-                grid-template-columns: 1fr 1fr; 
-            }
-            
-            .quem-somos-hero h1 { 
-                font-size: 2.2rem; 
-            }
-            .quem-somos-hero p { 
-                font-size: 1rem; 
-            }
-            .quem-somos-hero .hero-stats { 
-                gap: 20px; 
-            }
-            .timeline { 
-                padding-left: 20px; 
-            }
-            .timeline::before { 
-                left: 5px; 
-            }
-            .timeline-item::before { 
-                left: -23px; 
-                width: 12px; 
-                height: 12px; 
-            }
-            .valores-grid { 
-                grid-template-columns: 1fr 1fr; 
-            }
-            .equipe-grid { 
-                grid-template-columns: 1fr 1fr; 
-            }
-            
-            .trabalhe-hero h1 { 
-                font-size: 2rem; 
-            }
-            .beneficios-grid { 
-                grid-template-columns: 1fr 1fr; 
-            }
-            
-            .vaga-card { 
-                padding: 20px; 
-            }
-            .vaga-card .vaga-info h4 { 
-                font-size: 1rem; 
-            }
-        }
-
-        @media (max-width: 600px) {
-            .hero-content h1 { 
-                font-size: 1.8rem; 
-            }
-            
-            .quem-somos-hero h1 { 
-                font-size: 1.8rem; 
-            }
-            .quem-somos-hero .hero-stats { 
-                flex-direction: column; 
-                gap: 15px; 
-            }
-            
-            .trabalhe-hero h1 { 
-                font-size: 1.6rem; 
-            }
-            .trabalhe-hero .donut-icon { 
-                font-size: 50px; 
-            }
-            .trabalhe-hero .btn-grande { 
-                padding: 15px 30px; 
-                font-size: 0.9rem; 
-            }
-            
-            .trabalhe-cta h2 { 
-                font-size: 1.8rem; 
-            }
-        }
-
-        @media (max-width: 480px) {
-            .grid-produtos { 
-                grid-template-columns: 1fr; 
-            }
-            .card-produto { 
-                flex: 0 0 160px; 
-                padding: 15px; 
-            }
-            .card-produto img { 
-                height: 120px; 
-            }
-            .hero-content h1 { 
-                font-size: 1.5rem; 
-            }
-            .hero-indicators { 
-                bottom: 60px; 
-            }
-            .hero-arrows button { 
-                width: 35px; 
-                height: 35px; 
-                font-size: 14px; 
-            }
-            
-            .valores-grid { 
-                grid-template-columns: 1fr; 
-            }
-            .equipe-grid { 
-                grid-template-columns: 1fr; 
-            }
-            .beneficios-grid { 
-                grid-template-columns: 1fr; 
-            }
-            
-            .membro-card .avatar { 
-                width: 80px; 
-                height: 80px; 
-                font-size: 35px; 
-            }
-            
-            .quem-somos-hero h1 { 
-                font-size: 1.5rem; 
-            }
-            .quem-somos-conteudo .section-titulo h2 { 
-                font-size: 1.5rem; 
-            }
-            
-            .trabalhe-hero h1 { 
-                font-size: 1.4rem; 
-            }
-            .trabalhe-hero p { 
-                font-size: 0.95rem; 
-            }
-            .trabalhe-beneficios h2 { 
-                font-size: 1.5rem; 
-            }
-            .vagas-section h2 { 
-                font-size: 1.5rem; 
-            }
-            
-            .vaga-card { 
-                padding: 15px; 
-            }
-            .vaga-card .btn-candidatar { 
-                width: 100%; 
-                padding: 12px; 
-                font-size: 0.9rem; 
-            }
-            
-            .footer-logo h2 { 
-                font-size: 18px; 
-            }
-            .footer-nav a { 
-                font-size: 12px; 
-            }
-            
-            .mapa-placeholder { 
-                height: 200px; 
-                font-size: 0.9rem; 
-            }
-            
-            .trabalhe-cta h2 { 
-                font-size: 1.5rem; 
-            }
-            .trabalhe-cta .btn-cta { 
-                padding: 12px 30px; 
-                font-size: 0.9rem; 
-            }
-        }
-
-        @media (max-width: 360px) {
-            .hero-content h1 { 
-                font-size: 1.2rem; 
-            }
-            .hero-btn { 
-                padding: 10px 20px; 
-                font-size: 12px; 
-            }
-            .hero-image img { 
-                border-width: 4px; 
-            }
-            
-            .card-produto { 
-                flex: 0 0 140px; 
-                padding: 10px; 
-            }
-            .card-produto img { 
-                height: 100px; 
-            }
-            .card-produto h3 { 
-                font-size: 0.9rem; 
-            }
-            .card-produto p { 
-                font-size: 0.75rem; 
-            }
-            
-            .tab-btn { 
-                padding: 8px 8px; 
-                font-size: 10px; 
-                gap: 5px; 
-            }
-            .tab-btn i { 
-                font-size: 12px; 
-            }
-            
-            .btn-ver-mais { 
-                padding: 12px 30px; 
-                font-size: 12px; 
-            }
-            
-            .classico-content h2 { 
-                font-size: 1.8rem; 
-            }
-            .classico-content p { 
-                font-size: 0.9rem; 
-            }
-            .btn-saiba-mais { 
-                padding: 12px 25px; 
-                font-size: 12px; 
-            }
-            
-            .quem-somos-hero .stat-item .numero { 
-                font-size: 1.5rem; 
-            }
-            .quem-somos-hero .stat-item .label { 
-                font-size: 0.7rem; 
-            }
-            
-            .trabalhe-hero .btn-grande { 
-                padding: 12px 20px; 
-                font-size: 0.8rem; 
-            }
-            
-            .footer-nav a { 
-                font-size: 10px; 
-            }
-            .footer-links a { 
-                font-size: 11px; 
-            }
-            .footer-socials { 
-                font-size: 18px; 
-                gap: 15px; 
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donut Delícia - Os melhores donuts</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',sans-serif;overflow-x:hidden;background-color:#fff}
+:root{--verde-escuro:#006241;--verde-claro:#00a86b;--vermelho-principal:#E63946;--laranja-donut:#f5a623;--cinza-claro:#f4f4f4;--cinza-medio:#e0e0e0;--branco:#fff;--preto-texto:#333}
+a{text-decoration:none;color:inherit;transition:.3s}
+ul{list-style:none}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--cinza-claro);border-radius:10px}
+::-webkit-scrollbar-thumb{background:var(--verde-escuro);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--vermelho-principal)}
+.top-bar{background-color:var(--verde-escuro);padding:8px 5%;display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.top-bar a{color:#fff;font-size:16px}
+.top-bar a:hover{color:#ddd;transform:translateY(-2px)}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 5%;background-color:#fff;flex-wrap:wrap;position:sticky;top:0;z-index:1000;box-shadow:0 2px 15px rgba(0,0,0,.08);min-height:70px}
+.logo-header{font-size:24px;font-weight:800;font-style:italic;color:var(--vermelho-principal);border:3px solid var(--verde-escuro);padding:5px 15px;border-radius:10px 0 10px 0;cursor:pointer;flex-shrink:0;transition:.3s}
+.logo-header span{color:var(--verde-escuro)}
+.logo-header:hover{transform:scale(1.02)}
+nav{display:flex;align-items:center}
+nav ul{display:flex;gap:25px;align-items:center}
+nav ul li a{color:var(--verde-escuro);font-weight:700;font-size:13px;text-transform:uppercase;cursor:pointer;padding:8px 0;border-bottom:3px solid transparent;transition:.3s;white-space:nowrap;position:relative}
+nav ul li a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:3px;background:var(--vermelho-principal);transition:width .3s ease}
+nav ul li a:hover::after,nav ul li a.active::after{width:100%}
+nav ul li a:hover{color:var(--vermelho-principal)}
+nav ul li a.active{color:var(--vermelho-principal)}
+.btn-header{background-color:var(--vermelho-principal);color:#fff;padding:10px 25px;border-radius:25px;font-weight:700;font-size:12px;text-transform:uppercase;cursor:pointer;border:none;transition:.3s;white-space:nowrap;flex-shrink:0;margin-left:10px}
+.btn-header:hover{background-color:#b71c1c;transform:scale(1.05)}
+.btn-header-outline{background-color:transparent;color:var(--vermelho-principal);padding:10px 25px;border-radius:25px;font-weight:700;font-size:12px;text-transform:uppercase;cursor:pointer;border:2px solid var(--vermelho-principal);transition:.3s}
+.btn-header-outline:hover{background-color:var(--vermelho-principal);color:#fff;transform:scale(1.05)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:transparent;border:none;z-index:1001}
+.hamburger span{display:block;width:28px;height:3px;background:var(--verde-escuro);border-radius:3px;transition:.3s ease;transform-origin:center}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px);background:var(--vermelho-principal)}
+.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px);background:var(--vermelho-principal)}
+.hamburger:hover span{background:var(--vermelho-principal)}
+.nav-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:998;opacity:0;transition:opacity .3s ease}
+.nav-overlay.active{display:block;opacity:1}
+.pagina{display:none;animation:fadeIn .5s ease}
+.pagina.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HERO CLEAN ===== */
+.hero{display:flex;align-items:center;justify-content:space-between;padding:70px 5% 80px;position:relative;min-height:500px;color:#fff;transition:background .8s ease;overflow:hidden}
+.hero.hero-vermelho{background:linear-gradient(135deg,#c62828 0%,#e53935 50%,var(--vermelho-principal)100%)}
+.hero.hero-verde{background:linear-gradient(135deg,#004d33 0%,var(--verde-escuro)50%,var(--verde-claro)100%)}
+.hero.hero-laranja{background:linear-gradient(135deg,#cc6b14 0%,#e07b1a 50%,var(--laranja-donut)100%)}
+
+/* Gradiente sutil de fundo */
+.hero::before{content:'';position:absolute;top:-30%;right:-10%;width:60%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.06)0%,transparent 70%);pointer-events:none}
+
+/* Círculo decorativo sutil */
+.hero .deco-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);pointer-events:none}
+.hero .deco-circle-1{width:400px;height:400px;bottom:-150px;right:-50px}
+.hero .deco-circle-2{width:250px;height:250px;top:-80px;left:10%;border-color:rgba(255,255,255,.04)}
+
+.hero-content{max-width:50%;z-index:2;position:relative}
+.hero-content .tag{display:inline-block;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:6px 18px;border-radius:50px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;border:1px solid rgba(255,255,255,.1)}
+.hero-content h1{font-size:3.8rem;font-weight:800;font-style:italic;line-height:1.05;margin-bottom:18px;transition:opacity .3s ease}
+.hero-content h1 .highlight{color:#ffd700}
+.hero-content p{font-size:1.05rem;line-height:1.7;margin-bottom:30px;opacity:.85;max-width:420px}
+.hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
+.hero-btn{display:inline-block;padding:14px 34px;border-radius:50px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:.3s;border:2px solid transparent}
+.hero-btn-primary{background:#fff;color:var(--verde-escuro);border-color:#fff}
+.hero-btn-primary:hover{background:#ffd700;border-color:#ffd700;color:#000;transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.15)}
+.hero-btn-secondary{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.hero-btn-secondary:hover{background:rgba(255,255,255,.15);border-color:#fff;transform:translateY(-3px)}
+.hero-btn i{margin-right:8px}
+.hero-image{max-width:42%;z-index:2;position:relative}
+.hero-image img{width:100%;max-width:420px;border-radius:50%;display:block;transition:transform .4s ease;border:4px solid rgba(255,255,255,.15);box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.hero-image:hover img{transform:scale(1.02) rotate(-2deg)}
+.hero-indicators{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:2}
+.hero-indicators button{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:.3s;padding:0}
+.hero-indicators button.active{background:#fff;border-color:#fff;transform:scale(1.2)}
+.hero-indicators button:hover{background:rgba(255,255,255,.3)}
+.hero-arrows{position:absolute;bottom:25px;left:5%;display:flex;gap:10px;z-index:2}
+.hero-arrows button{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:16px;cursor:pointer;transition:.3s;border:1px solid rgba(255,255,255,.1)}
+.hero-arrows button:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+
+/* ===== SEÇÃO PRODUTOS ===== */
+.produtos-section{padding:60px 5%;text-align:center;background:#fff}
+.produtos-section h2{color:var(--verde-escuro);font-size:2.2rem;margin-bottom:40px;font-weight:800}
+.tabs-container{display:inline-flex;background-color:var(--cinza-claro);border-radius:50px;padding:8px;gap:5px;margin-bottom:50px;flex-wrap:wrap;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.tab-btn{display:flex;align-items:center;gap:10px;padding:15px 40px;border-radius:40px;border:none;background:transparent;font-weight:700;font-size:14px;color:#555;cursor:pointer;transition:.3s}
+.tab-btn.active{background-color:#fff;box-shadow:0 4px 15px rgba(0,0,0,.08);color:var(--verde-escuro)}
+.tab-btn:hover{background-color:#fff}
+.carrossel-wrapper{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:50px;padding:0 50px}
+.carrossel-grid{display:flex;gap:30px;overflow-x:auto;scroll-behavior:smooth;padding:20px 10px;width:100%;justify-content:flex-start;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.carrossel-grid::-webkit-scrollbar{display:none}
+.card-produto{flex:0 0 260px;text-align:center;background:#fff;padding:20px;border-radius:20px;scroll-snap-align:start;transition:.3s;border:1px solid #eee;box-shadow:0 4px 15px rgba(0,0,0,.05)}
+.card-produto:hover{transform:translateY(-10px);box-shadow:0 15px 35px rgba(0,0,0,.1);border-color:var(--verde-escuro)}
+.card-produto img{width:100%;height:200px;object-fit:cover;margin:0 auto 15px;display:block;border-radius:50%}
+.card-produto h3{color:var(--verde-escuro);font-size:1.1rem;margin-bottom:10px}
+.card-produto p{font-size:.9rem;color:#666;line-height:1.4}
+.card-produto .preco{color:var(--vermelho-principal);font-weight:700;margin-top:15px;display:block;font-size:1.1rem}
+.arrow-esq,.arrow-dir{position:absolute;background:#fff;color:#555;border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:18px;transition:.3s;display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.1);top:50%;transform:translateY(-50%)}
+.arrow-esq{left:0}
+.arrow-dir{right:0;background:var(--verde-escuro);color:#fff}
+.arrow-esq:hover{background:#f0f0f0}
+.arrow-dir:hover{background:#004d33}
+.btn-ver-mais{display:inline-block;background-color:var(--verde-escuro);color:#fff;padding:15px 50px;border-radius:30px;font-weight:700;text-transform:uppercase;box-shadow:0 4px 15px rgba(0,98,65,.3);cursor:pointer;border:none;transition:.3s}
+.btn-ver-mais:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,98,65,.4)}
+.classico-section{display:flex;background-color:var(--verde-escuro);color:#fff;min-height:400px;margin-top:50px}
+.classico-img{flex:1;background-image:url('https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=800&auto=format&fit=crop');background-size:cover;background-position:center;min-height:300px}
+.classico-content{flex:1;padding:60px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.classico-content h2{font-size:2.5rem;font-weight:800;margin-bottom:20px}
+.classico-content p{font-size:1rem;line-height:1.6;margin-bottom:30px;max-width:500px;opacity:.9}
+.btn-saiba-mais{align-self:flex-start;background-color:var(--vermelho-principal);color:#fff;padding:15px 35px;border-radius:30px;font-weight:700;text-transform:uppercase;cursor:pointer;border:none;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.btn-saiba-mais:hover{background-color:#b71c1c;transform:translateY(-3px)}
+.classico-pontos{position:absolute;bottom:0;right:0;width:60%;height:50px;background-image:radial-gradient(var(--branco)3px,transparent 3px);background-size:25px 25px;opacity:.3;pointer-events:none}
+
+/* ===== PÁGINA QUEM SOMOS ===== */
+.pagina-quem-somos{padding:0;max-width:100%}
+.quem-somos-hero{background:linear-gradient(135deg,var(--verde-escuro)0%,var(--verde-claro)100%);padding:80px 5% 60px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.quem-somos-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:60%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05)0%,transparent 70%);border-radius:50%;pointer-events:none}
+.quem-somos-hero .dots-bg{position:absolute;bottom:0;left:0;width:100%;height:100px;background-image:radial-gradient(rgba(255,255,255,.1)2px,transparent 2px);background-size:30px 30px;pointer-events:none}
+.quem-somos-hero h1{font-size:3.5rem;font-weight:800;margin-bottom:15px;position:relative;z-index:1}
+.quem-somos-hero p{font-size:1.2rem;opacity:.9;max-width:700px;margin:0 auto 30px;position:relative;z-index:1;line-height:1.6}
+.quem-somos-hero .hero-stats{display:flex;justify-content:center;gap:60px;flex-wrap:wrap;position:relative;z-index:1;margin-top:40px}
+.quem-somos-hero .stat-item{text-align:center}
+.quem-somos-hero .stat-item .numero{font-size:2.8rem;font-weight:800;display:block;color:#ffd700}
+.quem-somos-hero .stat-item .label{font-size:.9rem;opacity:.8;text-transform:uppercase;letter-spacing:1px}
+.quem-somos-conteudo{padding:60px 5%;max-width:1200px;margin:0 auto}
+.quem-somos-conteudo .section-titulo{text-align:center;margin-bottom:50px}
+.quem-somos-conteudo .section-titulo h2{color:var(--verde-escuro);font-size:2.2rem;margin-bottom:10px}
+.quem-somos-conteudo .section-titulo p{color:#666;font-size:1.1rem}
+.timeline{display:flex;flex-direction:column;gap:30px;margin:40px 0;position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--vermelho-principal),var(--verde-escuro));border-radius:3px}
+.timeline-item{background:var(--cinza-claro);padding:25px 30px;border-radius:15px;position:relative;transition:.3s;border-left:4px solid var(--vermelho-principal)}
+.timeline-item:hover{transform:translateX(10px);box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.timeline-item::before{content:'';position:absolute;left:-33px;top:30px;width:16px;height:16px;background:var(--vermelho-principal);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 3px var(--vermelho-principal)}
+.timeline-item .ano{color:var(--vermelho-principal);font-weight:800;font-size:1.3rem;display:block;margin-bottom:5px}
+.timeline-item h4{color:var(--verde-escuro);font-size:1.1rem;margin-bottom:8px}
+.timeline-item p{color:#555;line-height:1.6}
+.valores-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin:40px 0}
+.valor-card{background:var(--cinza-claro);padding:35px 25px;border-radius:20px;text-align:center;transition:.3s;border:2px solid transparent}
+.valor-card:hover{transform:translateY(-10px);border-color:var(--verde-escuro);box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.valor-card .icon-wrapper{width:70px;height:70px;background:linear-gradient(135deg,var(--vermelho-principal),#b71c1c);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;color:#fff}
+.valor-card h4{color:var(--verde-escuro);font-size:1.2rem;margin-bottom:10px}
+.valor-card p{color:#555;line-height:1.6}
+.equipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin:40px 0}
+.membro-card{text-align:center;transition:.3s}
+.membro-card:hover{transform:translateY(-5px)}
+.membro-card .avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--verde-escuro),var(--verde-claro));margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:50px;color:#fff;box-shadow:0 5px 20px rgba(0,98,65,.2)}
+.membro-card h4{color:var(--verde-escuro);font-size:1.1rem}
+.membro-card .cargo{color:#888;font-size:.9rem}
+
+/* ===== PÁGINA TRABALHE CONOSCO ===== */
+.pagina-trabalhe{padding:0;max-width:100%}
+.trabalhe-hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:80px 5% 60px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.trabalhe-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:50%;height:200%;background:radial-gradient(circle,rgba(204,0,34,.1)0%,transparent 70%);border-radius:50%;pointer-events:none}
+.trabalhe-hero .donut-icon{font-size:70px;margin-bottom:20px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.trabalhe-hero h1{font-size:3.5rem;font-weight:800;margin-bottom:15px;position:relative;z-index:1}
+.trabalhe-hero h1 span{color:var(--vermelho-principal)}
+.trabalhe-hero p{font-size:1.2rem;opacity:.9;max-width:700px;margin:0 auto 30px;position:relative;z-index:1;line-height:1.6}
+.trabalhe-hero .btn-grande{display:inline-block;background:var(--vermelho-principal);color:#fff;padding:18px 50px;border-radius:50px;font-weight:700;font-size:1.1rem;text-transform:uppercase;cursor:pointer;border:none;transition:.3s;position:relative;z-index:1;box-shadow:0 10px 30px rgba(204,0,34,.3)}
+.trabalhe-hero .btn-grande:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 15px 40px rgba(204,0,34,.4)}
+.trabalhe-beneficios{padding:60px 5%;max-width:1200px;margin:0 auto}
+.trabalhe-beneficios h2{text-align:center;color:var(--verde-escuro);font-size:2.2rem;margin-bottom:10px}
+.trabalhe-beneficios .sub{text-align:center;color:#666;font-size:1.1rem;margin-bottom:40px}
+.beneficios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+.beneficio-card{background:var(--cinza-claro);padding:35px 25px;border-radius:20px;text-align:center;transition:.3s;border:2px solid transparent}
+.beneficio-card:hover{transform:translateY(-10px);border-color:var(--verde-escuro);box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.beneficio-card .icon{font-size:45px;color:var(--vermelho-principal);margin-bottom:15px}
+.beneficio-card h4{color:var(--verde-escuro);font-size:1.1rem;margin-bottom:10px}
+.beneficio-card p{color:#555;line-height:1.6;font-size:.95rem}
+.vagas-section{background:var(--cinza-claro);padding:60px 5%}
+.vagas-section .container{max-width:1200px;margin:0 auto}
+.vagas-section h2{text-align:center;color:var(--verde-escuro);font-size:2.2rem;margin-bottom:10px}
+.vagas-section .sub{text-align:center;color:#666;font-size:1.1rem;margin-bottom:40px}
+.vaga-card{background:#fff;padding:25px 30px;border-radius:15px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;transition:.3s;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.vaga-card:hover{transform:translateX(10px);box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.vaga-card .vaga-info h4{color:var(--verde-escuro);font-size:1.1rem;margin-bottom:5px}
+.vaga-card .vaga-info .local{color:#888;font-size:.9rem}
+.vaga-card .vaga-info .local i{margin-right:5px}
+.vaga-card .vaga-tag{background:var(--cinza-claro);padding:5px 15px;border-radius:20px;font-size:.8rem;font-weight:600;color:var(--verde-escuro)}
+.vaga-card .btn-candidatar{background:var(--verde-escuro);color:#fff;padding:10px 30px;border-radius:25px;font-weight:700;font-size:.9rem;cursor:pointer;border:none;transition:.3s}
+.vaga-card .btn-candidatar:hover{background:var(--vermelho-principal);transform:scale(1.05)}
+.trabalhe-cta{padding:60px 5%;text-align:center;background:linear-gradient(135deg,var(--verde-escuro),var(--verde-claro));color:#fff}
+.trabalhe-cta h2{font-size:2.5rem;margin-bottom:15px}
+.trabalhe-cta p{font-size:1.1rem;opacity:.9;max-width:600px;margin:0 auto 30px}
+.trabalhe-cta .btn-cta{display:inline-block;background:#fff;color:var(--verde-escuro);padding:15px 45px;border-radius:30px;font-weight:700;font-size:1rem;text-transform:uppercase;cursor:pointer;border:none;transition:.3s}
+.trabalhe-cta .btn-cta:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+
+/* ===== PÁGINA NOSSOS PRODUTOS ===== */
+.pagina-produtos{padding:80px 5% 60px;max-width:1200px;margin:0 auto}
+.pagina-produtos h1{color:var(--verde-escuro);font-size:2.8rem;margin-bottom:20px;font-weight:800}
+.pagina-produtos .subtitulo{color:#666;font-size:1.2rem;margin-bottom:50px}
+.grid-produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px}
+.categoria-titulo{color:var(--verde-escuro);font-size:1.8rem;margin:40px 0 20px;padding-bottom:10px;border-bottom:3px solid var(--cinza-claro)}
+.categoria-titulo:first-of-type{margin-top:0}
+
+/* ===== PÁGINA NOSSAS LOJAS ===== */
+.pagina-lojas{padding:80px 5% 60px;max-width:1200px;margin:0 auto}
+.pagina-lojas h1{color:var(--verde-escuro);font-size:2.8rem;margin-bottom:20px;font-weight:800}
+.pagina-lojas .subtitulo{color:#666;font-size:1.2rem;margin-bottom:50px}
+.grid-lojas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+.card-loja{background:var(--cinza-claro);padding:35px 30px;border-radius:20px;transition:.3s;border:2px solid transparent;text-align:center}
+.card-loja:hover{transform:translateY(-10px);box-shadow:0 15px 40px rgba(0,0,0,.08);border-color:var(--verde-escuro)}
+.card-loja i{font-size:50px;color:var(--vermelho-principal);margin-bottom:20px}
+.card-loja h3{color:var(--verde-escuro);font-size:1.3rem;margin-bottom:15px}
+.card-loja p{color:#555;line-height:1.8}
+.card-loja .destaque{color:var(--vermelho-principal);font-weight:700;margin-top:10px;display:block}
+.card-loja .horario{background:#fff;padding:8px 15px;border-radius:20px;display:inline-block;margin-top:10px;font-size:.9rem;font-weight:600;color:var(--verde-escuro)}
+.mapa-section{margin-top:60px;padding:40px;background:var(--cinza-claro);border-radius:20px;text-align:center}
+.mapa-section h2{color:var(--verde-escuro);margin-bottom:20px}
+.mapa-placeholder{background:#ddd;height:300px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#666;font-size:1.2rem}
+
+/* ===== FOOTER ===== */
+footer{background-color:#fff;padding:60px 5% 20px;text-align:center}
+.footer-logo{margin-bottom:30px}
+.footer-logo h2{font-size:24px;font-weight:800;font-style:italic;color:var(--vermelho-principal);border:3px solid var(--verde-escuro);padding:5px 15px;border-radius:10px 0 10px 0;display:inline-block}
+.footer-logo span{color:var(--verde-escuro)}
+.footer-nav{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.footer-nav a{color:var(--verde-escuro);font-weight:700;font-size:14px;text-transform:uppercase;cursor:pointer;transition:.3s}
+.footer-nav a:hover{color:var(--vermelho-principal);transform:translateY(-2px)}
+.footer-divider{border-top:1px solid #eee;padding-top:20px;margin-bottom:20px}
+.footer-links{display:flex;justify-content:center;gap:50px;flex-wrap:wrap;margin-bottom:20px;color:#888;font-size:14px}
+.footer-links a:hover{color:var(--verde-escuro)}
+.footer-socials{display:flex;justify-content:center;gap:20px;margin-bottom:30px;font-size:22px;color:var(--verde-escuro)}
+.footer-socials a:hover{color:var(--vermelho-principal);transform:translateY(-3px)}
+.footer-copyright{font-size:12px;color:#555;margin-top:20px}
+.footer-dots{height:50px;width:100%;background-image:radial-gradient(var(--verde-escuro)2px,transparent 2px);background-size:20px 20px;opacity:.2;margin-top:30px}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width:1024px){nav ul{gap:15px}nav ul li a{font-size:12px}.btn-header{padding:8px 18px;font-size:11px}.logo-header{font-size:20px;padding:4px 12px}.hero-content h1{font-size:3.2rem}}
+@media (max-width:900px){.hamburger{display:flex}nav{position:fixed;top:0;right:-100%;width:80%;max-width:350px;height:100vh;background:#fff;padding:80px 30px 30px;flex-direction:column;align-items:flex-start;transition:right .4s cubic-bezier(.4,0,.2,1);box-shadow:-5px 0 30px rgba(0,0,0,.1);z-index:999;overflow-y:auto}nav.active{right:0}nav ul{flex-direction:column;align-items:flex-start;width:100%;gap:5px}nav ul li{width:100%}nav ul li a{display:block;padding:12px 15px;font-size:14px;border-bottom:none;border-left:3px solid transparent;transition:.3s;width:100%;border-radius:8px}nav ul li a::after{display:none}nav ul li a:hover,nav ul li a.active{background:var(--cinza-claro);border-left-color:var(--vermelho-principal);color:var(--vermelho-principal)}.btn-header{margin:15px 0 0;width:100%;text-align:center;padding:12px;font-size:14px}.nav-overlay.active{display:block;opacity:1}.hero{padding:50px 5% 60px;flex-direction:column;text-align:center;min-height:auto}.hero-content{max-width:100%;margin-bottom:40px}.hero-content h1{font-size:2.8rem}.hero-content p{max-width:100%;margin:0 auto 25px}.hero-buttons{justify-content:center}.hero-image{max-width:70%;margin:0 auto}.hero-arrows{position:static;justify-content:center;margin-top:20px}.hero-indicators{bottom:15px}.classico-section{flex-direction:column}.classico-img{min-height:250px}.classico-content{padding:40px 20px;text-align:center;align-items:center}.classico-content p{text-align:center;max-width:100%}.btn-saiba-mais{align-self:center}.classico-pontos{width:100%}.quem-somos-hero .hero-stats{gap:30px}.quem-somos-hero .stat-item .numero{font-size:2rem}.trabalhe-hero h1{font-size:2.2rem}.vaga-card{flex-direction:column;text-align:center}}
+@media (max-width:768px){.top-bar{justify-content:center;gap:15px;padding:8px 5%}.top-bar a{font-size:14px}header{padding:10px 5%;min-height:60px}.logo-header{font-size:18px;padding:4px 12px;border-width:2px}nav{width:85%;max-width:320px;padding:70px 20px 20px}nav ul li a{font-size:13px;padding:10px 12px}.btn-header{font-size:13px;padding:10px}.hamburger span{width:25px;height:2.5px}.hero{padding:40px 5% 50px}.hero-content h1{font-size:2.2rem}.hero-image{max-width:80%}.carrossel-wrapper{padding:0 15px}.carrossel-grid{gap:15px}.card-produto{flex:0 0 180px}.card-produto img{height:150px}.arrow-esq,.arrow-dir{width:35px;height:35px;font-size:14px}.tabs-container{width:100%;border-radius:20px;padding:10px}.tab-btn{flex:1;padding:12px 10px;font-size:12px;justify-content:center}.footer-nav{gap:20px;flex-direction:column}.footer-links{gap:20px;flex-direction:column}.pagina-produtos h1,.pagina-lojas h1{font-size:2rem}.grid-lojas{grid-template-columns:1fr}.grid-produtos{grid-template-columns:1fr 1fr}.quem-somos-hero h1{font-size:2.2rem}.quem-somos-hero p{font-size:1rem}.quem-somos-hero .hero-stats{gap:20px}.timeline{padding-left:20px}.timeline::before{left:5px}.timeline-item::before{left:-23px;width:12px;height:12px}.valores-grid{grid-template-columns:1fr 1fr}.equipe-grid{grid-template-columns:1fr 1fr}.trabalhe-hero h1{font-size:2rem}.beneficios-grid{grid-template-columns:1fr 1fr}.vaga-card{padding:20px}.vaga-card .vaga-info h4{font-size:1rem}}
+@media (max-width:600px){.top-bar a{font-size:12px}.top-bar{gap:10px;padding:6px 5%}.logo-header{font-size:16px;padding:3px 10px}nav{width:90%;max-width:300px;padding:60px 15px 15px}nav ul li a{font-size:12px;padding:8px 10px}.btn-header{font-size:12px;padding:8px}.hamburger span{width:22px;height:2px}.hamburger{gap:4px}.hero-content h1{font-size:1.8rem}.quem-somos-hero h1{font-size:1.8rem}.quem-somos-hero .hero-stats{flex-direction:column;gap:15px}.trabalhe-hero h1{font-size:1.6rem}.trabalhe-hero .donut-icon{font-size:50px}.trabalhe-hero .btn-grande{padding:15px 30px;font-size:.9rem}.trabalhe-cta h2{font-size:1.8rem}}
+@media (max-width:480px){.grid-produtos{grid-template-columns:1fr}.card-produto{flex:0 0 160px;padding:15px}.card-produto img{height:120px}.hero-content h1{font-size:1.5rem}.hero{padding:30px 5% 40px}.hero-image{max-width:90%}.hero-indicators{bottom:10px}.hero-arrows button{width:35px;height:35px;font-size:14px}.valores-grid{grid-template-columns:1fr}.equipe-grid{grid-template-columns:1fr}.beneficios-grid{grid-template-columns:1fr}.membro-card .avatar{width:80px;height:80px;font-size:35px}.quem-somos-hero h1{font-size:1.5rem}.quem-somos-conteudo .section-titulo h2{font-size:1.5rem}.trabalhe-hero h1{font-size:1.4rem}.trabalhe-hero p{font-size:.95rem}.trabalhe-beneficios h2{font-size:1.5rem}.vagas-section h2{font-size:1.5rem}.vaga-card{padding:15px}.vaga-card .btn-candidatar{width:100%;padding:12px;font-size:.9rem}.footer-logo h2{font-size:18px}.footer-nav a{font-size:12px}.mapa-placeholder{height:200px;font-size:.9rem}.trabalhe-cta h2{font-size:1.5rem}.trabalhe-cta .btn-cta{padding:12px 30px;font-size:.9rem}}
+@media (max-width:360px){.hero-content h1{font-size:1.2rem}.hero-btn{padding:12px 24px;font-size:12px}.hero-image img{border-width:3px}.card-produto{flex:0 0 140px;padding:10px}.card-produto img{height:100px}.card-produto h3{font-size:.9rem}.card-produto p{font-size:.75rem}.tab-btn{padding:8px 8px;font-size:10px;gap:5px}.tab-btn i{font-size:12px}.btn-ver-mais{padding:12px 30px;font-size:12px}.classico-content h2{font-size:1.8rem}.classico-content p{font-size:.9rem}.btn-saiba-mais{padding:12px 25px;font-size:12px}.quem-somos-hero .stat-item .numero{font-size:1.5rem}.quem-somos-hero .stat-item .label{font-size:.7rem}.trabalhe-hero .btn-grande{padding:12px 20px;font-size:.8rem}.footer-nav a{font-size:10px}.footer-links a{font-size:11px}.footer-socials{font-size:18px;gap:15px}}
+</style>
 </head>
 <body>
-
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-    </div>
-
-    <!-- OVERLAY PARA MOBILE -->
-    <div class="nav-overlay" id="navOverlay" onclick="fecharMenu()"></div>
-
-    <!-- HEADER -->
-    <header>
-        <div class="logo-header" onclick="navegar('home')">Donut <span>Delícia</span></div>
-        
-        <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <nav id="mainNav">
-            <ul>
-                <li><a onclick="navegar('home')" class="active" data-page="home">Home</a></li>
-                <li><a onclick="navegar('quem-somos')" data-page="quem-somos">Quem Somos</a></li>
-                <li><a onclick="navegar('nossos-produtos')" data-page="nossos-produtos">Nossos Produtos</a></li>
-                <li><a onclick="navegar('nossas-lojas')" data-page="nossas-lojas">Nossas Lojas</a></li>
-                <li><a onclick="navegar('trabalhe-conosco')" data-page="trabalhe-conosco">Trabalhe Conosco</a></li>
-                <li><a class="btn-header" style="display: inline-block; width: auto; margin: 0;">Minha Conta</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- ==================== PÁGINA HOME ==================== -->
-    <div id="page-home" class="pagina active">
-
-        <!-- HERO SECTION -->
-        <section class="hero hero-vermelho" id="hero-section">
-            <div class="hero-content">
-                <h1 id="hero-title">A felicidade está<br>mais perto do que<br>você imagina.</h1>
-                <a class="hero-btn" onclick="navegar('nossas-lojas')">Encontre uma loja</a>
-            </div>
-            <div class="hero-image">
-                <img id="hero-image" src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Donut Hero">
-            </div>
-            <div class="hero-arrows">
-                <button onclick="mudarSlide(-1)" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
-                <button onclick="mudarSlide(1)" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="hero-indicators" id="hero-indicators">
-                <button class="active" onclick="irParaSlide(0)" aria-label="Ir para slide 1"></button>
-                <button onclick="irParaSlide(1)" aria-label="Ir para slide 2"></button>
-                <button onclick="irParaSlide(2)" aria-label="Ir para slide 3"></button>
-            </div>
-        </section>
-
-        <!-- SEÇÃO PRODUTOS (Preview) -->
-        <section class="produtos-section">
-            <h2>Nossos Produtos</h2>
-            
-            <div class="tabs-container">
-                <button class="tab-btn active" onclick="mudarAba('donuts', this)">
-                    <i class="fas fa-circle" style="color: #d4883a;"></i> DONUTS
-                </button>
-                <button class="tab-btn" onclick="mudarAba('bebidas', this)">
-                    <i class="fas fa-mug-hot" style="color: #6f4e37;"></i> BEBIDAS
-                </button>
-                <button class="tab-btn" onclick="mudarAba('especiais', this)">
-                    <i class="fas fa-crown" style="color: #ffd700;"></i> ESPECIAIS
-                </button>
-                <button class="tab-btn" onclick="mudarAba('combos', this)">
-                    <i class="fas fa-gift" style="color: #e07b1a;"></i> COMBOS
-                </button>
-            </div>
-
-            <div class="carrossel-wrapper">
-                <button class="arrow-esq" onclick="scrollCarrossel(-1)" aria-label="Rolar para esquerda"><i class="fas fa-chevron-left"></i></button>
-                <div class="carrossel-grid" id="grid-produtos">
-                    <!-- Conteúdo gerado via JavaScript -->
-                </div>
-                <button class="arrow-dir" onclick="scrollCarrossel(1)" aria-label="Rolar para direita"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <a class="btn-ver-mais" onclick="navegar('nossos-produtos')">Ver Todos os Produtos</a>
-        </section>
-
-        <!-- SEÇÃO O CLÁSSICO -->
-        <section class="classico-section">
-            <div class="classico-img"></div>
-            <div class="classico-content">
-                <h2>O Clássico</h2>
-                <p>Nosso Donut Original transforma qualquer ocasião em algo especial. Leve, macio e irresistível, ele derrete na boca e é perfeito para criar momentos inesquecíveis. Feito fresquinho todos os dias com ingredientes de primeira qualidade.</p>
-                <a class="btn-saiba-mais">Saiba Mais</a>
-                <div class="classico-pontos"></div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- ==================== PÁGINA QUEM SOMOS ==================== -->
-    <div id="page-quem-somos" class="pagina">
-        <section class="pagina-quem-somos">
-            
-            <div class="quem-somos-hero">
-                <h1><i class="fas fa-heart" style="color: #ff6b6b;"></i> Quem Somos</h1>
-                <p>Conheça a história por trás dos donuts mais deliciosos do Brasil e a paixão que nos move todos os dias.</p>
-                
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="numero" data-count="2020">2020</span>
-                        <span class="label">Fundação</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="numero" data-count="50">50+</span>
-                        <span class="label">Receitas Exclusivas</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="numero" data-count="15">15+</span>
-                        <span class="label">Lojas pelo Brasil</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="numero" data-count="500k">500K+</span>
-                        <span class="label">Clientes Felizes</span>
-                    </div>
-                </div>
-                <div class="dots-bg"></div>
-            </div>
-
-            <div class="quem-somos-conteudo">
-                <div class="section-titulo">
-                    <h2>Nossa Jornada</h2>
-                    <p>Cada passo foi dado com muito amor e dedicação</p>
-                </div>
-
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="ano">2020</span>
-                        <h4>O Começo de Tudo</h4>
-                        <p>A Donut Delícia nasceu em uma pequena cozinha com um sonho: levar felicidade através dos donuts mais deliciosos do Brasil.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="ano">2021</span>
-                        <h4>Primeira Loja Física</h4>
-                        <p>Inauguramos nossa primeira loja na Avenida Paulista, conquistando o coração dos paulistanos com nossos donuts fresquinhos.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="ano">2022</span>
-                        <h4>Expansão Nacional</h4>
-                        <p>Abrimos filiais no Rio de Janeiro e Belo Horizonte, levando nosso sabor único para mais brasileiros.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="ano">2023</span>
-                        <h4>Inovação e Sustentabilidade</h4>
-                        <p>Lançamos nossa linha de embalagens sustentáveis e novas receitas exclusivas que se tornaram hits.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="ano">2024</span>
-                        <h4>Reconhecimento Nacional</h4>
-                        <p>Fomos eleitos a melhor rede de donuts do Brasil pelo Guia Gastronômico, um marco em nossa trajetória.</p>
-                    </div>
-                </div>
-
-                <div class="section-titulo" style="margin-top: 60px;">
-                    <h2>Nossos Valores</h2>
-                    <p>O que nos move e nos faz únicos</p>
-                </div>
-
-                <div class="valores-grid">
-                    <div class="valor-card">
-                        <div class="icon-wrapper"><i class="fas fa-heart"></i></div>
-                        <h4>Paixão</h4>
-                        <p>Fazemos tudo com amor e dedicação, desde a escolha dos ingredientes até o atendimento ao cliente.</p>
-                    </div>
-                    <div class="valor-card">
-                        <div class="icon-wrapper"><i class="fas fa-star"></i></div>
-                        <h4>Qualidade</h4>
-                        <p>Utilizamos apenas ingredientes premium e receitas testadas para garantir o melhor sabor em cada mordida.</p>
-                    </div>
-                    <div class="valor-card">
-                        <div class="icon-wrapper"><i class="fas fa-lightbulb"></i></div>
-                        <h4>Inovação</h4>
-                        <p>Estamos sempre criando novas receitas e surpreendendo nossos clientes com sabores únicos e especiais.</p>
-                    </div>
-                    <div class="valor-card">
-                        <div class="icon-wrapper"><i class="fas fa-leaf"></i></div>
-                        <h4>Sustentabilidade</h4>
-                        <p>Comprometidos com o planeta, utilizamos embalagens sustentáveis e práticas responsáveis em toda nossa cadeia.</p>
-                    </div>
-                </div>
-
-                <div class="section-titulo" style="margin-top: 60px;">
-                    <h2>Nosso Time</h2>
-                    <p>Pessoas apaixonadas que fazem a diferença</p>
-                </div>
-
-                <div class="equipe-grid">
-                    <div class="membro-card">
-                        <div class="avatar"><i class="fas fa-user-circle"></i></div>
-                        <h4>Ana Silva</h4>
-                        <span class="cargo">CEO & Fundadora</span>
-                    </div>
-                    <div class="membro-card">
-                        <div class="avatar"><i class="fas fa-user-circle"></i></div>
-                        <h4>Carlos Santos</h4>
-                        <span class="cargo">Chef Pâtissier</span>
-                    </div>
-                    <div class="membro-card">
-                        <div class="avatar"><i class="fas fa-user-circle"></i></div>
-                        <h4>Mariana Costa</h4>
-                        <span class="cargo">Gerente de Operações</span>
-                    </div>
-                    <div class="membro-card">
-                        <div class="avatar"><i class="fas fa-user-circle"></i></div>
-                        <h4>Rafael Oliveira</h4>
-                        <span class="cargo">Diretor de Marketing</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ==================== PÁGINA NOSSOS PRODUTOS ==================== -->
-    <div id="page-nossos-produtos" class="pagina">
-        <section class="pagina-produtos">
-            <h1><i class="fas fa-donut" style="color: var(--vermelho-principal);"></i> Nossos Produtos</h1>
-            <p class="subtitulo">Conheça nossa seleção de donuts e bebidas feitos com ingredientes de primeira qualidade.</p>
-
-            <h2 class="categoria-titulo"><i class="fas fa-circle" style="color: #d4883a; font-size: 1.2rem;"></i> Donuts</h2>
-            <div class="grid-produtos" id="grid-donuts"></div>
-
-            <h2 class="categoria-titulo"><i class="fas fa-mug-hot" style="color: #6f4e37; font-size: 1.2rem;"></i> Bebidas</h2>
-            <div class="grid-produtos" id="grid-bebidas"></div>
-
-            <h2 class="categoria-titulo"><i class="fas fa-crown" style="color: #ffd700; font-size: 1.2rem;"></i> Especiais</h2>
-            <div class="grid-produtos" id="grid-especiais"></div>
-
-            <h2 class="categoria-titulo"><i class="fas fa-gift" style="color: #e07b1a; font-size: 1.2rem;"></i> Combos</h2>
-            <div class="grid-produtos" id="grid-combos"></div>
-        </section>
-    </div>
-
-    <!-- ==================== PÁGINA NOSSAS LOJAS ==================== -->
-    <div id="page-nossas-lojas" class="pagina">
-        <section class="pagina-lojas">
-            <h1><i class="fas fa-store" style="color: var(--vermelho-principal);"></i> Nossas Lojas</h1>
-            <p class="subtitulo">Encontre a loja mais próxima de você e venha experimentar nossos donuts fresquinhos.</p>
-
-            <div class="grid-lojas">
-                <div class="card-loja">
-                    <i class="fas fa-map-pin"></i>
-                    <h3>Loja Paulista</h3>
-                    <p>Avenida Paulista, 1500<br>Bela Vista - São Paulo/SP</p>
-                    <span class="horario"><i class="far fa-clock"></i> 8h às 22h</span>
-                    <span class="destaque"><i class="fas fa-phone"></i> (11) 99999-1111</span>
-                </div>
-                <div class="card-loja">
-                    <i class="fas fa-map-pin"></i>
-                    <h3>Loja Shopping Morumbi</h3>
-                    <p>Av. Roque Petroni Júnior, 1089<br>Morumbi - São Paulo/SP</p>
-                    <span class="horario"><i class="far fa-clock"></i> 10h às 22h</span>
-                    <span class="destaque"><i class="fas fa-phone"></i> (11) 99999-2222</span>
-                </div>
-                <div class="card-loja">
-                    <i class="fas fa-map-pin"></i>
-                    <h3>Loja Vila Olímpia</h3>
-                    <p>Rua Fidêncio Ramos, 302<br>Vila Olímpia - São Paulo/SP</p>
-                    <span class="horario"><i class="far fa-clock"></i> 7h às 20h</span>
-                    <span class="destaque"><i class="fas fa-phone"></i> (11) 99999-3333</span>
-                </div>
-                <div class="card-loja">
-                    <i class="fas fa-truck"></i>
-                    <h3>Delivery</h3>
-                    <p>Entregamos para toda a região metropolitana de São Paulo</p>
-                    <span class="horario"><i class="far fa-clock"></i> 24 horas</span>
-                    <span class="destaque"><i class="fas fa-phone"></i> (11) 99999-8888</span>
-                </div>
-            </div>
-
-            <div class="mapa-section">
-                <h2><i class="fas fa-map-marked-alt" style="color: var(--vermelho-principal);"></i> Encontre a Loja Mais Próxima</h2>
-                <div class="mapa-placeholder">
-                    <i class="fas fa-map" style="font-size: 3rem; margin-right: 15px;"></i>
-                    Mapa interativo em breve
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ==================== PÁGINA TRABALHE CONOSCO ==================== -->
-    <div id="page-trabalhe-conosco" class="pagina">
-        <section class="pagina-trabalhe">
-            
-            <div class="trabalhe-hero">
-                <span class="donut-icon">🍩</span>
-                <h1>Faça parte do time <span>Donut Delícia</span></h1>
-                <p>Junte-se a nós e faça parte de uma equipe apaixonada por criar momentos de felicidade através dos donuts mais deliciosos do Brasil.</p>
-                <button class="btn-grande" onclick="document.getElementById('vagas-section').scrollIntoView({behavior: 'smooth'})">
-                    <i class="fas fa-rocket"></i> Ver Vagas Disponíveis
-                </button>
-            </div>
-
-            <div class="trabalhe-beneficios">
-                <h2>Por que trabalhar conosco?</h2>
-                <p class="sub">Oferecemos um ambiente incrível e benefícios que fazem a diferença</p>
-
-                <div class="beneficios-grid">
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-heart"></i></div>
-                        <h4>Ambiente Acolhedor</h4>
-                        <p>Um espaço onde você se sente em casa, com uma equipe unida e que valoriza cada colaborador.</p>
-                    </div>
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h4>Desenvolvimento</h4>
-                        <p>Oportunidades de crescimento e treinamentos para que você possa evoluir profissionalmente.</p>
-                    </div>
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-coffee"></i></div>
-                        <h4>Donuts de Graça</h4>
-                        <p>Sim, você pode comer nossos deliciosos donuts todos os dias! Um dos melhores benefícios daqui.</p>
-                    </div>
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-calendar-check"></i></div>
-                        <h4>Horários Flexíveis</h4>
-                        <p>Trabalhamos com horários flexíveis para que você possa equilibrar vida pessoal e profissional.</p>
-                    </div>
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
-                        <h4>Programas de Bem-Estar</h4>
-                        <p>Oferecemos suporte para sua saúde mental e física, porque sua felicidade é importante para nós.</p>
-                    </div>
-                    <div class="beneficio-card">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <h4>Eventos e Confraternizações</h4>
-                        <p>Festas, happy hours e eventos especiais para celebrar nossas conquistas juntos.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="vagas-section" id="vagas-section">
-                <div class="container">
-                    <h2>Vagas Disponíveis</h2>
-                    <p class="sub">Encontre a oportunidade que combina com você</p>
-
-                    <div class="vaga-card">
-                        <div class="vaga-info">
-                            <h4>🧑‍🍳 Pâtissier / Confeiteiro</h4>
-                            <div class="local"><i class="fas fa-map-marker-alt"></i> São Paulo - SP</div>
-                        </div>
-                        <span class="vaga-tag">Efetivo</span>
-                        <button class="btn-candidatar">Candidatar-se</button>
-                    </div>
-
-                    <div class="vaga-card">
-                        <div class="vaga-info">
-                            <h4>👨‍💼 Gerente de Loja</h4>
-                            <div class="local"><i class="fas fa-map-marker-alt"></i> Rio de Janeiro - RJ</div>
-                        </div>
-                        <span class="vaga-tag">Efetivo</span>
-                        <button class="btn-candidatar">Candidatar-se</button>
-                    </div>
-
-                    <div class="vaga-card">
-                        <div class="vaga-info">
-                            <h4>🧑‍🎓 Jovem Aprendiz</h4>
-                            <div class="local"><i class="fas fa-map-marker-alt"></i> Belo Horizonte - MG</div>
-                        </div>
-                        <span class="vaga-tag">Aprendiz</span>
-                        <button class="btn-candidatar">Candidatar-se</button>
-                    </div>
-
-                    <div class="vaga-card">
-                        <div class="vaga-info">
-                            <h4>📦 Entregador / Motoboy</h4>
-                            <div class="local"><i class="fas fa-map-marker-alt"></i> São Paulo - SP</div>
-                        </div>
-                        <span class="vaga-tag">Freelancer</span>
-                        <button class="btn-candidatar">Candidatar-se</button>
-                    </div>
-
-                    <div class="vaga-card">
-                        <div class="vaga-info">
-                            <h4>📱 Social Media / Marketing</h4>
-                            <div class="local"><i class="fas fa-map-marker-alt"></i> Remoto</div>
-                        </div>
-                        <span class="vaga-tag">Home Office</span>
-                        <button class="btn-candidatar">Candidatar-se</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="trabalhe-cta">
-                <h2>Venha fazer parte do nosso time!</h2>
-                <p>Envie seu currículo e venha criar momentos de felicidade com a gente.</p>
-                <button class="btn-cta" onclick="alert('📧 Envie seu currículo para: carreiras@donutdelicia.com.br')">
-                    <i class="fas fa-paper-plane"></i> Enviar Currículo
-                </button>
-            </div>
-
-        </section>
-    </div>
-
-    <!-- ==================== FOOTER ==================== -->
-    <footer>
-        <div class="footer-logo">
-            <h2>Donut <span>Delícia</span></h2>
-        </div>
-        
-        <div class="footer-nav">
-            <a onclick="navegar('quem-somos')">Quem Somos</a>
-            <a onclick="navegar('nossos-produtos')">Nossos Produtos</a>
-            <a onclick="navegar('nossas-lojas')">Nossas Lojas</a>
-            <a onclick="navegar('trabalhe-conosco')">Trabalhe Conosco</a>
-            <a>Minha Conta</a>
-        </div>
-
-        <div class="footer-divider"></div>
-
-        <div class="footer-links">
-            <a>Política de Privacidade</a>
-            <a>Definir Cookies</a>
-        </div>
-
-        <div class="footer-socials">
-            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        </div>
-
-        <div class="footer-copyright">
-            2026 © Copyright Donut Delícia Brasil | Todos os direitos reservados
-        </div>
-        <div class="footer-dots"></div>
-    </footer>
-
-    <!-- ==================== SCRIPTS ==================== -->
-    <script>
-        // ===== BANCO DE DADOS =====
-        const produtos = {
-            donuts: [
-                { nome: 'Original Glazed', desc: 'O clássico que derrete na boca.', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop', preco: 'R$ 7,50' },
-                { nome: 'Chocolate Belga', desc: 'Cobertura de chocolate belga intenso.', img: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop', preco: 'R$ 8,90' },
-                { nome: 'Choco Confetes', desc: 'Chocolate com confeitos coloridos.', img: 'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop', preco: 'R$ 9,50' },
-                { nome: 'Morango com Confetes', desc: 'Cobertura de morango com confeitos.', img: 'https://images.unsplash.com/photo-1556913396-7a3c459ef68e?q=80&w=400&auto=format&fit=crop', preco: 'R$ 9,50' },
-                { nome: 'Donut de Baunilha', desc: 'Cobertura de baunilha com granulado.', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop', preco: 'R$ 7,90' },
-                { nome: 'Donut de Caramelo', desc: 'Cobertura de caramelo salgado.', img: 'https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?q=80&w=400&auto=format&fit=crop', preco: 'R$ 8,50' }
-            ],
-            bebidas: [
-                { nome: 'Café Especial', desc: 'Café arábica torrado na hora.', img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop', preco: 'R$ 6,00' },
-                { nome: 'Chocolate Quente', desc: 'Chocolate cremoso com marshmallows.', img: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop', preco: 'R$ 8,00' },
-                { nome: 'Milkshake Baunilha', desc: 'Milkshake gelado e cremoso.', img: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop', preco: 'R$ 12,00' },
-                { nome: 'Suco Natural', desc: 'Suco de frutas frescas.', img: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=400&auto=format&fit=crop', preco: 'R$ 7,50' },
-                { nome: 'Cappuccino', desc: 'Cappuccino cremoso com canela.', img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop', preco: 'R$ 7,00' }
-            ],
-            especiais: [
-                { nome: 'Red Velvet', desc: 'Massa vermelha com cream cheese.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop', preco: 'R$ 10,00' },
-                { nome: 'Donut de Limão', desc: 'Cobertura de limão siciliano.', img: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop', preco: 'R$ 8,50' },
-                { nome: 'Donut de Coco', desc: 'Coco ralado com leite condensado.', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop', preco: 'R$ 9,00' },
-                { nome: 'Donut de Pistache', desc: 'Cobertura de pistache com pedaços da noz.', img: 'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop', preco: 'R$ 11,00' }
-            ],
-            combos: [
-                { nome: 'Combo Duplo', desc: '2 donuts + 1 café especial.', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop', preco: 'R$ 15,90' },
-                { nome: 'Combo Família', desc: '6 donuts + 2 bebidas.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop', preco: 'R$ 39,90' },
-                { nome: 'Combo Café', desc: '3 donuts + 1 café + 1 suco.', img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop', preco: 'R$ 22,90' }
-            ]
-        };
-
-        // ===== HERO SLIDES =====
-        const slides = [
-            {
-                titulo: 'A felicidade está<br>mais perto do que<br>você imagina.',
-                imagem: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',
-                classe: 'hero-vermelho'
-            },
-            {
-                titulo: 'Sabor único<br>em cada<br>mordida!',
-                imagem: 'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop',
-                classe: 'hero-verde'
-            },
-            {
-                titulo: 'Momentos<br>especiais com<br>quem você ama!',
-                imagem: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop',
-                classe: 'hero-laranja'
-            }
-        ];
-
-        let slideAtual = 0;
-        let intervaloAuto = null;
-
-        function atualizarSlide(index) {
-            const hero = document.getElementById('hero-section');
-            const titulo = document.getElementById('hero-title');
-            const imagem = document.getElementById('hero-image');
-            const indicadores = document.querySelectorAll('#hero-indicators button');
-
-            hero.className = 'hero ' + slides[index].classe;
-            
-            titulo.style.opacity = '0';
-            imagem.style.opacity = '0';
-            
-            setTimeout(() => {
-                titulo.innerHTML = slides[index].titulo;
-                imagem.src = slides[index].imagem;
-                titulo.style.opacity = '1';
-                imagem.style.opacity = '1';
-            }, 200);
-
-            indicadores.forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
-
-            slideAtual = index;
-        }
-
-        function mudarSlide(direcao) {
-            let novoIndex = slideAtual + direcao;
-            if (novoIndex < 0) novoIndex = slides.length - 1;
-            if (novoIndex >= slides.length) novoIndex = 0;
-            atualizarSlide(novoIndex);
-            reiniciarAutoSlide();
-        }
-
-        function irParaSlide(index) {
-            atualizarSlide(index);
-            reiniciarAutoSlide();
-        }
-
-        function iniciarAutoSlide() {
-            if (intervaloAuto) clearInterval(intervaloAuto);
-            intervaloAuto = setInterval(() => {
-                mudarSlide(1);
-            }, 5000);
-        }
-
-        function reiniciarAutoSlide() {
-            if (intervaloAuto) {
-                clearInterval(intervaloAuto);
-                iniciarAutoSlide();
-            }
-        }
-
-        // ===== NAVEGAÇÃO ENTRE PÁGINAS =====
-        function navegar(pagina) {
-            document.querySelectorAll('.pagina').forEach(p => p.classList.remove('active'));
-            
-            const pageElement = document.getElementById('page-' + pagina);
-            if (pageElement) {
-                pageElement.classList.add('active');
-            }
-
-            document.querySelectorAll('nav ul li a').forEach(link => {
-                link.classList.remove('active');
-                if (link.dataset.page === pagina) {
-                    link.classList.add('active');
-                }
-            });
-
-            fecharMenu();
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ===== MENU MOBILE =====
-        function toggleMenu() {
-            const nav = document.getElementById('mainNav');
-            const hamburger = document.getElementById('hamburgerBtn');
-            const overlay = document.getElementById('navOverlay');
-            
-            nav.classList.toggle('active');
-            hamburger.classList.toggle('active');
-            overlay.classList.toggle('active');
-            
-            // Previne scroll do body
-            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
-        }
-
-        function fecharMenu() {
-            const nav = document.getElementById('mainNav');
-            const hamburger = document.getElementById('hamburgerBtn');
-            const overlay = document.getElementById('navOverlay');
-            
-            nav.classList.remove('active');
-            hamburger.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // ===== FUNÇÕES DO CARROSSEL HOME =====
-        function mudarAba(tipo, botaoClicado) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            if (botaoClicado) botaoClicado.classList.add('active');
-
-            const grid = document.getElementById('grid-produtos');
-            grid.innerHTML = '';
-            const lista = produtos[tipo] || [];
-
-            lista.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'card-produto';
-                card.innerHTML = `
-                    <img src="${prod.img}" alt="${prod.nome}">
-                    <h3>${prod.nome}</h3>
-                    <p>${prod.desc}</p>
-                    <span class="preco">${prod.preco}</span>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function scrollCarrossel(direcao) {
-            const grid = document.getElementById('grid-produtos');
-            if (!grid) return;
-            
-            // Calcula a largura do card + gap
-            const card = grid.querySelector('.card-produto');
-            if (!card) return;
-            
-            const cardWidth = card.offsetWidth;
-            const gap = 30; // mesmo valor do gap no CSS
-            const scrollAmount = (cardWidth + gap) * 2; // rola 2 cards por vez
-            
-            grid.scrollBy({ left: direcao * scrollAmount, behavior: 'smooth' });
-        }
-
-        // ===== RENDERIZAR PRODUTOS (Página Nossos Produtos) =====
-        function renderizarProdutos(categoria, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            const lista = produtos[categoria] || [];
-            
-            lista.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'card-produto';
-                card.innerHTML = `
-                    <img src="${prod.img}" alt="${prod.nome}">
-                    <h3>${prod.nome}</h3>
-                    <p>${prod.desc}</p>
-                    <span class="preco">${prod.preco}</span>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // ===== INICIALIZAÇÃO =====
-        document.addEventListener('DOMContentLoaded', () => {
-            atualizarSlide(0);
-            iniciarAutoSlide();
-
-            const primeiroBotao = document.querySelector('.tab-btn');
-            if(primeiroBotao) {
-                mudarAba('donuts', primeiroBotao);
-            }
-
-            renderizarProdutos('donuts', 'grid-donuts');
-            renderizarProdutos('bebidas', 'grid-bebidas');
-            renderizarProdutos('especiais', 'grid-especiais');
-            renderizarProdutos('combos', 'grid-combos');
-
-            document.querySelector('nav ul li a[data-page="home"]')?.classList.add('active');
-        });
-
-        // Fechar menu ao redimensionar para desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 900) {
-                fecharMenu();
-            }
-        });
-    </script>
-
+<div class="top-bar">
+<a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+<a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+</div>
+<div class="nav-overlay" id="navOverlay" onclick="fecharMenu()"></div>
+<header>
+<div class="logo-header" onclick="navegar('home')">Donut <span>Delícia</span></div>
+<button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+<nav id="mainNav"><ul>
+<li><a onclick="navegar('home')" class="active" data-page="home">Home</a></li>
+<li><a onclick="navegar('quem-somos')" data-page="quem-somos">Quem Somos</a></li>
+<li><a onclick="navegar('nossos-produtos')" data-page="nossos-produtos">Nossos Produtos</a></li>
+<li><a onclick="navegar('nossas-lojas')" data-page="nossas-lojas">Nossas Lojas</a></li>
+<li><a onclick="navegar('trabalhe-conosco')" data-page="trabalhe-conosco">Trabalhe Conosco</a></li>
+<li><a class="btn-header" style="display:inline-block;width:auto;margin:0">Minha Conta</a></li>
+</ul></nav>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="pagina active">
+<section class="hero hero-vermelho" id="hero-section">
+<div class="deco-circle deco-circle-1"></div>
+<div class="deco-circle deco-circle-2"></div>
+<div class="hero-content">
+<div class="tag"><i class="fas fa-star" style="margin-right:6px;color:#ffd700"></i> Destaque da semana</div>
+<h1 id="hero-title">A felicidade está<br>mais perto do que<br><span class="highlight">você imagina</span></h1>
+<p>Donuts fresquinhos feitos com amor todos os dias. Experimente o sabor que conquistou o Brasil.</p>
+<div class="hero-buttons">
+<a class="hero-btn hero-btn-primary" onclick="navegar('nossas-lojas')"><i class="fas fa-store"></i> Encontre uma loja</a>
+<a class="hero-btn hero-btn-secondary" onclick="navegar('nossos-produtos')"><i class="fas fa-donut"></i> Ver cardápio</a>
+</div>
+</div>
+<div class="hero-image">
+<img id="hero-image" src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Donut Hero">
+</div>
+<div class="hero-arrows">
+<button onclick="mudarSlide(-1)" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
+<button onclick="mudarSlide(1)" aria-label="Próximo slide"><i class="fas fa-chevron-right"></i></button>
+</div>
+<div class="hero-indicators" id="hero-indicators">
+<button class="active" onclick="irParaSlide(0)" aria-label="Ir para slide 1"></button>
+<button onclick="irParaSlide(1)" aria-label="Ir para slide 2"></button>
+<button onclick="irParaSlide(2)" aria-label="Ir para slide 3"></button>
+</div>
+</section>
+
+<section class="produtos-section">
+<h2>Nossos Produtos</h2>
+<div class="tabs-container">
+<button class="tab-btn active" onclick="mudarAba('donuts',this)"><i class="fas fa-circle" style="color:#d4883a"></i> DONUTS</button>
+<button class="tab-btn" onclick="mudarAba('bebidas',this)"><i class="fas fa-mug-hot" style="color:#6f4e37"></i> BEBIDAS</button>
+<button class="tab-btn" onclick="mudarAba('especiais',this)"><i class="fas fa-crown" style="color:#ffd700"></i> ESPECIAIS</button>
+<button class="tab-btn" onclick="mudarAba('combos',this)"><i class="fas fa-gift" style="color:#e07b1a"></i> COMBOS</button>
+</div>
+<div class="carrossel-wrapper">
+<button class="arrow-esq" onclick="scrollCarrossel(-1)" aria-label="Rolar para esquerda"><i class="fas fa-chevron-left"></i></button>
+<div class="carrossel-grid" id="grid-produtos"></div>
+<button class="arrow-dir" onclick="scrollCarrossel(1)" aria-label="Rolar para direita"><i class="fas fa-chevron-right"></i></button>
+</div>
+<a class="btn-ver-mais" onclick="navegar('nossos-produtos')">Ver Todos os Produtos</a>
+</section>
+
+<section class="classico-section">
+<div class="classico-img"></div>
+<div class="classico-content">
+<h2>O Clássico</h2>
+<p>Nosso Donut Original transforma qualquer ocasião em algo especial. Leve, macio e irresistível, ele derrete na boca e é perfeito para criar momentos inesquecíveis. Feito fresquinho todos os dias com ingredientes de primeira qualidade.</p>
+<a class="btn-saiba-mais">Saiba Mais</a>
+<div class="classico-pontos"></div>
+</div>
+</section>
+</div>
+
+<!-- QUEM SOMOS -->
+<div id="page-quem-somos" class="pagina">
+<section class="pagina-quem-somos">
+<div class="quem-somos-hero">
+<h1><i class="fas fa-heart" style="color:#ff6b6b"></i> Quem Somos</h1>
+<p>Conheça a história por trás dos donuts mais deliciosos do Brasil e a paixão que nos move todos os dias.</p>
+<div class="hero-stats">
+<div class="stat-item"><span class="numero" data-count="2020">2020</span><span class="label">Fundação</span></div>
+<div class="stat-item"><span class="numero" data-count="50">50+</span><span class="label">Receitas Exclusivas</span></div>
+<div class="stat-item"><span class="numero" data-count="15">15+</span><span class="label">Lojas pelo Brasil</span></div>
+<div class="stat-item"><span class="numero" data-count="500k">500K+</span><span class="label">Clientes Felizes</span></div>
+</div>
+<div class="dots-bg"></div>
+</div>
+<div class="quem-somos-conteudo">
+<div class="section-titulo"><h2>Nossa Jornada</h2><p>Cada passo foi dado com muito amor e dedicação</p></div>
+<div class="timeline">
+<div class="timeline-item"><span class="ano">2020</span><h4>O Começo de Tudo</h4><p>A Donut Delícia nasceu em uma pequena cozinha com um sonho: levar felicidade através dos donuts mais deliciosos do Brasil.</p></div>
+<div class="timeline-item"><span class="ano">2021</span><h4>Primeira Loja Física</h4><p>Inauguramos nossa primeira loja na Avenida Paulista, conquistando o coração dos paulistanos com nossos donuts fresquinhos.</p></div>
+<div class="timeline-item"><span class="ano">2022</span><h4>Expansão Nacional</h4><p>Abrimos filiais no Rio de Janeiro e Belo Horizonte, levando nosso sabor único para mais brasileiros.</p></div>
+<div class="timeline-item"><span class="ano">2023</span><h4>Inovação e Sustentabilidade</h4><p>Lançamos nossa linha de embalagens sustentáveis e novas receitas exclusivas que se tornaram hits.</p></div>
+<div class="timeline-item"><span class="ano">2024</span><h4>Reconhecimento Nacional</h4><p>Fomos eleitos a melhor rede de donuts do Brasil pelo Guia Gastronômico, um marco em nossa trajetória.</p></div>
+</div>
+<div class="section-titulo" style="margin-top:60px"><h2>Nossos Valores</h2><p>O que nos move e nos faz únicos</p></div>
+<div class="valores-grid">
+<div class="valor-card"><div class="icon-wrapper"><i class="fas fa-heart"></i></div><h4>Paixão</h4><p>Fazemos tudo com amor e dedicação, desde a escolha dos ingredientes até o atendimento ao cliente.</p></div>
+<div class="valor-card"><div class="icon-wrapper"><i class="fas fa-star"></i></div><h4>Qualidade</h4><p>Utilizamos apenas ingredientes premium e receitas testadas para garantir o melhor sabor em cada mordida.</p></div>
+<div class="valor-card"><div class="icon-wrapper"><i class="fas fa-lightbulb"></i></div><h4>Inovação</h4><p>Estamos sempre criando novas receitas e surpreendendo nossos clientes com sabores únicos e especiais.</p></div>
+<div class="valor-card"><div class="icon-wrapper"><i class="fas fa-leaf"></i></div><h4>Sustentabilidade</h4><p>Comprometidos com o planeta, utilizamos embalagens sustentáveis e práticas responsáveis em toda nossa cadeia.</p></div>
+</div>
+<div class="section-titulo" style="margin-top:60px"><h2>Nosso Time</h2><p>Pessoas apaixonadas que fazem a diferença</p></div>
+<div class="equipe-grid">
+<div class="membro-card"><div class="avatar"><i class="fas fa-user-circle"></i></div><h4>Ana Silva</h4><span class="cargo">CEO & Fundadora</span></div>
+<div class="membro-card"><div class="avatar"><i class="fas fa-user-circle"></i></div><h4>Carlos Santos</h4><span class="cargo">Chef Pâtissier</span></div>
+<div class="membro-card"><div class="avatar"><i class="fas fa-user-circle"></i></div><h4>Mariana Costa</h4><span class="cargo">Gerente de Operações</span></div>
+<div class="membro-card"><div class="avatar"><i class="fas fa-user-circle"></i></div><h4>Rafael Oliveira</h4><span class="cargo">Diretor de Marketing</span></div>
+</div>
+</div>
+</section>
+</div>
+
+<!-- NOSSOS PRODUTOS -->
+<div id="page-nossos-produtos" class="pagina">
+<section class="pagina-produtos">
+<h1><i class="fas fa-donut" style="color:var(--vermelho-principal)"></i> Nossos Produtos</h1>
+<p class="subtitulo">Conheça nossa seleção de donuts e bebidas feitos com ingredientes de primeira qualidade.</p>
+<h2 class="categoria-titulo"><i class="fas fa-circle" style="color:#d4883a;font-size:1.2rem"></i> Donuts</h2><div class="grid-produtos" id="grid-donuts"></div>
+<h2 class="categoria-titulo"><i class="fas fa-mug-hot" style="color:#6f4e37;font-size:1.2rem"></i> Bebidas</h2><div class="grid-produtos" id="grid-bebidas"></div>
+<h2 class="categoria-titulo"><i class="fas fa-crown" style="color:#ffd700;font-size:1.2rem"></i> Especiais</h2><div class="grid-produtos" id="grid-especiais"></div>
+<h2 class="categoria-titulo"><i class="fas fa-gift" style="color:#e07b1a;font-size:1.2rem"></i> Combos</h2><div class="grid-produtos" id="grid-combos"></div>
+</section>
+</div>
+
+<!-- NOSSAS LOJAS -->
+<div id="page-nossas-lojas" class="pagina">
+<section class="pagina-lojas">
+<h1><i class="fas fa-store" style="color:var(--vermelho-principal)"></i> Nossas Lojas</h1>
+<p class="subtitulo">Encontre a loja mais próxima de você e venha experimentar nossos donuts fresquinhos.</p>
+<div class="grid-lojas">
+<div class="card-loja"><i class="fas fa-map-pin"></i><h3>Loja Paulista</h3><p>Avenida Paulista, 1500<br>Bela Vista - São Paulo/SP</p><span class="horario"><i class="far fa-clock"></i> 8h às 22h</span><span class="destaque"><i class="fas fa-phone"></i> (11) 99999-1111</span></div>
+<div class="card-loja"><i class="fas fa-map-pin"></i><h3>Loja Shopping Morumbi</h3><p>Av. Roque Petroni Júnior, 1089<br>Morumbi - São Paulo/SP</p><span class="horario"><i class="far fa-clock"></i> 10h às 22h</span><span class="destaque"><i class="fas fa-phone"></i> (11) 99999-2222</span></div>
+<div class="card-loja"><i class="fas fa-map-pin"></i><h3>Loja Vila Olímpia</h3><p>Rua Fidêncio Ramos, 302<br>Vila Olímpia - São Paulo/SP</p><span class="horario"><i class="far fa-clock"></i> 7h às 20h</span><span class="destaque"><i class="fas fa-phone"></i> (11) 99999-3333</span></div>
+<div class="card-loja"><i class="fas fa-truck"></i><h3>Delivery</h3><p>Entregamos para toda a região metropolitana de São Paulo</p><span class="horario"><i class="far fa-clock"></i> 24 horas</span><span class="destaque"><i class="fas fa-phone"></i> (11) 99999-8888</span></div>
+</div>
+<div class="mapa-section"><h2><i class="fas fa-map-marked-alt" style="color:var(--vermelho-principal)"></i> Encontre a Loja Mais Próxima</h2><div class="mapa-placeholder"><i class="fas fa-map" style="font-size:3rem;margin-right:15px"></i> Mapa interativo em breve</div></div>
+</section>
+</div>
+
+<!-- TRABALHE CONOSCO -->
+<div id="page-trabalhe-conosco" class="pagina">
+<section class="pagina-trabalhe">
+<div class="trabalhe-hero">
+<span class="donut-icon">🍩</span>
+<h1>Faça parte do time <span>Donut Delícia</span></h1>
+<p>Junte-se a nós e faça parte de uma equipe apaixonada por criar momentos de felicidade através dos donuts mais deliciosos do Brasil.</p>
+<button class="btn-grande" onclick="document.getElementById('vagas-section').scrollIntoView({behavior:'smooth'})"><i class="fas fa-rocket"></i> Ver Vagas Disponíveis</button>
+</div>
+<div class="trabalhe-beneficios">
+<h2>Por que trabalhar conosco?</h2>
+<p class="sub">Oferecemos um ambiente incrível e benefícios que fazem a diferença</p>
+<div class="beneficios-grid">
+<div class="beneficio-card"><div class="icon"><i class="fas fa-heart"></i></div><h4>Ambiente Acolhedor</h4><p>Um espaço onde você se sente em casa, com uma equipe unida e que valoriza cada colaborador.</p></div>
+<div class="beneficio-card"><div class="icon"><i class="fas fa-graduation-cap"></i></div><h4>Desenvolvimento</h4><p>Oportunidades de crescimento e treinamentos para que você possa evoluir profissionalmente.</p></div>
+<div class="beneficio-card"><div class="icon"><i class="fas fa-coffee"></i></div><h4>Donuts de Graça</h4><p>Sim, você pode comer nossos deliciosos donuts todos os dias! Um dos melhores benefícios daqui.</p></div>
+<div class="beneficio-card"><div class="icon"><i class="fas fa-calendar-check"></i></div><h4>Horários Flexíveis</h4><p>Trabalhamos com horários flexíveis para que você possa equilibrar vida pessoal e profissional.</p></div>
+<div class="beneficio-card"><div class="icon"><i class="fas fa-hand-holding-heart"></i></div><h4>Programas de Bem-Estar</h4><p>Oferecemos suporte para sua saúde mental e física, porque sua felicidade é importante para nós.</p></div>
+<div class="beneficio-card"><div class="icon"><i class="fas fa-users"></i></div><h4>Eventos e Confraternizações</h4><p>Festas, happy hours e eventos especiais para celebrar nossas conquistas juntos.</p></div>
+</div>
+</div>
+<div class="vagas-section" id="vagas-section">
+<div class="container">
+<h2>Vagas Disponíveis</h2>
+<p class="sub">Encontre a oportunidade que combina com você</p>
+<div class="vaga-card"><div class="vaga-info"><h4>🧑‍🍳 Pâtissier / Confeiteiro</h4><div class="local"><i class="fas fa-map-marker-alt"></i> São Paulo - SP</div></div><span class="vaga-tag">Efetivo</span><button class="btn-candidatar">Candidatar-se</button></div>
+<div class="vaga-card"><div class="vaga-info"><h4>👨‍💼 Gerente de Loja</h4><div class="local"><i class="fas fa-map-marker-alt"></i> Rio de Janeiro - RJ</div></div><span class="vaga-tag">Efetivo</span><button class="btn-candidatar">Candidatar-se</button></div>
+<div class="vaga-card"><div class="vaga-info"><h4>🧑‍🎓 Jovem Aprendiz</h4><div class="local"><i class="fas fa-map-marker-alt"></i> Belo Horizonte - MG</div></div><span class="vaga-tag">Aprendiz</span><button class="btn-candidatar">Candidatar-se</button></div>
+<div class="vaga-card"><div class="vaga-info"><h4>📦 Entregador / Motoboy</h4><div class="local"><i class="fas fa-map-marker-alt"></i> São Paulo - SP</div></div><span class="vaga-tag">Freelancer</span><button class="btn-candidatar">Candidatar-se</button></div>
+<div class="vaga-card"><div class="vaga-info"><h4>📱 Social Media / Marketing</h4><div class="local"><i class="fas fa-map-marker-alt"></i> Remoto</div></div><span class="vaga-tag">Home Office</span><button class="btn-candidatar">Candidatar-se</button></div>
+</div>
+</div>
+<div class="trabalhe-cta">
+<h2>Venha fazer parte do nosso time!</h2>
+<p>Envie seu currículo e venha criar momentos de felicidade com a gente.</p>
+<button class="btn-cta" onclick="alert('📧 Envie seu currículo para: carreiras@donutdelicia.com.br')"><i class="fas fa-paper-plane"></i> Enviar Currículo</button>
+</div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-logo"><h2>Donut <span>Delícia</span></h2></div>
+<div class="footer-nav">
+<a onclick="navegar('quem-somos')">Quem Somos</a>
+<a onclick="navegar('nossos-produtos')">Nossos Produtos</a>
+<a onclick="navegar('nossas-lojas')">Nossas Lojas</a>
+<a onclick="navegar('trabalhe-conosco')">Trabalhe Conosco</a>
+<a>Minha Conta</a>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-links"><a>Política de Privacidade</a><a>Definir Cookies</a></div>
+<div class="footer-socials">
+<a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+<a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+</div>
+<div class="footer-copyright">2026 © Copyright Donut Delícia Brasil | Todos os direitos reservados</div>
+<div class="footer-dots"></div>
+</footer>
+
+<script>
+const produtos={donuts:[{nome:'Original Glazed',desc:'O clássico que derrete na boca.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},{nome:'Chocolate Belga',desc:'Cobertura de chocolate belga intenso.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,90'},{nome:'Choco Confetes',desc:'Chocolate com confeitos coloridos.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},{nome:'Morango com Confetes',desc:'Cobertura de morango com confeitos.',img:'https://images.unsplash.com/photo-1556913396-7a3c459ef68e?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},{nome:'Donut de Baunilha',desc:'Cobertura de baunilha com granulado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,90'},{nome:'Donut de Caramelo',desc:'Cobertura de caramelo salgado.',img:'https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'}],
+bebidas:[{nome:'Café Especial',desc:'Café arábica torrado na hora.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 6,00'},{nome:'Chocolate Quente',desc:'Chocolate cremoso com marshmallows.',img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,00'},{nome:'Milkshake Baunilha',desc:'Milkshake gelado e cremoso.',img:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop',preco:'R$ 12,00'},{nome:'Suco Natural',desc:'Suco de frutas frescas.',img:'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},{nome:'Cappuccino',desc:'Cappuccino cremoso com canela.',img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,00'}],
+especiais:[{nome:'Red Velvet',desc:'Massa vermelha com cream cheese.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 10,00'},{nome:'Donut de Limão',desc:'Cobertura de limão siciliano.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'},{nome:'Donut de Coco',desc:'Coco ralado com leite condensado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,00'},{nome:'Donut de Pistache',desc:'Cobertura de pistache com pedaços da noz.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 11,00'}],
+combos:[{nome:'Combo Duplo',desc:'2 donuts + 1 café especial.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 15,90'},{nome:'Combo Família',desc:'6 donuts + 2 bebidas.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 39,90'},{nome:'Combo Café',desc:'3 donuts + 1 café + 1 suco.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 22,90'}]};
+const slides=[{titulo:'A felicidade está<br>mais perto do que<br><span class="highlight">você imagina</span>',imagem:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',classe:'hero-vermelho'},{titulo:'Sabor único<br>em cada<br><span class="highlight">mordida!</span>',imagem:'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop',classe:'hero-verde'},{titulo:'Momentos<br>especiais com<br><span class="highlight">quem você ama!</span>',imagem:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop',classe:'hero-laranja'}];
+let slideAtual=0,intervaloAuto=null;
+function atualizarSlide(i){const h=document.getElementById('hero-section'),t=document.getElementById('hero-title'),im=document.getElementById('hero-image'),ind=document.querySelectorAll('#hero-indicators button');h.className='hero '+slides[i].classe;t.style.opacity='0';im.style.opacity='0';setTimeout(()=>{t.innerHTML=slides[i].titulo;im.src=slides[i].imagem;t.style.opacity='1';im.style.opacity='1'},200);ind.forEach((b,n)=>b.classList.toggle('active',n===i));slideAtual=i}
+function mudarSlide(d){let n=slideAtual+d;if(n<0)n=slides.length-1;if(n>=slides.length)n=0;atualizarSlide(n);reiniciarAutoSlide()}
+function irParaSlide(i){atualizarSlide(i);reiniciarAutoSlide()}
+function iniciarAutoSlide(){if(intervaloAuto)clearInterval(intervaloAuto);intervaloAuto=setInterval(()=>mudarSlide(1),5000)}
+function reiniciarAutoSlide(){if(intervaloAuto){clearInterval(intervaloAuto);iniciarAutoSlide()}}
+function navegar(p){document.querySelectorAll('.pagina').forEach(el=>el.classList.remove('active'));const el=document.getElementById('page-'+p);if(el)el.classList.add('active');document.querySelectorAll('nav ul li a').forEach(l=>{l.classList.remove('active');if(l.dataset.page===p)l.classList.add('active')});fecharMenu();window.scrollTo({top:0,behavior:'smooth'})}
+function toggleMenu(){const n=document.getElementById('mainNav'),h=document.getElementById('hamburgerBtn'),o=document.getElementById('navOverlay');n.classList.toggle('active');h.classList.toggle('active');o.classList.toggle('active');document.body.style.overflow=n.classList.contains('active')?'hidden':''}
+function fecharMenu(){const n=document.getElementById('mainNav'),h=document.getElementById('hamburgerBtn'),o=document.getElementById('navOverlay');n.classList.remove('active');h.classList.remove('active');o.classList.remove('active');document.body.style.overflow=''}
+function mudarAba(t,b){document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));if(b)b.classList.add('active');const grid=document.getElementById('grid-produtos');grid.innerHTML='';const lista=produtos[t]||[];lista.forEach(p=>{const c=document.createElement('div');c.className='card-produto';c.innerHTML=`<img src="${p.img}" alt="${p.nome}"><h3>${p.nome}</h3><p>${p.desc}</p><span class="preco">${p.preco}</span>`;grid.appendChild(c)})}
+function scrollCarrossel(d){const g=document.getElementById('grid-produtos');if(!g)return;const c=g.querySelector('.card-produto');if(!c)return;const w=c.offsetWidth+30;g.scrollBy({left:d*w*2,behavior:'smooth'})}
+function renderizarProdutos(c,id){const container=document.getElementById(id);if(!container)return;const lista=produtos[c]||[];lista.forEach(p=>{const card=document.createElement('div');card.className='card-produto';card.innerHTML=`<img src="${p.img}" alt="${p.nome}"><h3>${p.nome}</h3><p>${p.desc}</p><span class="preco">${p.preco}</span>`;container.appendChild(card)})}
+document.addEventListener('DOMContentLoaded',()=>{atualizarSlide(0);iniciarAutoSlide();const primeiroBotao=document.querySelector('.tab-btn');if(primeiroBotao)mudarAba('donuts',primeiroBotao);renderizarProdutos('donuts','grid-donuts');renderizarProdutos('bebidas','grid-bebidas');renderizarProdutos('especiais','grid-especiais');renderizarProdutos('combos','grid-combos');document.querySelector('nav ul li a[data-page="home"]')?.classList.add('active')});
+window.addEventListener('resize',()=>{if(window.innerWidth>900)fecharMenu()});
+</script>
 </body>
 </html>
