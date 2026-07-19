@@ -7,22 +7,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* ===== RESET ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Montserrat',sans-serif;overflow-x:hidden;background-color:#fff}
+
+/* ===== VARIÁVEIS ===== */
 :root{--verde-escuro:#006241;--verde-claro:#00a86b;--vermelho-principal:#E63946;--laranja-donut:#f5a623;--cinza-claro:#f4f4f4;--cinza-medio:#e0e0e0;--branco:#fff;--preto-texto:#333}
+
+/* ===== GERAIS ===== */
 a{text-decoration:none;color:inherit;transition:.3s}
 ul{list-style:none}
+
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:var(--cinza-claro);border-radius:10px}
 ::-webkit-scrollbar-thumb{background:var(--verde-escuro);border-radius:10px}
 ::-webkit-scrollbar-thumb:hover{background:var(--vermelho-principal)}
-.top-bar{background-color:var(--verde-escuro);padding:8px 5%;display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
-.top-bar a{color:#fff;font-size:16px}
+
+/* ===== TOP BAR ===== */
+.top-bar{background-color:var(--verde-escuro);padding:8px 5%;display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap;transition:background-color .8s ease}
+.top-bar a{color:#fff;font-size:16px;transition:color .3s}
 .top-bar a:hover{color:#ddd;transform:translateY(-2px)}
+.top-bar.vermelho{background-color:#c62828}
+.top-bar.verde{background-color:var(--verde-escuro)}
+.top-bar.laranja{background-color:#cc6b14}
+
+/* ===== HEADER ===== */
 header{display:flex;justify-content:space-between;align-items:center;padding:12px 5%;background-color:#fff;flex-wrap:wrap;position:sticky;top:0;z-index:1000;box-shadow:0 2px 15px rgba(0,0,0,.08);min-height:70px}
 .logo-header{font-size:24px;font-weight:800;font-style:italic;color:var(--vermelho-principal);border:3px solid var(--verde-escuro);padding:5px 15px;border-radius:10px 0 10px 0;cursor:pointer;flex-shrink:0;transition:.3s}
 .logo-header span{color:var(--verde-escuro)}
 .logo-header:hover{transform:scale(1.02)}
+
+/* ===== NAVEGAÇÃO ===== */
 nav{display:flex;align-items:center}
 nav ul{display:flex;gap:25px;align-items:center}
 nav ul li a{color:var(--verde-escuro);font-weight:700;font-size:13px;text-transform:uppercase;cursor:pointer;padding:8px 0;border-bottom:3px solid transparent;transition:.3s;white-space:nowrap;position:relative}
@@ -34,6 +50,8 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .btn-header:hover{background-color:#b71c1c;transform:scale(1.05)}
 .btn-header-outline{background-color:transparent;color:var(--vermelho-principal);padding:10px 25px;border-radius:25px;font-weight:700;font-size:12px;text-transform:uppercase;cursor:pointer;border:2px solid var(--vermelho-principal);transition:.3s}
 .btn-header-outline:hover{background-color:var(--vermelho-principal);color:#fff;transform:scale(1.05)}
+
+/* ===== HAMBURGER ===== */
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:transparent;border:none;z-index:1001}
 .hamburger span{display:block;width:28px;height:3px;background:var(--verde-escuro);border-radius:3px;transition:.3s ease;transform-origin:center}
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px);background:var(--vermelho-principal)}
@@ -42,24 +60,21 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .hamburger:hover span{background:var(--vermelho-principal)}
 .nav-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:998;opacity:0;transition:opacity .3s ease}
 .nav-overlay.active{display:block;opacity:1}
+
+/* ===== PÁGINAS ===== */
 .pagina{display:none;animation:fadeIn .5s ease}
 .pagina.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== HERO CLEAN ===== */
+/* ===== HERO ===== */
 .hero{display:flex;align-items:center;justify-content:space-between;padding:70px 5% 80px;position:relative;min-height:500px;color:#fff;transition:background .8s ease;overflow:hidden}
 .hero.hero-vermelho{background:linear-gradient(135deg,#c62828 0%,#e53935 50%,var(--vermelho-principal)100%)}
 .hero.hero-verde{background:linear-gradient(135deg,#004d33 0%,var(--verde-escuro)50%,var(--verde-claro)100%)}
 .hero.hero-laranja{background:linear-gradient(135deg,#cc6b14 0%,#e07b1a 50%,var(--laranja-donut)100%)}
-
-/* Gradiente sutil de fundo */
 .hero::before{content:'';position:absolute;top:-30%;right:-10%;width:60%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.06)0%,transparent 70%);pointer-events:none}
-
-/* Círculo decorativo sutil */
 .hero .deco-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);pointer-events:none}
 .hero .deco-circle-1{width:400px;height:400px;bottom:-150px;right:-50px}
 .hero .deco-circle-2{width:250px;height:250px;top:-80px;left:10%;border-color:rgba(255,255,255,.04)}
-
 .hero-content{max-width:50%;z-index:2;position:relative}
 .hero-content .tag{display:inline-block;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:6px 18px;border-radius:50px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;border:1px solid rgba(255,255,255,.1)}
 .hero-content h1{font-size:3.8rem;font-weight:800;font-style:italic;line-height:1.05;margin-bottom:18px;transition:opacity .3s ease}
@@ -83,7 +98,7 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .hero-arrows button{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:16px;cursor:pointer;transition:.3s;border:1px solid rgba(255,255,255,.1)}
 .hero-arrows button:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
 
-/* ===== SEÇÃO PRODUTOS ===== */
+/* ===== PRODUTOS ===== */
 .produtos-section{padding:60px 5%;text-align:center;background:#fff}
 .produtos-section h2{color:var(--verde-escuro);font-size:2.2rem;margin-bottom:40px;font-weight:800}
 .tabs-container{display:inline-flex;background-color:var(--cinza-claro);border-radius:50px;padding:8px;gap:5px;margin-bottom:50px;flex-wrap:wrap;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
@@ -106,6 +121,8 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .arrow-dir:hover{background:#004d33}
 .btn-ver-mais{display:inline-block;background-color:var(--verde-escuro);color:#fff;padding:15px 50px;border-radius:30px;font-weight:700;text-transform:uppercase;box-shadow:0 4px 15px rgba(0,98,65,.3);cursor:pointer;border:none;transition:.3s}
 .btn-ver-mais:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,98,65,.4)}
+
+/* ===== CLÁSSICO ===== */
 .classico-section{display:flex;background-color:var(--verde-escuro);color:#fff;min-height:400px;margin-top:50px}
 .classico-img{flex:1;background-image:url('https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=800&auto=format&fit=crop');background-size:cover;background-position:center;min-height:300px}
 .classico-content{flex:1;padding:60px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
@@ -115,7 +132,7 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .btn-saiba-mais:hover{background-color:#b71c1c;transform:translateY(-3px)}
 .classico-pontos{position:absolute;bottom:0;right:0;width:60%;height:50px;background-image:radial-gradient(var(--branco)3px,transparent 3px);background-size:25px 25px;opacity:.3;pointer-events:none}
 
-/* ===== PÁGINA QUEM SOMOS ===== */
+/* ===== QUEM SOMOS ===== */
 .pagina-quem-somos{padding:0;max-width:100%}
 .quem-somos-hero{background:linear-gradient(135deg,var(--verde-escuro)0%,var(--verde-claro)100%);padding:80px 5% 60px;text-align:center;color:#fff;position:relative;overflow:hidden}
 .quem-somos-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:60%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05)0%,transparent 70%);border-radius:50%;pointer-events:none}
@@ -151,7 +168,7 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .membro-card h4{color:var(--verde-escuro);font-size:1.1rem}
 .membro-card .cargo{color:#888;font-size:.9rem}
 
-/* ===== PÁGINA TRABALHE CONOSCO ===== */
+/* ===== TRABALHE CONOSCO ===== */
 .pagina-trabalhe{padding:0;max-width:100%}
 .trabalhe-hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:80px 5% 60px;text-align:center;color:#fff;position:relative;overflow:hidden}
 .trabalhe-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:50%;height:200%;background:radial-gradient(circle,rgba(204,0,34,.1)0%,transparent 70%);border-radius:50%;pointer-events:none}
@@ -189,7 +206,7 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .trabalhe-cta .btn-cta{display:inline-block;background:#fff;color:var(--verde-escuro);padding:15px 45px;border-radius:30px;font-weight:700;font-size:1rem;text-transform:uppercase;cursor:pointer;border:none;transition:.3s}
 .trabalhe-cta .btn-cta:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,.2)}
 
-/* ===== PÁGINA NOSSOS PRODUTOS ===== */
+/* ===== NOSSOS PRODUTOS ===== */
 .pagina-produtos{padding:80px 5% 60px;max-width:1200px;margin:0 auto}
 .pagina-produtos h1{color:var(--verde-escuro);font-size:2.8rem;margin-bottom:20px;font-weight:800}
 .pagina-produtos .subtitulo{color:#666;font-size:1.2rem;margin-bottom:50px}
@@ -197,7 +214,7 @@ nav ul li a.active{color:var(--vermelho-principal)}
 .categoria-titulo{color:var(--verde-escuro);font-size:1.8rem;margin:40px 0 20px;padding-bottom:10px;border-bottom:3px solid var(--cinza-claro)}
 .categoria-titulo:first-of-type{margin-top:0}
 
-/* ===== PÁGINA NOSSAS LOJAS ===== */
+/* ===== NOSSAS LOJAS ===== */
 .pagina-lojas{padding:80px 5% 60px;max-width:1200px;margin:0 auto}
 .pagina-lojas h1{color:var(--verde-escuro);font-size:2.8rem;margin-bottom:20px;font-weight:800}
 .pagina-lojas .subtitulo{color:#666;font-size:1.2rem;margin-bottom:50px}
@@ -239,13 +256,19 @@ footer{background-color:#fff;padding:60px 5% 20px;text-align:center}
 </style>
 </head>
 <body>
-<div class="top-bar">
+
+<!-- TOP BAR -->
+<div class="top-bar" id="topBar">
 <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
 <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
 <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
 <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
 </div>
+
+<!-- OVERLAY -->
 <div class="nav-overlay" id="navOverlay" onclick="fecharMenu()"></div>
+
+<!-- HEADER -->
 <header>
 <div class="logo-header" onclick="navegar('home')">Donut <span>Delícia</span></div>
 <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -266,8 +289,8 @@ footer{background-color:#fff;padding:60px 5% 20px;text-align:center}
 <div class="deco-circle deco-circle-2"></div>
 <div class="hero-content">
 <div class="tag"><i class="fas fa-star" style="margin-right:6px;color:#ffd700"></i> Destaque da semana</div>
-<h1 id="hero-title">A felicidade está<br>mais perto do que<br><span class="highlight">você imagina</span></h1>
-<p>Donuts fresquinhos feitos com amor todos os dias. Experimente o sabor que conquistou o Brasil.</p>
+<h1 id="hero-title">Donuts<br><span class="highlight">fresquinhos</span><br>todo dia</h1>
+<p>Feitos com amor. Para você.</p>
 <div class="hero-buttons">
 <a class="hero-btn hero-btn-primary" onclick="navegar('nossas-lojas')"><i class="fas fa-store"></i> Encontre uma loja</a>
 <a class="hero-btn hero-btn-secondary" onclick="navegar('nossos-produtos')"><i class="fas fa-donut"></i> Ver cardápio</a>
@@ -445,25 +468,223 @@ footer{background-color:#fff;padding:60px 5% 20px;text-align:center}
 </footer>
 
 <script>
-const produtos={donuts:[{nome:'Original Glazed',desc:'O clássico que derrete na boca.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},{nome:'Chocolate Belga',desc:'Cobertura de chocolate belga intenso.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,90'},{nome:'Choco Confetes',desc:'Chocolate com confeitos coloridos.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},{nome:'Morango com Confetes',desc:'Cobertura de morango com confeitos.',img:'https://images.unsplash.com/photo-1556913396-7a3c459ef68e?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},{nome:'Donut de Baunilha',desc:'Cobertura de baunilha com granulado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,90'},{nome:'Donut de Caramelo',desc:'Cobertura de caramelo salgado.',img:'https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'}],
-bebidas:[{nome:'Café Especial',desc:'Café arábica torrado na hora.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 6,00'},{nome:'Chocolate Quente',desc:'Chocolate cremoso com marshmallows.',img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,00'},{nome:'Milkshake Baunilha',desc:'Milkshake gelado e cremoso.',img:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop',preco:'R$ 12,00'},{nome:'Suco Natural',desc:'Suco de frutas frescas.',img:'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},{nome:'Cappuccino',desc:'Cappuccino cremoso com canela.',img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,00'}],
-especiais:[{nome:'Red Velvet',desc:'Massa vermelha com cream cheese.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 10,00'},{nome:'Donut de Limão',desc:'Cobertura de limão siciliano.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'},{nome:'Donut de Coco',desc:'Coco ralado com leite condensado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,00'},{nome:'Donut de Pistache',desc:'Cobertura de pistache com pedaços da noz.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 11,00'}],
-combos:[{nome:'Combo Duplo',desc:'2 donuts + 1 café especial.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 15,90'},{nome:'Combo Família',desc:'6 donuts + 2 bebidas.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 39,90'},{nome:'Combo Café',desc:'3 donuts + 1 café + 1 suco.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 22,90'}]};
-const slides=[{titulo:'A felicidade está<br>mais perto do que<br><span class="highlight">você imagina</span>',imagem:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',classe:'hero-vermelho'},{titulo:'Sabor único<br>em cada<br><span class="highlight">mordida!</span>',imagem:'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop',classe:'hero-verde'},{titulo:'Momentos<br>especiais com<br><span class="highlight">quem você ama!</span>',imagem:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop',classe:'hero-laranja'}];
-let slideAtual=0,intervaloAuto=null;
-function atualizarSlide(i){const h=document.getElementById('hero-section'),t=document.getElementById('hero-title'),im=document.getElementById('hero-image'),ind=document.querySelectorAll('#hero-indicators button');h.className='hero '+slides[i].classe;t.style.opacity='0';im.style.opacity='0';setTimeout(()=>{t.innerHTML=slides[i].titulo;im.src=slides[i].imagem;t.style.opacity='1';im.style.opacity='1'},200);ind.forEach((b,n)=>b.classList.toggle('active',n===i));slideAtual=i}
-function mudarSlide(d){let n=slideAtual+d;if(n<0)n=slides.length-1;if(n>=slides.length)n=0;atualizarSlide(n);reiniciarAutoSlide()}
-function irParaSlide(i){atualizarSlide(i);reiniciarAutoSlide()}
-function iniciarAutoSlide(){if(intervaloAuto)clearInterval(intervaloAuto);intervaloAuto=setInterval(()=>mudarSlide(1),5000)}
-function reiniciarAutoSlide(){if(intervaloAuto){clearInterval(intervaloAuto);iniciarAutoSlide()}}
-function navegar(p){document.querySelectorAll('.pagina').forEach(el=>el.classList.remove('active'));const el=document.getElementById('page-'+p);if(el)el.classList.add('active');document.querySelectorAll('nav ul li a').forEach(l=>{l.classList.remove('active');if(l.dataset.page===p)l.classList.add('active')});fecharMenu();window.scrollTo({top:0,behavior:'smooth'})}
-function toggleMenu(){const n=document.getElementById('mainNav'),h=document.getElementById('hamburgerBtn'),o=document.getElementById('navOverlay');n.classList.toggle('active');h.classList.toggle('active');o.classList.toggle('active');document.body.style.overflow=n.classList.contains('active')?'hidden':''}
-function fecharMenu(){const n=document.getElementById('mainNav'),h=document.getElementById('hamburgerBtn'),o=document.getElementById('navOverlay');n.classList.remove('active');h.classList.remove('active');o.classList.remove('active');document.body.style.overflow=''}
-function mudarAba(t,b){document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));if(b)b.classList.add('active');const grid=document.getElementById('grid-produtos');grid.innerHTML='';const lista=produtos[t]||[];lista.forEach(p=>{const c=document.createElement('div');c.className='card-produto';c.innerHTML=`<img src="${p.img}" alt="${p.nome}"><h3>${p.nome}</h3><p>${p.desc}</p><span class="preco">${p.preco}</span>`;grid.appendChild(c)})}
-function scrollCarrossel(d){const g=document.getElementById('grid-produtos');if(!g)return;const c=g.querySelector('.card-produto');if(!c)return;const w=c.offsetWidth+30;g.scrollBy({left:d*w*2,behavior:'smooth'})}
-function renderizarProdutos(c,id){const container=document.getElementById(id);if(!container)return;const lista=produtos[c]||[];lista.forEach(p=>{const card=document.createElement('div');card.className='card-produto';card.innerHTML=`<img src="${p.img}" alt="${p.nome}"><h3>${p.nome}</h3><p>${p.desc}</p><span class="preco">${p.preco}</span>`;container.appendChild(card)})}
-document.addEventListener('DOMContentLoaded',()=>{atualizarSlide(0);iniciarAutoSlide();const primeiroBotao=document.querySelector('.tab-btn');if(primeiroBotao)mudarAba('donuts',primeiroBotao);renderizarProdutos('donuts','grid-donuts');renderizarProdutos('bebidas','grid-bebidas');renderizarProdutos('especiais','grid-especiais');renderizarProdutos('combos','grid-combos');document.querySelector('nav ul li a[data-page="home"]')?.classList.add('active')});
-window.addEventListener('resize',()=>{if(window.innerWidth>900)fecharMenu()});
+// ===== BANCO DE DADOS =====
+const produtos = {
+    donuts: [
+        {nome:'Original Glazed',desc:'O clássico que derrete na boca.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},
+        {nome:'Chocolate Belga',desc:'Cobertura de chocolate belga intenso.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,90'},
+        {nome:'Choco Confetes',desc:'Chocolate com confeitos coloridos.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},
+        {nome:'Morango com Confetes',desc:'Cobertura de morango com confeitos.',img:'https://images.unsplash.com/photo-1556913396-7a3c459ef68e?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,50'},
+        {nome:'Donut de Baunilha',desc:'Cobertura de baunilha com granulado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,90'},
+        {nome:'Donut de Caramelo',desc:'Cobertura de caramelo salgado.',img:'https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'}
+    ],
+    bebidas: [
+        {nome:'Café Especial',desc:'Café arábica torrado na hora.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 6,00'},
+        {nome:'Chocolate Quente',desc:'Chocolate cremoso com marshmallows.',img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,00'},
+        {nome:'Milkshake Baunilha',desc:'Milkshake gelado e cremoso.',img:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop',preco:'R$ 12,00'},
+        {nome:'Suco Natural',desc:'Suco de frutas frescas.',img:'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,50'},
+        {nome:'Cappuccino',desc:'Cappuccino cremoso com canela.',img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop',preco:'R$ 7,00'}
+    ],
+    especiais: [
+        {nome:'Red Velvet',desc:'Massa vermelha com cream cheese.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 10,00'},
+        {nome:'Donut de Limão',desc:'Cobertura de limão siciliano.',img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop',preco:'R$ 8,50'},
+        {nome:'Donut de Coco',desc:'Coco ralado com leite condensado.',img:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400&auto=format&fit=crop',preco:'R$ 9,00'},
+        {nome:'Donut de Pistache',desc:'Cobertura de pistache com pedaços da noz.',img:'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=400&auto=format&fit=crop',preco:'R$ 11,00'}
+    ],
+    combos: [
+        {nome:'Combo Duplo',desc:'2 donuts + 1 café especial.',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop',preco:'R$ 15,90'},
+        {nome:'Combo Família',desc:'6 donuts + 2 bebidas.',img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=400&auto=format&fit=crop',preco:'R$ 39,90'},
+        {nome:'Combo Café',desc:'3 donuts + 1 café + 1 suco.',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop',preco:'R$ 22,90'}
+    ]
+};
+
+// ===== SLIDES =====
+const slides = [
+    {titulo:'Donuts<br><span class="highlight">fresquinhos</span><br>todo dia', imagem:'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop', classe:'hero-vermelho', cor:'vermelho'},
+    {titulo:'Sabor único<br>em cada<br><span class="highlight">mordida!</span>', imagem:'https://images.unsplash.com/photo-1527904324834-3bda86da6771?q=80&w=800&auto=format&fit=crop', classe:'hero-verde', cor:'verde'},
+    {titulo:'Momentos<br>especiais com<br><span class="highlight">quem você ama!</span>', imagem:'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=800&auto=format&fit=crop', classe:'hero-laranja', cor:'laranja'}
+];
+
+let slideAtual = 0;
+let intervaloAuto = null;
+
+// ===== FUNÇÃO ATUALIZAR SLIDE =====
+function atualizarSlide(i) {
+    const hero = document.getElementById('hero-section');
+    const titulo = document.getElementById('hero-title');
+    const imagem = document.getElementById('hero-image');
+    const indicadores = document.querySelectorAll('#hero-indicators button');
+    const topBar = document.getElementById('topBar');
+    
+    // Troca classe da hero
+    hero.className = 'hero ' + slides[i].classe;
+    
+    // Troca cor da top-bar
+    topBar.className = 'top-bar';
+    if (slides[i].cor === 'vermelho') {
+        topBar.classList.add('vermelho');
+    } else if (slides[i].cor === 'verde') {
+        topBar.classList.add('verde');
+    } else if (slides[i].cor === 'laranja') {
+        topBar.classList.add('laranja');
+    }
+    
+    // Anima título e imagem
+    titulo.style.opacity = '0';
+    imagem.style.opacity = '0';
+    
+    setTimeout(() => {
+        titulo.innerHTML = slides[i].titulo;
+        imagem.src = slides[i].imagem;
+        titulo.style.opacity = '1';
+        imagem.style.opacity = '1';
+    }, 200);
+    
+    // Atualiza indicadores
+    indicadores.forEach((btn, index) => {
+        btn.classList.toggle('active', index === i);
+    });
+    
+    slideAtual = i;
+}
+
+// ===== NAVEGAÇÃO SLIDES =====
+function mudarSlide(direcao) {
+    let novoIndex = slideAtual + direcao;
+    if (novoIndex < 0) novoIndex = slides.length - 1;
+    if (novoIndex >= slides.length) novoIndex = 0;
+    atualizarSlide(novoIndex);
+    reiniciarAutoSlide();
+}
+
+function irParaSlide(index) {
+    atualizarSlide(index);
+    reiniciarAutoSlide();
+}
+
+function iniciarAutoSlide() {
+    if (intervaloAuto) clearInterval(intervaloAuto);
+    intervaloAuto = setInterval(() => {
+        mudarSlide(1);
+    }, 5000);
+}
+
+function reiniciarAutoSlide() {
+    if (intervaloAuto) {
+        clearInterval(intervaloAuto);
+        iniciarAutoSlide();
+    }
+}
+
+// ===== NAVEGAÇÃO ENTRE PÁGINAS =====
+function navegar(pagina) {
+    document.querySelectorAll('.pagina').forEach(p => p.classList.remove('active'));
+    const pageElement = document.getElementById('page-' + pagina);
+    if (pageElement) pageElement.classList.add('active');
+    
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === pagina) {
+            link.classList.add('active');
+        }
+    });
+    
+    fecharMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== MENU MOBILE =====
+function toggleMenu() {
+    const nav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburgerBtn');
+    const overlay = document.getElementById('navOverlay');
+    
+    nav.classList.toggle('active');
+    hamburger.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+}
+
+function fecharMenu() {
+    const nav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburgerBtn');
+    const overlay = document.getElementById('navOverlay');
+    
+    nav.classList.remove('active');
+    hamburger.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ===== PRODUTOS =====
+function mudarAba(tipo, botaoClicado) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (botaoClicado) botaoClicado.classList.add('active');
+    
+    const grid = document.getElementById('grid-produtos');
+    grid.innerHTML = '';
+    const lista = produtos[tipo] || [];
+    
+    lista.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'card-produto';
+        card.innerHTML = `
+            <img src="${prod.img}" alt="${prod.nome}">
+            <h3>${prod.nome}</h3>
+            <p>${prod.desc}</p>
+            <span class="preco">${prod.preco}</span>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function scrollCarrossel(direcao) {
+    const grid = document.getElementById('grid-produtos');
+    if (!grid) return;
+    const card = grid.querySelector('.card-produto');
+    if (!card) return;
+    const largura = card.offsetWidth + 30;
+    grid.scrollBy({ left: direcao * largura * 2, behavior: 'smooth' });
+}
+
+function renderizarProdutos(categoria, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const lista = produtos[categoria] || [];
+    
+    lista.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'card-produto';
+        card.innerHTML = `
+            <img src="${prod.img}" alt="${prod.nome}">
+            <h3>${prod.nome}</h3>
+            <p>${prod.desc}</p>
+            <span class="preco">${prod.preco}</span>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// ===== INICIALIZAÇÃO =====
+document.addEventListener('DOMContentLoaded', () => {
+    atualizarSlide(0);
+    iniciarAutoSlide();
+    
+    const primeiroBotao = document.querySelector('.tab-btn');
+    if (primeiroBotao) mudarAba('donuts', primeiroBotao);
+    
+    renderizarProdutos('donuts', 'grid-donuts');
+    renderizarProdutos('bebidas', 'grid-bebidas');
+    renderizarProdutos('especiais', 'grid-especiais');
+    renderizarProdutos('combos', 'grid-combos');
+    
+    document.querySelector('nav ul li a[data-page="home"]')?.classList.add('active');
+});
+
+// Fechar menu ao redimensionar para desktop
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) fecharMenu();
+});
 </script>
 </body>
 </html>
