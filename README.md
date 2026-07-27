@@ -3,7 +3,7 @@
 > Landing Page institucional para uma rede de donuts, com cardápio interativo, lojas físicas e área de carreiras.
 
 🌐 **Website:** https://www.pablogdev.com.br  
-🚀 **Demo:** https://pablog-7.github.io/donut-delicia/
+🚀 **Demo:** https://pablog-7.github.io/donuts-site-exemplo/
 
 ---
 
