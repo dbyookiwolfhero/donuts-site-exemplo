@@ -1,6 +1,6 @@
 # 🍩 Donut Delícia
 
-> Landing Page completa para uma rede de donuts, desenvolvida para demonstrar design institucional, responsividade e experiência de usuário com navegação fluida entre páginas.
+> Landing Page institucional para uma rede de donuts, com cardápio interativo, lojas físicas e área de carreiras.
 
 🌐 **Website:** https://www.pablogdev.com.br  
 🚀 **Demo:** https://pablog-7.github.io/donut-delicia/
@@ -9,9 +9,9 @@
 
 ## 🎯 Sobre o Projeto
 
-A **Donut Delícia** é uma landing page institucional desenvolvida para compor meu portfólio de desenvolvimento front-end. O projeto apresenta a identidade visual completa de uma rede de donuts, com seções que incluem apresentação da marca, cardápio interativo, informações sobre lojas físicas, área para candidatos a vagas de emprego e muito mais.
+A **Donut Delícia** é um UI Concept desenvolvido para compor meu portfólio de desenvolvimento front-end. O projeto apresenta uma landing page completa para uma rede de donuts, com uma experiência digital imersiva que inclui cardápio interativo, apresentação da marca, localização de lojas físicas e uma seção de recrutamento para novos talentos.
 
-Desenvolvido com HTML, CSS e JavaScript puro, este projeto demonstra a capacidade de criar experiências completas e navegáveis sem a necessidade de frameworks, mantendo alta performance e excelente responsividade.
+Desenvolvido com HTML, CSS e JavaScript puro, este conceito demonstra a capacidade de criar sites institucionais completos e navegáveis com alta performance e excelente responsividade, sem a necessidade de frameworks.
 
 ---
 
@@ -27,9 +27,9 @@ Desenvolvido com HTML, CSS e JavaScript puro, este projeto demonstra a capacidad
 
 </div>
 
-- **HTML5** - Estrutura semântica com múltiplas páginas
-- **CSS3** - Design premium, animações, responsividade completa
-- **JavaScript ES6+** - Navegação, carrossel, abas, interatividade
+- **HTML5** - Estrutura semântica com múltiplas seções
+- **CSS3** - Design premium, animações e responsividade
+- **JavaScript ES6+** - Carrossel, abas, navegação e interatividade
 - **Font Awesome 6** - Ícones vetoriais
 - **Google Fonts** - Fonte Montserrat
 
@@ -38,63 +38,62 @@ Desenvolvido com HTML, CSS e JavaScript puro, este projeto demonstra a capacidad
 ## ⚡ Funcionalidades
 
 ### 🏠 Home
-- Hero com carrossel automático e indicadores
-- 3 slides com cores distintas (vermelho, verde, laranja)
-- Top bar com redes sociais com cor dinâmica
-- Produtos em destaque com abas (Donuts, Bebidas, Especiais, Combos)
+
+- Hero com carrossel automático
+- 3 slides com cores dinâmicas (vermelho, verde, laranja)
+- Top bar com redes sociais com cor sincronizada
+- Produtos em destaque com abas interativas
 - Carrossel de produtos com navegação por setas
-- Seção "O Clássico" com imagem e chamada
+- Seção "O Clássico" com imagem institucional
 
 ### 👤 Quem Somos
-- Hero com estatísticas animadas
+
+- Hero com estatísticas da empresa
 - Linha do tempo com a história da marca (2020-2024)
-- Cards com valores da empresa (Paixão, Qualidade, Inovação, Sustentabilidade)
+- Cards com valores da empresa
 - Time de colaboradores com avatares
 
 ### 🍩 Nossos Produtos
-- Grid completo com todos os produtos organizados por categoria
+
+- Grid completo organizado por categorias
+- Donuts, Bebidas, Especiais e Combos
 - Cards com imagem, nome, descrição e preço
-- Categorias: Donuts, Bebidas, Especiais e Combos
 
 ### 🏪 Nossas Lojas
-- Cards com informações de cada loja (endereço, horário, telefone)
+
+- Cards com informações de cada unidade
+- Endereço, horário de funcionamento e telefone
 - Seção de Delivery
-- Mapa interativo (placeholder para integração futura)
+- Mapa interativo (placeholder)
 
 ### 💼 Trabalhe Conosco
+
 - Hero com chamada para vagas
-- Cards de benefícios (Ambiente Acolhedor, Desenvolvimento, Donuts de Graça, etc.)
-- Lista de vagas disponíveis com botão de candidatura
-- CTA final para envio de currículo
+- Cards com benefícios da empresa
+- Lista de vagas disponíveis
+- Botões de candidatura
+- CTA para envio de currículo
 
 ---
 
 ## 🎨 Destaques do Design
 
-- **Paleta de Cores** - Verde escuro (#006241), Vermelho (#E63946), Laranja (#f5a623)
-- **Carrossel Dinâmico** - Slides com transições suaves e cores de fundo variadas
-- **Animações** - FadeIn, Float, Hover com scale e translate
-- **Mobile First** - Design adaptado para todos os dispositivos
-- **Menu Hamburguer** - Navegação mobile com overlay
-- **Scrollbar Customizada** - Estilização premium
-- **Timeline Interativa** - Linha do tempo com hover effects
-- **Cards com Efeitos** - Elevação e bordas coloridas no hover
+- **Paleta de Cores** - Verde escuro, Vermelho e Laranja
+- **Carrossel Dinâmico** com transições suaves
+- **Timeline Interativa** com hover effects
+- **Glassmorphism** em elementos da interface
+- **Animações** - Fade, Float, Pulse e Bounce
+- **Badges e Indicadores** - Navegação clara
+- **Scrollbar Customizada**
+- **Cards com Efeitos** - Elevação e bordas coloridas
 
 ---
 
 ## 📱 Responsividade
 
 - **Mobile** - Otimizado para telas pequenas (até 480px)
-- **Tablet** - Layout adaptado (768px - 1024px)
-- **Desktop** - Experiência completa (acima de 1024px)
-
-Breakpoints implementados:
-- 1024px - Ajustes de espaçamento e fontes
-- 900px - Menu hamburger ativado
-- 768px - Layouts em coluna
-- 600px - Ajustes finos para mobile
-- 480px - Experiência mobile completa
-- 360px - Otimização para telas muito pequenas
+- **Tablet** - Layout adaptado para telas médias
+- **Desktop** - Experiência completa em telas maiores
 
 ---
 
@@ -105,24 +104,19 @@ Breakpoints implementados:
 - [ ] Formulário de contato funcional
 - [ ] Blog com receitas e novidades
 - [ ] Sistema de agendamento de pedidos
-- [ ] Painel administrativo para gestão de conteúdo
-- [ ] Integração com Google Maps real
+- [ ] Painel administrativo
+- [ ] Integração com Google Maps
 - [ ] Sistema de avaliação de produtos
 - [ ] Programa de fidelidade
-- [ ] PWA para instalação em dispositivos móveis
+- [ ] PWA
 
 ---
 
 ## 💼 Sobre este Case
 
-Este projeto faz parte da coleção de **UI Concepts** desenvolvidos para meu portfólio. O objetivo é apresentar diferentes estilos de interface e demonstrar minha abordagem em design, experiência do usuário e desenvolvimento front-end.
+Este projeto faz parte da coleção de **UI Concepts** desenvolvidos para meu portfólio. O objetivo é demonstrar minha abordagem na criação de landing pages institucionais completas, com foco em identidade visual, experiência do usuário e conversão.
 
-A Donut Delícia é um exemplo de como criar uma presença digital completa para um negócio de alimentos, com foco em:
-- **Identidade visual** - Cores, tipografia e elementos que reforçam a marca
-- **Experiência do usuário** - Navegação intuitiva e conteúdos bem estruturados
-- **Conversão** - Chamadas para ação estratégicas em todas as seções
-
-Caso deseje transformar este conceito em um projeto real, é possível evoluí-lo com React, TypeScript, Next.js, backend, autenticação e integrações personalizadas.
+Caso deseje transformar este conceito em um projeto real, ele pode ser expandido com React, TypeScript, Next.js, backend, autenticação, banco de dados e integrações personalizadas.
 
 ---
 
@@ -135,5 +129,3 @@ Caso deseje transformar este conceito em um projeto real, é possível evoluí-l
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/pablogomesdev)
 
 </div>
-
-## 📊 Estrutura do Projeto
